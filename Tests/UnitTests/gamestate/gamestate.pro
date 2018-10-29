@@ -17,16 +17,11 @@ TEMPLATE = app
 
 
 SOURCES += \
-    gamestatetest.cpp \
-    ../../../UI/gamestate.cpp
-HEADERS += \
-    ../../../UI/gamestate.hh \
-    ../../../GameLogic/Engine/igamestate.hh
-
+    gamestatetest.cpp
 
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 INCLUDEPATH += \
             ../../../UI/ \
-            ../../../GameLogic/Engine
+            ../../../GameLogic/Engine/
 
