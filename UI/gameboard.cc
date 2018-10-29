@@ -49,8 +49,17 @@ void GameBoard::addPawn(int playerId, int pawnId) {
   centerHex->addPawn(pawn);
 }
 
+void GameBoard::movePawn(int pawnId, Common::CubeCoordinate pawnCoord) {
+  shared_ptr<Pawn> pawn = _pawnsByIds[pawnId];
+  pawn->setCoordinates(pawnCoord);
+  // TODO: remove from current hex
+  auto newHex = getHex(pawnCoord);
+  newHex->addPawn(pawn);
+}
+
 void GameBoard::removePawn(int pawnId) {
   shared_ptr<Pawn> pawn = _pawnsByIds[pawnId];
+  // TODO: commented, because Pawn::getCoordinates does not exist
   // CubeCoordinate coordinates = pawn->getCoordinates();
   // shared_ptr<Hex> hex = getHex(coordinates);
   // if (hex != nullptr)
