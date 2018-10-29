@@ -1,12 +1,7 @@
 #include "gameboard.hh"
 #include "hex.hh"
 #include "pawn.hh"
-
-using Common::CubeCoordinate;
-using Common::Hex;
-using Common::Pawn;
-using std::map;
-using std::shared_ptr;
+#include "actor.hh"
 
 namespace Student {
 
@@ -52,19 +47,23 @@ void GameBoard::addPawn(int playerId, int pawnId) {
 void GameBoard::movePawn(int pawnId, Common::CubeCoordinate pawnCoord) {
   shared_ptr<Pawn> pawn = _pawnsByIds[pawnId];
   pawn->setCoordinates(pawnCoord);
-  // TODO: remove from current hex
+  // TODO: remove from current hex?
   auto newHex = getHex(pawnCoord);
   newHex->addPawn(pawn);
 }
 
 void GameBoard::removePawn(int pawnId) {
   shared_ptr<Pawn> pawn = _pawnsByIds[pawnId];
-  // TODO: commented, because Pawn::getCoordinates does not exist
-  // CubeCoordinate coordinates = pawn->getCoordinates();
-  // shared_ptr<Hex> hex = getHex(coordinates);
-  // if (hex != nullptr)
-  //   hex->changeOccupation(-1);
+  // TODO: remove from current hex?
   _pawnsByIds.erase(pawnId);
 }
+
+void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
+  shared_ptr<Actor> actor = _actorsByIds[actorId];
+  shared_ptr<Hex> hex = getHex(actorCoord);
+  actor->move(hex);
+}
+
+void GameBoard::removeActor(int actorId) { _actorsByIds.erase(actorId); }
 
 } // namespace Student

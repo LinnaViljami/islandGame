@@ -8,6 +8,7 @@ using Common::CubeCoordinate;
 using Common::Hex;
 using Common::IGameBoard;
 using Common::Pawn;
+using Common::Actor;
 using std::map;
 using std::shared_ptr;
 
@@ -70,6 +71,8 @@ private:
   map<CubeCoordinate, shared_ptr<Hex>> _hexMap;
 
   map<int, shared_ptr<Pawn>> _pawnsByIds;
+
+  map<int, shared_ptr<Actor>> _actorsByIds;
 };
 
 } // namespace Student
