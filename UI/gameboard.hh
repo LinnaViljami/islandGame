@@ -1,10 +1,14 @@
 #ifndef GAMEBOARD_HH
 #define GAMEBOARD_HH
 
-#include <map>
-#include <unordered_map>
-
 #include "igameboard.hh"
+#include <map>
+
+using Common::CubeCoordinate;
+using Common::Hex;
+using Common::IGameBoard;
+using std::map;
+using std::shared_ptr;
 
 namespace Student {
 
@@ -15,23 +19,56 @@ public:
 
   ~GameBoard();
 
-  int checkTileOccupation(Common::CubeCoordinate tileCoord) const;
+  /**
+   * @copydoc IGameBoard::checkTileOccupation()
+   */
+  virtual int checkTileOccupation(CubeCoordinate tileCoord) const;
 
-  bool isWaterTile(Common::CubeCoordinate tileCoord) const;
+  /**
+   * @copydoc IGameBoard::isWaterTile()
+   */
+  virtual bool isWaterTile(CubeCoordinate tileCoord) const;
 
-  std::shared_ptr<Common::Hex> getHex(Common::CubeCoordinate hexCoord) const;
+  /**
+   * @copydoc IGameBoard::getHex()
+   */
+  virtual shared_ptr<Hex> getHex(CubeCoordinate hexCoord) const;
 
-  void addPawn(int playerId, int pawnId);
+  /**
+   * @copydoc IGameBoard::addPawn()
+   */
+  virtual void addPawn(int playerId, int pawnId);
 
-  void movePawn(int pawnId, Common::CubeCoordinate pawnCoord);
+  /**
+   * @copydoc IGameBoard::movePawn()
+   */
+  virtual void movePawn(int pawnId, CubeCoordinate pawnCoord);
 
-  void removePawn(int pawnId);
+  /**
+   * @copydoc IGameBoard::removePawn()
+   */
+  virtual void removePawn(int pawnId);
 
-  void moveActor(int actorId, Common::CubeCoordinate actorCoord);
+  /**
+   * @copydoc IGameBoard::moveActor()
+   */
+  virtual void moveActor(int actorId, CubeCoordinate actorCoord);
 
-  void removeActor(int actorId);
+  /**
+   * @copydoc IGameBoard::removeActor()
+   */
+  virtual void removeActor(int actorId);
 
-  void addHex(std::shared_ptr<Common::Hex> newHex);
+  /**
+   * @copydoc IGameBoard::addHex()
+   */
+  virtual void addHex(shared_ptr<Hex> newHex);
+
+private:
+  shared_ptr<Hex>
+  getHexOnCoordinatesOrNull(const CubeCoordinate coordinates) const;
+
+  map<CubeCoordinate, shared_ptr<Hex>> _hexMap;
 };
 
 } // namespace Student
