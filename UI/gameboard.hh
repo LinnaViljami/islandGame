@@ -66,7 +66,6 @@ public:
   virtual void removeActor(int actorId);
 
 private:
-  shared_ptr<Hex> getCenterHex() const;
 
   map<CubeCoordinate, shared_ptr<Hex>> _hexMap;
 
