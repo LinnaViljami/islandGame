@@ -65,8 +65,6 @@ public:
   virtual void addHex(shared_ptr<Hex> newHex);
 
 private:
-  shared_ptr<Hex>
-  getHexOnCoordinatesOrNull(const CubeCoordinate coordinates) const;
 
   map<CubeCoordinate, shared_ptr<Hex>> _hexMap;
 };

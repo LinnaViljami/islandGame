@@ -7,8 +7,8 @@ using std::shared_ptr;
 
 namespace Student {
 
-int GameBoard::checkTileOccupation(Common::CubeCoordinate tileCoord) const {
-  shared_ptr<Hex> hex = getHexOnCoordinatesOrNull(tileCoord);
+int GameBoard::checkTileOccupation(CubeCoordinate tileCoord) const {
+  shared_ptr<Hex> hex = getHex(tileCoord);
   if (hex == nullptr) {
     return -1;
   } else {
@@ -17,7 +17,7 @@ int GameBoard::checkTileOccupation(Common::CubeCoordinate tileCoord) const {
 }
 
 bool GameBoard::isWaterTile(CubeCoordinate tileCoord) const {
-  shared_ptr<Hex> hex = getHexOnCoordinatesOrNull(tileCoord);
+  shared_ptr<Hex> hex = getHex(tileCoord);
   if (hex == nullptr) {
     return false;
   } else {
@@ -25,8 +25,8 @@ bool GameBoard::isWaterTile(CubeCoordinate tileCoord) const {
   }
 }
 
-shared_ptr<Hex> GameBoard::getHexOnCoordinatesOrNull(
-    const Common::CubeCoordinate coordinates) const {
+shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
+
   auto hexIterator = _hexMap.find(coordinates);
   if (hexIterator == _hexMap.end()) {
     return nullptr;
