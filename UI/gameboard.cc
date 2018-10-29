@@ -2,30 +2,37 @@
 
 using Common::CubeCoordinate;
 using Common::Hex;
-using std::shared_ptr;
 using std::map;
+using std::shared_ptr;
 
 namespace Student {
 
-bool GameBoard::isWaterTile(CubeCoordinate tileCoord) const {
-    shared_ptr<Hex> hex = getHexOnCoordinatesOrNull(tileCoord);
-    if(hex == nullptr){
-        return false;
-    }
-    else{
-        return hex->isWaterTile();
-    }
+int GameBoard::checkTileOccupation(Common::CubeCoordinate tileCoord) const {
+  shared_ptr<Hex> hex = getHexOnCoordinatesOrNull(tileCoord);
+  if (hex == nullptr) {
+    return -1;
+  } else {
+    return hex->getPawns();
+  }
 }
 
-shared_ptr<Hex> GameBoard::getHexOnCoordinatesOrNull(const Common::CubeCoordinate coordinates) const
-{
-    auto hexIterator = _hexMap.find(coordinates);
-    if(hexIterator == _hexMap.end()){
-        return nullptr;
-    }
-    else{
-        return hexIterator->second;
-    }
+bool GameBoard::isWaterTile(CubeCoordinate tileCoord) const {
+  shared_ptr<Hex> hex = getHexOnCoordinatesOrNull(tileCoord);
+  if (hex == nullptr) {
+    return false;
+  } else {
+    return hex->isWaterTile();
+  }
+}
+
+shared_ptr<Hex> GameBoard::getHexOnCoordinatesOrNull(
+    const Common::CubeCoordinate coordinates) const {
+  auto hexIterator = _hexMap.find(coordinates);
+  if (hexIterator == _hexMap.end()) {
+    return nullptr;
+  } else {
+    return hexIterator->second;
+  }
 }
 
 } // namespace Student
