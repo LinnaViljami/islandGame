@@ -8,9 +8,11 @@
 
 class GameBoard : public Common::IGameBoard
 {
+
 public:
     GameBoard();
     ~GameBoard();
 
 };
+
 #endif // GAMEBOARD_HH

@@ -8,12 +8,25 @@ QT       += testlib
 
 QT       -= gui
 
-TARGET = tst_gamestatetest
+TARGET = gamestatetest
+CONFIG += c++14
 CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
 
 
-SOURCES += tst_gamestatetest.cpp
+SOURCES += \
+    gamestatetest.cpp \
+    ../../../UI/gamestate.cpp
+HEADERS += \
+    ../../../UI/gamestate.hh \
+    ../../../GameLogic/Engine/igamestate.hh
+
+
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
+
+INCLUDEPATH += \
+            ../../../UI/ \
+            ../../../GameLogic/Engine
+

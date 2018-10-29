@@ -1,9 +1,0 @@
-#include "gameboard.hh"
-
-namespace Student{
-
-Student::GameState::GameState()
-{
-
-}
-}
