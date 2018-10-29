@@ -12,30 +12,27 @@ namespace Student {
 
 int GameBoard::checkTileOccupation(CubeCoordinate tileCoord) const {
   shared_ptr<Hex> hex = getHex(tileCoord);
-  if (hex == nullptr) {
+  if (hex == nullptr)
     return -1;
-  } else {
+  else
     return hex->getPawns();
-  }
 }
 
 bool GameBoard::isWaterTile(CubeCoordinate tileCoord) const {
   shared_ptr<Hex> hex = getHex(tileCoord);
-  if (hex == nullptr) {
+  if (hex == nullptr)
     return false;
-  } else {
+  else
     return hex->isWaterTile();
-  }
 }
 
 shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
 
   auto hexIterator = _hexMap.find(hexCoord);
-  if (hexIterator == _hexMap.end()) {
+  if (hexIterator == _hexMap.end())
     return nullptr;
-  } else {
+  else
     return hexIterator->second;
-  }
 }
 
 void GameBoard::addHex(shared_ptr<Common::Hex> newHex) {
@@ -48,6 +45,15 @@ void GameBoard::addPawn(int playerId, int pawnId) {
   _pawnsByIds[pawnId] = pawn;
   auto centerHex = getCenterHex();
   centerHex->addPawn(pawn);
+}
+
+void GameBoard::removePawn(int pawnId) {
+  shared_ptr<Pawn> pawn = _pawnsByIds[pawnId];
+  // CubeCoordinate coordinates = pawn->getCoordinates();
+  // shared_ptr<Hex> hex = getHex(coordinates);
+  // if (hex != nullptr)
+  //   hex->changeOccupation(-1);
+  _pawnsByIds.erase(pawnId);
 }
 
 shared_ptr<Common::Hex> GameBoard::getCenterHex() const {
