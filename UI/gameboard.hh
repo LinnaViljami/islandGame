@@ -4,11 +4,11 @@
 #include "igameboard.hh"
 #include <map>
 
+using Common::Actor;
 using Common::CubeCoordinate;
 using Common::Hex;
 using Common::IGameBoard;
 using Common::Pawn;
-using Common::Actor;
 using std::map;
 using std::shared_ptr;
 
@@ -17,9 +17,6 @@ namespace Student {
 class GameBoard : public Common::IGameBoard {
 
 public:
-  GameBoard();
-
-  ~GameBoard();
 
   /**
    * @copydoc IGameBoard::checkTileOccupation()
@@ -67,7 +64,6 @@ public:
   virtual void removeActor(int actorId);
 
 private:
-
   map<CubeCoordinate, shared_ptr<Hex>> _hexMap;
 
   map<int, shared_ptr<Pawn>> _pawnsByIds;
