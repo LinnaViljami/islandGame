@@ -27,12 +27,16 @@ bool GameBoard::isWaterTile(CubeCoordinate tileCoord) const {
 
 shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
 
-  auto hexIterator = _hexMap.find(coordinates);
+  auto hexIterator = _hexMap.find(hexCoord);
   if (hexIterator == _hexMap.end()) {
     return nullptr;
   } else {
     return hexIterator->second;
   }
+}
+
+void GameBoard::addHex(shared_ptr<Common::Hex> newHex) {
+  _hexMap[newHex->getCoordinates()] = newHex;
 }
 
 } // namespace Student
