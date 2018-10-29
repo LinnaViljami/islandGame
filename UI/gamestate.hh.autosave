@@ -10,7 +10,7 @@ class GameState : public Common::IGameState
 public:
     GameState();
     ~GameState();
-};
+        };
 
 }
 
