@@ -14,6 +14,7 @@ CONFIG += c++14
 
 
 SOURCES += main.cc \
+    gamestate.cpp \
     gameboard.cc \
     player.cc \
     gamewindow.cc
