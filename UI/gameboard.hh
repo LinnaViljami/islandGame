@@ -7,6 +7,7 @@
 using Common::CubeCoordinate;
 using Common::Hex;
 using Common::IGameBoard;
+using Common::Pawn;
 using std::map;
 using std::shared_ptr;
 
@@ -35,6 +36,11 @@ public:
   virtual shared_ptr<Hex> getHex(CubeCoordinate hexCoord) const;
 
   /**
+   * @copydoc IGameBoard::addHex()
+   */
+  virtual void addHex(shared_ptr<Hex> newHex);
+
+  /**
    * @copydoc IGameBoard::addPawn()
    */
   virtual void addPawn(int playerId, int pawnId);
@@ -59,14 +65,12 @@ public:
    */
   virtual void removeActor(int actorId);
 
-  /**
-   * @copydoc IGameBoard::addHex()
-   */
-  virtual void addHex(shared_ptr<Hex> newHex);
-
 private:
+  shared_ptr<Hex> getCenterHex() const;
 
   map<CubeCoordinate, shared_ptr<Hex>> _hexMap;
+
+  map<int, shared_ptr<Pawn>> _pawnsByIds;
 };
 
 } // namespace Student

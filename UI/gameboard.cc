@@ -1,7 +1,10 @@
 #include "gameboard.hh"
+#include "hex.hh"
+#include "pawn.hh"
 
 using Common::CubeCoordinate;
 using Common::Hex;
+using Common::Pawn;
 using std::map;
 using std::shared_ptr;
 
@@ -37,6 +40,18 @@ shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
 
 void GameBoard::addHex(shared_ptr<Common::Hex> newHex) {
   _hexMap[newHex->getCoordinates()] = newHex;
+}
+
+void GameBoard::addPawn(int playerId, int pawnId) {
+  auto pawn = std::make_shared<Common::Pawn>();
+  pawn->setId(pawnId, playerId);
+  _pawnsByIds[pawnId] = pawn;
+  auto centerHex = getCenterHex();
+  centerHex->addPawn(pawn);
+}
+
+shared_ptr<Common::Hex> GameBoard::getCenterHex() const {
+  return getHex(CubeCoordinate(0, 0, 0));
 }
 
 } // namespace Student
