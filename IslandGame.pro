@@ -1,8 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    Tests \
     UI \
+    Tests \
     GameLogic
 
 UI.depends = GameLogic
