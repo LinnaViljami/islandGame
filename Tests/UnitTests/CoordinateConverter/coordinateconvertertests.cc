@@ -32,9 +32,8 @@ void CoordinateConverterTests::testCoordinateConverting() {
   CartesianCoordinate actual =
       Student::convertCubeCoordinatesToCartesian(cubeCoord);
 
-  static const double EPSILON = 0.001;
-  QVERIFY2(fabs(actual.x - exceptedCartesianX) < EPSILON, "x failed");
-  QVERIFY2(fabs(actual.y - exceptedCartesianY) < EPSILON, "y failed");
+  QCOMPARE(actual.x, exceptedCartesianX);
+  QCOMPARE(actual.y, exceptedCartesianY);
 }
 
 void CoordinateConverterTests::testCoordinateConverting_data() {
@@ -46,8 +45,9 @@ void CoordinateConverterTests::testCoordinateConverting_data() {
 
   QTest::addRow("center") << 0 << 0 << 0 << 0.0 << 0.0;
   QTest::addRow("along cube Z-axis") << +2 << -2 << 0 << 4 * sqrt(3) / 2 << 0.0;
-  QTest::addRow("random point 1") << +2 << -1 << -1 << 2 * sqrt(3) / 2 << 1.5;
-  QTest::addRow("random point 2") << -3 << 0 << +3 << -3 * sqrt(3) / 2 << 4.5;
+  QTest::addRow("random point 1") << +2 << -1 << -1 << 3 * sqrt(3) / 2 << 1.5;
+  QTest::addRow("random point 2") << -3 << 0 << +3 << -3 * sqrt(3) / 2 << -4.5;
+  QTest::addRow("random point 3") << -3 << +2 << +1 << -5 * sqrt(3) / 2 << -1.5;
 }
 
 QTEST_APPLESS_MAIN(CoordinateConverterTests)
