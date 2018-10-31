@@ -2,10 +2,8 @@
 
 namespace Student{
 
-Student::GameState::GameState()
+Student::GameState::GameState() : _gamePhase(GamePhase::MOVEMENT), _idOfPlayerInTurn(-1)
 {
-    _gamePhase = GamePhase::MOVEMENT;
-    _idOfPlayerInTurn = -1;
 }
 
 GamePhase Student::GameState::currentGamePhase() const
