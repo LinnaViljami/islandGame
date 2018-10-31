@@ -14,6 +14,7 @@ public:
 
 private Q_SLOTS:
     void testChangeGamePhase();
+    void testChangePlayerTurn();
 };
 
 GamestateTest::GamestateTest()
@@ -26,6 +27,15 @@ void GamestateTest::testChangeGamePhase()
     GamePhase testPhase = GamePhase::SINKING;
     testState.changeGamePhase(GamePhase::SINKING);
     QCOMPARE(testPhase, testState.currentGamePhase());
+}
+
+void GamestateTest::testChangePlayerTurn()
+{
+    GameState testState = GameState();
+    int testPlayerId = 2;
+    testState.changePlayerTurn(2);
+    QCOMPARE(testPlayerId, testState.currentPlayer());
+
 }
 
 QTEST_APPLESS_MAIN(GamestateTest)

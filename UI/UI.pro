@@ -14,13 +14,13 @@ CONFIG += c++14
 
 
 SOURCES += main.cc \
-    gamestate.cpp \
     gameboard.cc \
     player.cc \
     gamewindow.cc \
     hexgraphicsitem.cc \
     gameboardwidget.cc \
-    coordinateconverter.cc
+    coordinateconverter.cc \
+    gamestate.cc 
 
 HEADERS  += \
     gameboard.hh \
