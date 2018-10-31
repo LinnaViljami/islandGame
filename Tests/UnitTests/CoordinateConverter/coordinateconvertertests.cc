@@ -43,11 +43,11 @@ void CoordinateConverterTests::testCoordinateConverting_data() {
   QTest::addColumn<double>("exceptedCartesianX");
   QTest::addColumn<double>("exceptedCartesianY");
 
-  QTest::addRow("center") << 0 << 0 << 0 << 0.0 << 0.0;
-  QTest::addRow("along cube Z-axis") << +2 << -2 << 0 << 4 * sqrt(3) / 2 << 0.0;
-  QTest::addRow("random point 1") << +2 << -1 << -1 << 3 * sqrt(3) / 2 << 1.5;
-  QTest::addRow("random point 2") << -3 << 0 << +3 << -3 * sqrt(3) / 2 << -4.5;
-  QTest::addRow("random point 3") << -3 << +2 << +1 << -5 * sqrt(3) / 2 << -1.5;
+  QTest::newRow("center") << 0 << 0 << 0 << 0.0 << 0.0;
+  QTest::newRow("along cube Z-axis") << +2 << -2 << 0 << 4 * sqrt(3) / 2 << 0.0;
+  QTest::newRow("random point 1") << +2 << -1 << -1 << 3 * sqrt(3) / 2 << 1.5;
+  QTest::newRow("random point 2") << -3 << 0 << +3 << -3 * sqrt(3) / 2 << -4.5;
+  QTest::newRow("random point 3") << -3 << +2 << +1 << -5 * sqrt(3) / 2 << -1.5;
 }
 
 QTEST_APPLESS_MAIN(CoordinateConverterTests)

@@ -35,7 +35,6 @@ void GamestateTest::testChangePlayerTurn()
     int testPlayerId = 2;
     testState.changePlayerTurn(2);
     QCOMPARE(testPlayerId, testState.currentPlayer());
-
 }
 
 QTEST_APPLESS_MAIN(GamestateTest)
