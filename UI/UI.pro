@@ -18,14 +18,19 @@ SOURCES += main.cc \
     gameboard.cc \
     player.cc \
     gamewindow.cc \
-    hexgraphicsitem.cc
+    hexgraphicsitem.cc \
+    gameboardwidget.cc \
+    coordinateconverter.cc
 
 HEADERS  += \
     gameboard.hh \
     player.hh \
     gamestate.hh \
     gamewindow.hh \
-    hexgraphicsitem.hh
+    hexgraphicsitem.hh \
+    gameboardwidget.hh \
+    coordinateconverter.hh \
+    coordinateconvertettests.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine
