@@ -14,17 +14,18 @@ void HexGraphicsItem::paint(QPainter *painter,
                             const QStyleOptionGraphicsItem *option,
                             QWidget *widget) {
 
-  static const double topAndBottomPointX = r / 2;
-  static const double topAndBottomPointY = (sqrt(3) / 2) * r;
+    static const double topAndBottomPointX = (sqrt(3) / 2) * r;
+  static const double topAndBottomPointY = r / 2;
   static const QPointF points[] = {
-      QPointF(r, 0),
+      QPointF(0, r),
       QPointF(topAndBottomPointX, topAndBottomPointY),
-      QPointF(-topAndBottomPointX, topAndBottomPointY),
-      QPointF(-r, 0),
+      QPointF(topAndBottomPointX, -topAndBottomPointY),
+      QPointF(0, -r),
       QPointF(-topAndBottomPointX, -topAndBottomPointY),
-      QPointF(topAndBottomPointX, -topAndBottomPointY)};
+      QPointF(-topAndBottomPointX, topAndBottomPointY)};
 
   painter->save();
+  painter->setPen(QPen(Qt::GlobalColor::black, 0));
   painter->setBrush(QColor(Qt::GlobalColor::yellow));
   painter->drawConvexPolygon(points, 6);
   painter->restore();
