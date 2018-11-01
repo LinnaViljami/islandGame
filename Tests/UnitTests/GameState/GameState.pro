@@ -17,7 +17,7 @@ TEMPLATE = app
 
 
 SOURCES += \
-    gamestatetest.cpp \
+    gamestatetest.cc \
     ../../../UI/gamestate.cc
 
 HEADERS += \

@@ -9,12 +9,12 @@ Q_DECLARE_METATYPE(GameState);
 Q_DECLARE_METATYPE(GamePhase);
 
 
-class GamestateTest : public QObject
+class GameStateTest : public QObject
 {
     Q_OBJECT
 
 public:
-    GamestateTest();
+    GameStateTest();
 
 private Q_SLOTS:
     void testChangeGamePhase();
@@ -25,11 +25,11 @@ private Q_SLOTS:
     void testCurrentPlayer_data();
 };
 
-GamestateTest::GamestateTest()
+GameStateTest::GameStateTest()
 {
 }
 
-void GamestateTest::testChangeGamePhase()
+void GameStateTest::testChangeGamePhase()
 {
     GameState testState = GameState();
     GamePhase testPhase = GamePhase::SINKING;
@@ -37,7 +37,7 @@ void GamestateTest::testChangeGamePhase()
     QCOMPARE(testPhase, testState.currentGamePhase());
 }
 
-void GamestateTest::testChangePlayerTurn()
+void GameStateTest::testChangePlayerTurn()
 {
     GameState testState = GameState();
     int testPlayerId = 2;
@@ -45,7 +45,7 @@ void GamestateTest::testChangePlayerTurn()
     QCOMPARE(testPlayerId, testState.currentPlayer());
 }
 
-void GamestateTest::testCurrentGamePhase()
+void GameStateTest::testCurrentGamePhase()
 {
     GamePhase defaultPhase = GamePhase::MOVEMENT;
     QFETCH(GamePhase, expectedPhase);
@@ -56,7 +56,7 @@ void GamestateTest::testCurrentGamePhase()
     QCOMPARE(newState.currentGamePhase(), expectedPhase);
 }
 
-void GamestateTest::testCurrentGamePhase_data()
+void GameStateTest::testCurrentGamePhase_data()
 {
     QTest::addColumn<GamePhase>("expectedPhase");
     QTest::addColumn<GameState>("newState");
@@ -66,7 +66,7 @@ void GamestateTest::testCurrentGamePhase_data()
     QTest::newRow("Spinning") << GamePhase::SPINNING << GameState();
 }
 
-void GamestateTest::testCurrentPlayer()
+void GameStateTest::testCurrentPlayer()
 {
     QFETCH(int, expectedPlayer);
     QFETCH(GameState, newState);
@@ -76,7 +76,7 @@ void GamestateTest::testCurrentPlayer()
     QCOMPARE(newState.currentPlayer(), expectedPlayer);
 }
 
-void GamestateTest::testCurrentPlayer_data()
+void GameStateTest::testCurrentPlayer_data()
 {
     QTest::addColumn<int>("expectedPlayer");
     QTest::addColumn<GameState>("newState");
@@ -87,6 +87,6 @@ void GamestateTest::testCurrentPlayer_data()
     QTest::newRow("Player244") << 244 << GameState();
 }
 
-QTEST_APPLESS_MAIN(GamestateTest)
+QTEST_APPLESS_MAIN(GameStateTest)
 
 #include "gamestatetest.moc"
