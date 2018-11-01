@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 namespace Ui {
+
 class GameWindow;
 }
 
@@ -16,6 +17,7 @@ public:
 
 private:
   Ui::GameWindow *ui;
+
 };
 
 #endif // GAMEWINDOW_HH

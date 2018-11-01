@@ -6,6 +6,7 @@
 #include <QGraphicsView>
 #include <QObject>
 #include <QWidget>
+#include <QFrame>
 #include <map>
 
 using Common::CubeCoordinate;
@@ -14,6 +15,8 @@ using std::map;
 using std::shared_ptr;
 using std::unique_ptr;
 using Student::HexGraphicsItem;
+
+namespace Student {
 
 class GameBoardWidget : public QWidget {
   Q_OBJECT
@@ -27,13 +30,15 @@ signals:
 public slots:
 
 protected:
-
 private:
-  shared_ptr<HexGraphicsItem> getExistingHexItemOrNull(CubeCoordinate coord) const;
+  shared_ptr<HexGraphicsItem>
+  getExistingHexItemOrNull(CubeCoordinate coord) const;
   void removeDrawnHexItemAt(CubeCoordinate coord);
 
   map<CubeCoordinate, shared_ptr<HexGraphicsItem>> _hexItemsByCoordinates;
   QGraphicsView *_graphicsView;
 };
+
+} // namespace Ui
 
 #endif // GAMEBOARDWIDGET_HH

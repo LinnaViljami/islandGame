@@ -2,10 +2,20 @@
 #include "QGraphicsView"
 #include "coordinateconverter.hh"
 
+#include <qboxlayout.h>
+
+namespace{
+    static int HEX_SCALE = 30;
+}
+
+namespace Student {
+
 GameBoardWidget::GameBoardWidget(QWidget *parent)
     : QWidget(parent), _graphicsView(new QGraphicsView(this)) {
+  this->setLayout(new QHBoxLayout(this));
   QGraphicsScene *scene = new QGraphicsScene(this);
   _graphicsView->setScene(scene);
+  this->layout()->addWidget(_graphicsView);
 }
 
 void GameBoardWidget::drawHexagon(Common::CubeCoordinate coordinates) {
@@ -18,8 +28,8 @@ void GameBoardWidget::drawHexagon(Common::CubeCoordinate coordinates) {
 
   Student::CartesianCoordinate cartesianCoord =
       Student::convertCubeCoordinatesToCartesian(coordinates);
-  item->setPos(cartesianCoord.x, cartesianCoord.y);
-  item->setScale(100);
+  item->setPos(HEX_SCALE * cartesianCoord.x, HEX_SCALE * cartesianCoord.y);
+  item->setScale(HEX_SCALE);
   scene->addItem(item.get());
 }
 
@@ -40,3 +50,5 @@ GameBoardWidget::getExistingHexItemOrNull(CubeCoordinate coord) const {
   else
     return iterator->second;
 }
+
+} // namespace Student

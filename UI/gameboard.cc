@@ -1,9 +1,12 @@
 #include "gameboard.hh"
+#include "actor.hh"
 #include "hex.hh"
 #include "pawn.hh"
-#include "actor.hh"
 
 namespace Student {
+
+GameBoard::GameBoard(GameBoardWidget *boardWidget)
+    : _boardWidget(boardWidget) {}
 
 int GameBoard::checkTileOccupation(CubeCoordinate tileCoord) const {
   shared_ptr<Hex> hex = getHex(tileCoord);
@@ -32,6 +35,8 @@ shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
 
 void GameBoard::addHex(shared_ptr<Common::Hex> newHex) {
   _hexMap[newHex->getCoordinates()] = newHex;
+
+  _boardWidget->drawHexagon(newHex->getCoordinates());
 }
 
 void GameBoard::addPawn(int playerId, int pawnId) {

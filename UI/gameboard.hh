@@ -1,6 +1,7 @@
 #ifndef GAMEBOARD_HH
 #define GAMEBOARD_HH
 
+#include "gameboardwidget.hh"
 #include "igameboard.hh"
 #include <map>
 
@@ -11,12 +12,14 @@ using Common::IGameBoard;
 using Common::Pawn;
 using std::map;
 using std::shared_ptr;
+using Student::GameBoardWidget;
 
 namespace Student {
 
 class GameBoard : public Common::IGameBoard {
 
 public:
+  GameBoard(GameBoardWidget *boardWidget);
 
   /**
    * @copydoc IGameBoard::checkTileOccupation()
@@ -64,6 +67,8 @@ public:
   virtual void removeActor(int actorId);
 
 private:
+  GameBoardWidget *_boardWidget;
+
   map<CubeCoordinate, shared_ptr<Hex>> _hexMap;
 
   map<int, shared_ptr<Pawn>> _pawnsByIds;
