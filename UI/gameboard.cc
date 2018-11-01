@@ -10,7 +10,7 @@ int GameBoard::checkTileOccupation(CubeCoordinate tileCoord) const {
   if (hex == nullptr)
     return -1;
   else
-    return hex->getPawns();
+    return hex->getPawnAmount();
 }
 
 bool GameBoard::isWaterTile(CubeCoordinate tileCoord) const {
