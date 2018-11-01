@@ -2,16 +2,14 @@
 #include "gamestate.hh"
 #include "player.hh"
 
-#include <memory>
-#include <QApplication>
 #include "gamewindow.hh"
+#include <QApplication>
+#include <memory>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 
-    QApplication a(argc, argv);
-    GameWindow mainWin;
-    mainWin.show();
-    mainWin.init();
-    return a.exec();
+  QApplication a(argc, argv);
+  GameWindow mainWin;
+  mainWin.show();
+  return a.exec();
 }

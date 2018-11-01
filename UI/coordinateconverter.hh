@@ -10,6 +10,12 @@ namespace Student {
 struct CartesianCoordinate {
   double x;
   double y;
+
+  CartesianCoordinate() {
+    x = 0;
+    y = 0;
+  }
+
   CartesianCoordinate(double x, double y) {
 
     this->x = x;

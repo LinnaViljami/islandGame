@@ -2,9 +2,11 @@
 
 namespace {
 
-static const double r = 100;
+static const double r = 1;
 
 } // namespace
+
+namespace Student {
 
 QRectF HexGraphicsItem::boundingRect() const { return QRectF(-r, -r, r, r); }
 
@@ -27,3 +29,5 @@ void HexGraphicsItem::paint(QPainter *painter,
   painter->drawConvexPolygon(points, 6);
   painter->restore();
 }
+
+} // namespace Student
