@@ -7,18 +7,15 @@ namespace Ui {
 class GameWindow;
 }
 
-class GameWindow : public QMainWindow
-{
-    Q_OBJECT
+class GameWindow : public QMainWindow {
+  Q_OBJECT
 
 public:
-    explicit GameWindow(QWidget *parent = 0);
-    ~GameWindow();
-
-    void init();
+  explicit GameWindow(QWidget *parent = 0);
+  ~GameWindow();
 
 private:
-    Ui::GameWindow *ui;
+  Ui::GameWindow *ui;
 };
 
 #endif // GAMEWINDOW_HH

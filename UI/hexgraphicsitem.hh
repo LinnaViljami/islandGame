@@ -6,6 +6,8 @@
 #include <QRectF>
 #include <math.h>
 
+namespace Student {
+
 class HexGraphicsItem : public QGraphicsItem {
 public:
   QRectF boundingRect() const override;
@@ -13,5 +15,7 @@ public:
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
              QWidget *widget) override;
 };
+
+} // namespace Student
 
 #endif // HEXGRAPHICSITEM_HH
