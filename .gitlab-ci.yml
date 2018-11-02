@@ -80,7 +80,9 @@ GameStateTestsRun:
   stage: test
   script:
     - cd Tests/UnitTests/GameState
-    - ./gamestatetest.cc
+    - ./gamestatetest
+  dependencies:
+    - BuildUnitTests
 
 CoordinateConverterTestsRun:
   tags:
@@ -88,4 +90,6 @@ CoordinateConverterTestsRun:
   stage: test
   script:
     - cd Tests/UnitTests/CoordinateConverter
-    - ./coordinateconvertertests.cc
+    - ./coordinateconvertertests
+  dependencies:
+    - BuildUnitTests
