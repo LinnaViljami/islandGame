@@ -25,6 +25,8 @@ BuildUnitTests:
     paths:
       - Tests/UnitTests/*/bin
       - Tests/IntegrationTests/*/bin
+      - Tests/UnitTests/GameState/gamestatetest
+      - Tests/UnitTests/CoordinateConverter/coordinateconvertertests
     expire_in: 2d
 
 # Compile and prepare the source code for analysis.
