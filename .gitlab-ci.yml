@@ -73,3 +73,11 @@ PerformBranchAnalysis:
     - master
   dependencies:
     - PrepareAnalysis
+
+RunGameStateTests:
+  tags:
+    - qt
+  stage: test
+  script:
+    - cd Tests/UnitTests/GameState
+    - ./gamestatetest
