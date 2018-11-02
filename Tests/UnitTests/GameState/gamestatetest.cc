@@ -20,6 +20,8 @@ private Q_SLOTS:
     void testChangeGamePhase();
     void testChangePlayerTurn();
     void testCurrentGamePhase();
+    void testDefaultGamePhase();
+    void testDefaultPlayer();
     void testCurrentGamePhase_data();
     void testCurrentPlayer();
     void testCurrentPlayer_data();
@@ -47,13 +49,25 @@ void GameStateTest::testChangePlayerTurn()
 
 void GameStateTest::testCurrentGamePhase()
 {
-    GamePhase defaultPhase = GamePhase::MOVEMENT;
     QFETCH(GamePhase, expectedPhase);
     QFETCH(GameState, newState);
 
-    QCOMPARE(newState.currentGamePhase(), defaultPhase);
     newState.changeGamePhase(expectedPhase);
     QCOMPARE(newState.currentGamePhase(), expectedPhase);
+}
+
+void GameStateTest::testDefaultGamePhase()
+{
+    GamePhase defaultPhase = GamePhase::MOVEMENT;
+    GameState defaultState = GameState();
+    QCOMPARE(defaultState.currentGamePhase(), defaultPhase);
+}
+
+void GameStateTest::testDefaultPlayer()
+{
+    int defaultPlayer = -1;
+    GameState defaultState = GameState();
+    QCOMPARE(defaultState.currentPlayer(), defaultPlayer);
 }
 
 void GameStateTest::testCurrentGamePhase_data()
@@ -70,9 +84,8 @@ void GameStateTest::testCurrentPlayer()
 {
     QFETCH(int, expectedPlayer);
     QFETCH(GameState, newState);
-    if(expectedPlayer != -1){
-        newState.changePlayerTurn(expectedPlayer);
-    }
+
+    newState.changePlayerTurn(expectedPlayer);
     QCOMPARE(newState.currentPlayer(), expectedPlayer);
 }
 
@@ -81,7 +94,6 @@ void GameStateTest::testCurrentPlayer_data()
     QTest::addColumn<int>("expectedPlayer");
     QTest::addColumn<GameState>("newState");
 
-    QTest::newRow("DefaultPlayer") << -1 << GameState();
     QTest::newRow("Player1") << 1 << GameState();
     QTest::newRow("Player3") << 3 << GameState();
     QTest::newRow("Player244") << 244 << GameState();
