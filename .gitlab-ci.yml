@@ -74,10 +74,18 @@ PerformBranchAnalysis:
   dependencies:
     - PrepareAnalysis
 
-RunGameStateTests:
+GameStateTestsRun:
   tags:
     - qt
   stage: test
   script:
     - cd Tests/UnitTests/GameState
-    - ./gamestatetest
+    - ./gamestatetest.cc
+
+CoordinateConverterTestsRun:
+  tags:
+    - qt
+  stage: test
+  script:
+    - cd Tests/UnitTests/CoordinateConverter
+    - ./coordinateconvertertests.cc
