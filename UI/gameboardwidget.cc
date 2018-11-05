@@ -18,6 +18,11 @@ GameBoardWidget::GameBoardWidget(QWidget *parent)
   this->layout()->addWidget(_graphicsView);
 }
 
+void GameBoardWidget::setGameController(shared_ptr<IGameController> controller)
+{
+    _controller = controller;
+}
+
 void GameBoardWidget::drawHexagon(Common::CubeCoordinate coordinates) {
   QGraphicsScene *scene = _graphicsView->scene();
 

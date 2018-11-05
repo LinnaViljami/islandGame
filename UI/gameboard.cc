@@ -71,4 +71,9 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
 
 void GameBoard::removeActor(int actorId) { _actorsByIds.erase(actorId); }
 
+void GameBoard::handleHexagonClick(Common::CubeCoordinate hexCoordinates)
+{
+
+}
+
 } // namespace Student

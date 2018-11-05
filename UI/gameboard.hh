@@ -4,6 +4,7 @@
 #include "gameboardwidget.hh"
 #include "igameboard.hh"
 #include <map>
+#include "igamecontroller.hh"
 
 using Common::Actor;
 using Common::CubeCoordinate;
@@ -16,7 +17,7 @@ using Student::GameBoardWidget;
 
 namespace Student {
 
-class GameBoard : public Common::IGameBoard {
+class GameBoard : public Common::IGameBoard, public Student::IGameController {
 
 public:
   GameBoard(GameBoardWidget *boardWidget);
@@ -66,6 +67,8 @@ public:
    */
   virtual void removeActor(int actorId);
 
+  void handleHexagonClick(Common::CubeCoordinate hexCoordinates);
+
 private:
   GameBoardWidget *_boardWidget;
 
@@ -75,6 +78,5 @@ private:
 
   map<int, shared_ptr<Actor>> _actorsByIds;
 };
-
 } // namespace Student
 #endif // GAMEBOARD_HH
