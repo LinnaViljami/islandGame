@@ -8,7 +8,6 @@
 #include <QWidget>
 #include <QFrame>
 #include <map>
-#include "igamecontroller.hh"
 
 using Common::CubeCoordinate;
 using Common::Hex;
@@ -24,8 +23,6 @@ class GameBoardWidget : public QWidget {
 public:
   explicit GameBoardWidget(QWidget *parent = nullptr);
 
-  void setGameController(shared_ptr<Student::IGameController> controller);
-
   void drawHexagon(CubeCoordinate coordinates);
 
 signals:
@@ -40,7 +37,6 @@ private:
 
   map<CubeCoordinate, shared_ptr<HexGraphicsItem>> _hexItemsByCoordinates;
   QGraphicsView *_graphicsView;
-  shared_ptr<Student::IGameController> _controller;
 };
 
 } // namespace Ui

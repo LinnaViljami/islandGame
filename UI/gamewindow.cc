@@ -19,8 +19,6 @@ GameWindow::GameWindow(QWidget *parent)
   auto gameBoard = std::make_shared<Student::GameBoard>(boardWidget);
   auto gameState = std::make_shared<Student::GameState>();
 
-  boardWidget->setGameController(gameBoard);
-
   auto players = std::vector<shared_ptr<Common::IPlayer>>();
   for (int i = 0; i < 4; ++i) {
     auto player = std::make_shared<Student::Player>(i, 3);
