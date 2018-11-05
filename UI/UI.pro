@@ -30,7 +30,8 @@ HEADERS  += \
     hexgraphicsitem.hh \
     gameboardwidget.hh \
     coordinateconverter.hh \
-    coordinateconvertettests.hh
+    coordinateconvertettests.hh \
+    igamecontroller.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine
