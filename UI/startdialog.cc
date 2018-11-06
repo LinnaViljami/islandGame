@@ -8,7 +8,8 @@ StartDialog::StartDialog(QWidget *parent)
   ui->setupUi(this);
   connect(ui->playerCountSpinBox, qOverload<int>(&QSpinBox::valueChanged), this,
           &StartDialog::playerCountChanged);
-  playerCountChanged(ui->playerCountSpinBox->value());
+  int initialPlayerCount = ui->playerCountSpinBox->value();
+  playerCountChanged(initialPlayerCount);
 }
 
 StartDialog::~StartDialog() { delete ui; }
@@ -24,6 +25,7 @@ std::vector<QString> StartDialog::getPlayerNames() {
 void StartDialog::playerCountChanged(int newCount) {
   int currentPlayerCount = _playerNameLineEdits.size();
   if (newCount > currentPlayerCount) {
+    // Add field for each new player.
     for (int i = currentPlayerCount + 1; i <= newCount; ++i) {
       QString labelText = QString("Pelaaja %1").arg(i);
       QLineEdit *lineEdit = new QLineEdit(this);
@@ -32,6 +34,7 @@ void StartDialog::playerCountChanged(int newCount) {
       ui->playerNamesLayout->addRow(labelText, lineEdit);
     }
   } else {
+    // Remove field of every removed player.
     for (int i = currentPlayerCount - 1; i >= newCount; --i) {
       _playerNameLineEdits.erase(_playerNameLineEdits.begin() + i);
       ui->playerNamesLayout->removeRow(i);
