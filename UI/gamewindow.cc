@@ -5,6 +5,7 @@
 #include "hexgraphicsitem.hh"
 #include "initialize.hh"
 #include "player.hh"
+#include "startdialog.hh"
 #include "ui_gamewindow.h"
 
 #include <qboxlayout.h>
@@ -13,6 +14,12 @@
 GameWindow::GameWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::GameWindow) {
   ui->setupUi(this);
+
+  StartDialog *startDialog = new StartDialog(this);
+  int dialogResult = startDialog->exec();
+  if (dialogResult != QDialog::Accepted) {
+    this->close();
+  }
 
   Student::GameBoardWidget *boardWidget = new Student::GameBoardWidget(this);
 

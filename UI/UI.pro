@@ -20,7 +20,8 @@ SOURCES += main.cc \
     hexgraphicsitem.cc \
     gameboardwidget.cc \
     coordinateconverter.cc \
-    gamestate.cc 
+    gamestate.cc \ 
+    startdialog.cc
 
 HEADERS  += \
     gameboard.hh \
@@ -30,7 +31,8 @@ HEADERS  += \
     hexgraphicsitem.hh \
     gameboardwidget.hh \
     coordinateconverter.hh \
-    coordinateconvertettests.hh
+    coordinateconvertettests.hh \
+    startdialog.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine
@@ -68,4 +70,5 @@ QMAKE_EXTRA_TARGETS += copyfiles
 POST_TARGETDEPS += copyfiles
 
 FORMS += \
-    gamewindow.ui
+    gamewindow.ui \
+    startdialog.ui
