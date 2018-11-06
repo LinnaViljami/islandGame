@@ -10,53 +10,53 @@ namespace Student {
 class GameBoard : public Common::IGameBoard {
 
 public:
-  GameBoard(Student::GameBoardWidget *boardWidget);
+  explicit GameBoard(Student::GameBoardWidget *boardWidget);
 
   /**
    * @copydoc IGameBoard::checkTileOccupation()
    */
-  virtual int checkTileOccupation(Common::CubeCoordinate tileCoord) const;
+  int checkTileOccupation(Common::CubeCoordinate tileCoord) const override;
 
   /**
    * @copydoc IGameBoard::isWaterTile()
    */
-  virtual bool isWaterTile(Common::CubeCoordinate tileCoord) const;
+  bool isWaterTile(Common::CubeCoordinate tileCoord) const override;
 
   /**
    * @copydoc IGameBoard::getHex()
    */
-  virtual std::shared_ptr<Common::Hex> getHex(Common::CubeCoordinate hexCoord) const;
+  std::shared_ptr<Common::Hex>
+  getHex(Common::CubeCoordinate hexCoord) const override;
 
   /**
    * @copydoc IGameBoard::addHex()
    */
-  virtual void addHex(std::shared_ptr<Common::Hex> newHex);
+  void addHex(std::shared_ptr<Common::Hex> newHex) override;
 
   /**
    * @copydoc IGameBoard::addPawn()
    */
-  virtual void addPawn(int playerId, int pawnId);
+  void addPawn(int playerId, int pawnId) override;
 
   /**
    * @copydoc IGameBoard::movePawn()
    */
-  virtual void movePawn(int pawnId, Common::CubeCoordinate pawnCoord);
+  void movePawn(int pawnId, Common::CubeCoordinate pawnCoord) override;
 
   /**
    * @copydoc IGameBoard::removePawn()
    */
-  virtual void removePawn(int pawnId);
+  void removePawn(int pawnId) override;
 
   /**
    * @copydoc IGameBoard::moveActor()
    */
-  virtual void moveActor(int actorId, Common::CubeCoordinate actorCoord);
-
+  void moveActor(int actorId, Common::CubeCoordinate actorCoord) override;
 
   /**
    * @copydoc IGameBoard::removeActor()
    */
-  virtual void removeActor(int actorId);
+  void removeActor(int actorId) override;
 
 private:
   Student::GameBoardWidget *_boardWidget;

@@ -3,11 +3,11 @@
 #include "hex.hh"
 #include "pawn.hh"
 
-using std::shared_ptr;
-using Common::Pawn;
-using Common::CubeCoordinate;
-using std::map;
 using Common::Actor;
+using Common::CubeCoordinate;
+using Common::Pawn;
+using std::map;
+using std::shared_ptr;
 
 namespace Student {
 
@@ -16,27 +16,30 @@ GameBoard::GameBoard(GameBoardWidget *boardWidget)
 
 int GameBoard::checkTileOccupation(CubeCoordinate tileCoord) const {
   shared_ptr<Hex> hex = getHex(tileCoord);
-  if (hex == nullptr)
+  if (hex == nullptr) {
     return -1;
-  else
+  } else {
     return hex->getPawnAmount();
+  }
 }
 
 bool GameBoard::isWaterTile(CubeCoordinate tileCoord) const {
   shared_ptr<Hex> hex = getHex(tileCoord);
-  if (hex == nullptr)
+  if (hex == nullptr) {
     return false;
-  else
+  } else {
     return hex->isWaterTile();
+  }
 }
 
 shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
 
   auto hexIterator = _hexMap.find(hexCoord);
-  if (hexIterator == _hexMap.end())
+  if (hexIterator == _hexMap.end()) {
     return nullptr;
-  else
+  } else {
     return hexIterator->second;
+  }
 }
 
 void GameBoard::addHex(shared_ptr<Common::Hex> newHex) {
