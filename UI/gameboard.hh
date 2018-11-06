@@ -5,41 +5,32 @@
 #include "igameboard.hh"
 #include <map>
 
-using Common::Actor;
-using Common::CubeCoordinate;
-using Common::Hex;
-using Common::IGameBoard;
-using Common::Pawn;
-using std::map;
-using std::shared_ptr;
-using Student::GameBoardWidget;
-
 namespace Student {
 
 class GameBoard : public Common::IGameBoard {
 
 public:
-  GameBoard(GameBoardWidget *boardWidget);
+  GameBoard(Student::GameBoardWidget *boardWidget);
 
   /**
    * @copydoc IGameBoard::checkTileOccupation()
    */
-  virtual int checkTileOccupation(CubeCoordinate tileCoord) const;
+  virtual int checkTileOccupation(Common::CubeCoordinate tileCoord) const;
 
   /**
    * @copydoc IGameBoard::isWaterTile()
    */
-  virtual bool isWaterTile(CubeCoordinate tileCoord) const;
+  virtual bool isWaterTile(Common::CubeCoordinate tileCoord) const;
 
   /**
    * @copydoc IGameBoard::getHex()
    */
-  virtual shared_ptr<Hex> getHex(CubeCoordinate hexCoord) const;
+  virtual std::shared_ptr<Common::Hex> getHex(Common::CubeCoordinate hexCoord) const;
 
   /**
    * @copydoc IGameBoard::addHex()
    */
-  virtual void addHex(shared_ptr<Hex> newHex);
+  virtual void addHex(std::shared_ptr<Common::Hex> newHex);
 
   /**
    * @copydoc IGameBoard::addPawn()
@@ -49,7 +40,7 @@ public:
   /**
    * @copydoc IGameBoard::movePawn()
    */
-  virtual void movePawn(int pawnId, CubeCoordinate pawnCoord);
+  virtual void movePawn(int pawnId, Common::CubeCoordinate pawnCoord);
 
   /**
    * @copydoc IGameBoard::removePawn()
@@ -59,7 +50,8 @@ public:
   /**
    * @copydoc IGameBoard::moveActor()
    */
-  virtual void moveActor(int actorId, CubeCoordinate actorCoord);
+  virtual void moveActor(int actorId, Common::CubeCoordinate actorCoord);
+
 
   /**
    * @copydoc IGameBoard::removeActor()
@@ -67,13 +59,13 @@ public:
   virtual void removeActor(int actorId);
 
 private:
-  GameBoardWidget *_boardWidget;
+  Student::GameBoardWidget *_boardWidget;
 
-  map<CubeCoordinate, shared_ptr<Hex>> _hexMap;
+  std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> _hexMap;
 
-  map<int, shared_ptr<Pawn>> _pawnsByIds;
+  std::map<int, std::shared_ptr<Common::Pawn>> _pawnsByIds;
 
-  map<int, shared_ptr<Actor>> _actorsByIds;
+  std::map<int, std::shared_ptr<Common::Actor>> _actorsByIds;
 };
 
 } // namespace Student

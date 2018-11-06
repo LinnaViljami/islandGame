@@ -3,6 +3,12 @@
 #include "hex.hh"
 #include "pawn.hh"
 
+using std::shared_ptr;
+using Common::Pawn;
+using Common::CubeCoordinate;
+using std::map;
+using Common::Actor;
+
 namespace Student {
 
 GameBoard::GameBoard(GameBoardWidget *boardWidget)
