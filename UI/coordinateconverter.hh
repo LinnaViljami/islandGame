@@ -23,7 +23,7 @@ struct CartesianCoordinate {
   }
 };
 
-CartesianCoordinate convertCubeCoordinatesToCartesian(CubeCoordinate cubeCoord);
+CartesianCoordinate convertCoordinates(CubeCoordinate cubeCoord);
 
 } // namespace Student
 

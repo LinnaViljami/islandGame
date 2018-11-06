@@ -28,7 +28,7 @@ void CoordinateConverterTests::testCoordinateConverting() {
   QFETCH(CartesianCoordinate, excepted);
 
   CartesianCoordinate actual =
-      Student::convertCubeCoordinatesToCartesian(cubeCoord);
+      Student::convertCoordinates(cubeCoord);
 
   QCOMPARE(actual.x, excepted.x);
   QCOMPARE(actual.y, excepted.y);

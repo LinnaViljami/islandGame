@@ -27,7 +27,7 @@ void GameBoardWidget::drawHexagon(Common::CubeCoordinate coordinates) {
   _hexItemsByCoordinates[coordinates] = item;
 
   Student::CartesianCoordinate cartesianCoord =
-      Student::convertCubeCoordinatesToCartesian(coordinates);
+      Student::convertCoordinates(coordinates);
   item->setPos(HEX_SCALE * cartesianCoord.x, HEX_SCALE * cartesianCoord.y);
   item->setScale(HEX_SCALE);
   scene->addItem(item.get());
