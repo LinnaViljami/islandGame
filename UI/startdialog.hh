@@ -2,6 +2,8 @@
 #define STARTDIALOG_HH
 
 #include <QDialog>
+#include <qlineedit.h>
+#include <vector>
 
 namespace Ui {
 class StartDialog;
@@ -15,13 +17,15 @@ public:
     explicit StartDialog(QWidget *parent = 0);
     ~StartDialog();
 
+    std::vector<QString> getPlayerNames();
+
 public slots:
     void playerCountChanged(int newCount);
 
 private:
     Ui::StartDialog *ui;
 
-    int _currentPlayerCount;
+    std::vector<QLineEdit*> _playerNameLineEdits;
 };
 
 #endif // STARTDIALOG_HH

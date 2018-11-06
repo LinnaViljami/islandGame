@@ -2,13 +2,14 @@
 #define PLAYER_HH
 
 #include "iplayer.hh"
+#include <QString>
 
 namespace Student {
 
 class Player : public Common::IPlayer {
 
 public:
-  Player(int id, unsigned int actionsLeft);
+  Player(int id, unsigned int actionsLeft, QString name);
 
   virtual int getPlayerId() const;
 
@@ -16,10 +17,14 @@ public:
 
   virtual unsigned int getActionsLeft() const;
 
+  QString getName();
+
 private:
   int _id;
 
   unsigned int _actionsLeft;
+
+  QString _name;
 };
 
 } // namespace Student
