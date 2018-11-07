@@ -5,6 +5,7 @@
 #include "hexgraphicsitem.hh"
 #include "initialize.hh"
 #include "player.hh"
+#include "spinnerwidget.hh"
 #include "startdialog.hh"
 #include "ui_gamewindow.h"
 
@@ -14,6 +15,14 @@
 using Common::IPlayer;
 using std::shared_ptr;
 using std::vector;
+
+namespace {
+
+static const vector<QString> actors{QString("Dolphin"),    QString("Kraken"),
+                                    QString("Seamonster"), QString("Shark"),
+                                    QString("Boat"),       QString("Vortex")};
+
+} // namespace
 
 GameWindow::GameWindow(vector<QString> playerNames)
     : QMainWindow(nullptr), ui(new Ui::GameWindow) {
@@ -28,8 +37,11 @@ GameWindow::GameWindow(vector<QString> playerNames)
   auto gameRunner =
       Common::Initialization::getGameRunner(gameBoard, gameState, players);
 
-  ui->centralwidget->setLayout(new QHBoxLayout());
-  ui->centralwidget->layout()->addWidget(boardWidget);
+  ui->mainLayout->addWidget(boardWidget);
+  auto spinnerWidget = new SpinnerWidget(this, actors);
+  spinnerWidget->setMinimumSize(400, 400);
+  ui->mainLayout->addWidget(spinnerWidget);
+  ui->mainLayout->setAlignment(spinnerWidget, Qt::AlignTop);
 }
 
 GameWindow::~GameWindow() { delete ui; }
