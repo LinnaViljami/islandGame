@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "../GameLogic/Engine/igamestate.hh"
+#include <QObject>
 
 using Common::GamePhase;
 

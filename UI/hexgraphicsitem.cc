@@ -31,4 +31,9 @@ void HexGraphicsItem::paint(QPainter *painter,
   painter->restore();
 }
 
+void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    emit hexClicked();
+}
+
 } // namespace Student

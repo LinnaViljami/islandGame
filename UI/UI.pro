@@ -31,7 +31,6 @@ HEADERS  += \
     hexgraphicsitem.hh \
     gameboardwidget.hh \
     coordinateconverter.hh \
-    coordinateconvertettests.hh \
     startdialog.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine

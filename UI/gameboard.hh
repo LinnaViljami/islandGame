@@ -8,10 +8,10 @@
 namespace Student {
 
 class GameBoard : public Common::IGameBoard {
-
 public:
   explicit GameBoard(Student::GameBoardWidget *boardWidget);
 
+  std::shared_ptr<GameBoardWidget> getBoardWidget();
   /**
    * @copydoc IGameBoard::checkTileOccupation()
    */
@@ -58,6 +58,9 @@ public:
    */
   void removeActor(int actorId) override;
 
+  void handleHexClick(Common::CubeCoordinate hexCoordinates);
+
+  void connectSignals();
 private:
   Student::GameBoardWidget *_boardWidget;
 
@@ -66,6 +69,7 @@ private:
   std::map<int, std::shared_ptr<Common::Pawn>> _pawnsByIds;
 
   std::map<int, std::shared_ptr<Common::Actor>> _actorsByIds;
+
 };
 
 } // namespace Student

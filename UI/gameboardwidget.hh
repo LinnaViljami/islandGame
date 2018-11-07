@@ -26,10 +26,8 @@ public:
   void drawHexagon(CubeCoordinate coordinates);
 
 signals:
-
+  void hexClicked(CubeCoordinate coordinates);
 public slots:
-
-protected:
 private:
   shared_ptr<HexGraphicsItem>
   getExistingHexItemOrNull(CubeCoordinate coord) const;

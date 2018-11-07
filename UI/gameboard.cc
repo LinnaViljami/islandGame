@@ -2,6 +2,7 @@
 #include "actor.hh"
 #include "hex.hh"
 #include "pawn.hh"
+#include <QObject>
 
 using Common::Actor;
 using Common::CubeCoordinate;
@@ -12,7 +13,14 @@ using std::shared_ptr;
 namespace Student {
 
 GameBoard::GameBoard(GameBoardWidget *boardWidget)
-    : _boardWidget(boardWidget) {}
+    : _boardWidget(boardWidget) {
+}
+
+std::shared_ptr<GameBoardWidget> GameBoard::getBoardWidget()
+{
+    auto widget = std::make_shared<GameBoardWidget>(_boardWidget);
+    return widget;
+}
 
 int GameBoard::checkTileOccupation(CubeCoordinate tileCoord) const {
   shared_ptr<Hex> hex = getHex(tileCoord);
@@ -44,7 +52,6 @@ shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
 
 void GameBoard::addHex(shared_ptr<Common::Hex> newHex) {
   _hexMap[newHex->getCoordinates()] = newHex;
-
   _boardWidget->drawHexagon(newHex->getCoordinates());
 }
 
@@ -79,5 +86,14 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
 }
 
 void GameBoard::removeActor(int actorId) { _actorsByIds.erase(actorId); }
+
+void GameBoard::handleHexClick(Common::CubeCoordinate hexCoordinates)
+{
+
+}
+
+void GameBoard::connectSignals()
+{
+}
 
 } // namespace Student
