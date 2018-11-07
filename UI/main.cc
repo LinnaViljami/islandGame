@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
   } else {
     std::vector<QString> playerNames = startDialog.getPlayerNames();
     GameWindow mainWin(playerNames);
-    mainWin.show();
+    mainWin.showMaximized();
     return a.exec();
   }
 }

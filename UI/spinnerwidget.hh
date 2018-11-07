@@ -3,16 +3,21 @@
 
 #include <QObject>
 #include <QWidget>
+#include <vector>
 
-class SpinnerWidget : public QWidget
-{
-    Q_OBJECT
+class SpinnerWidget : public QWidget {
+  Q_OBJECT
+
 public:
-    explicit SpinnerWidget(QWidget *parent = nullptr);
+  explicit SpinnerWidget(QWidget *parent, std::vector<QString> spinnerValues);
 
-signals:
+  void spinToValue(QString value);
 
-public slots:
+protected:
+  void paintEvent(QPaintEvent *event) override;
+
+private:
+  std::vector<QString> spinner_values_;
 };
 
 #endif // SPINNERWIDGET_HH

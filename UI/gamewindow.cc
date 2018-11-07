@@ -5,6 +5,7 @@
 #include "hexgraphicsitem.hh"
 #include "initialize.hh"
 #include "player.hh"
+#include "spinnerwidget.hh"
 #include "startdialog.hh"
 #include "ui_gamewindow.h"
 
@@ -28,8 +29,12 @@ GameWindow::GameWindow(vector<QString> playerNames)
   auto gameRunner =
       Common::Initialization::getGameRunner(gameBoard, gameState, players);
 
-  ui->centralwidget->setLayout(new QHBoxLayout());
-  ui->centralwidget->layout()->addWidget(boardWidget);
+  ui->mainLayout->addWidget(boardWidget);
+
+  auto spinnerWidget = new SpinnerWidget(this, std::vector<QString>());
+  spinnerWidget->setMinimumSize(400, 400);
+  ui->mainLayout->addWidget(spinnerWidget);
+  ui->mainLayout->setAlignment(spinnerWidget, Qt::AlignTop);
 }
 
 GameWindow::~GameWindow() { delete ui; }
