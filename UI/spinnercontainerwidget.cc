@@ -18,6 +18,10 @@ SpinnerContainerWidget::SpinnerContainerWidget(
   this->layout()->addWidget(graphicsView);
   setStyleSheet("background-color: transparent;");
 
-  auto spinnerItem = new SpinnerGraphicsItem(spinnerValues);
-  scene->addItem(spinnerItem);
+  spinnerItem_ = new SpinnerGraphicsItem(spinnerValues);
+  scene->addItem(spinnerItem_);
+}
+
+void SpinnerContainerWidget::spinToValue(QString value) {
+  spinnerItem_->spinToValue(value);
 }

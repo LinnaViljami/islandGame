@@ -1,6 +1,8 @@
 #include "spinnergraphicsitem.hh"
+#include "spinnerpointergraphicsitem.hh"
 
 #include <QPainter>
+#include <QPropertyAnimation>
 
 namespace {
 
@@ -8,18 +10,28 @@ static const double R = 1;
 }
 
 SpinnerGraphicsItem::SpinnerGraphicsItem(std::vector<QString> spinnerValues)
-    : QGraphicsItem(nullptr), spinnerValues_(spinnerValues) {}
+    : QGraphicsItem(nullptr), spinnerValues_(spinnerValues),
+      pointerAnimation_(nullptr),
+      pointerItem_(*(new Student::SpinnerPointerGraphicsItem(this))) {}
 
 QRectF SpinnerGraphicsItem::boundingRect() const {
   return QRectF(-100, -100, 200, 200);
 }
 
 void SpinnerGraphicsItem::spinToValue(QString value) {
-  int indexOfValue = std::distance(
-      spinnerValues_.begin(),
-      std::find(spinnerValues_.begin(), spinnerValues_.end(), value));
-  currentPointerAngle_ = indexOfValue * 360.0 / spinnerValues_.size();
-  update();
+  int indexOfValue = getIndexOfSpinnerValue(value);
+  double targetAngle = indexOfValue * (360.0 / spinnerValues_.size());
+  int extraRounds = std::rand() % 2 + 1;
+  double totalRotation = extraRounds * 360.0 + targetAngle;
+  double startAngle = (static_cast<int>(pointerItem_.rotation()) % 360) - 360;
+
+  pointerAnimation_ =
+      std::make_unique<QPropertyAnimation>(&pointerItem_, "rotation");
+  pointerAnimation_->setDuration(1000);
+  pointerAnimation_->setStartValue(startAngle);
+  pointerAnimation_->setEndValue(totalRotation);
+  pointerAnimation_->setEasingCurve(QEasingCurve::OutQuad);
+  pointerAnimation_->start();
 }
 
 void SpinnerGraphicsItem::paint(QPainter *painter,
@@ -31,7 +43,6 @@ void SpinnerGraphicsItem::paint(QPainter *painter,
 
   paintBackground(*painter);
   paintSpinnerValues(*painter);
-  paintPointer(*painter);
 }
 
 void SpinnerGraphicsItem::paintBackground(QPainter &painter) {
@@ -74,12 +85,8 @@ void SpinnerGraphicsItem::paintSingleSpinnerValue(QPainter &painter,
   painter.restore();
 }
 
-void SpinnerGraphicsItem::paintPointer(QPainter &painter) {
-  painter.save();
-  painter.rotate(currentPointerAngle_);
-  // Pointer points to top before rotation.
-  static const QPoint pointerPoints[3] = {QPoint(7, 8), QPoint(-7, 8),
-                                          QPoint(0, -40)};
-  painter.drawConvexPolygon(pointerPoints, 3);
-  painter.restore();
+int SpinnerGraphicsItem::getIndexOfSpinnerValue(QString value) {
+  auto iterator =
+      std::find(spinnerValues_.begin(), spinnerValues_.end(), value);
+  return std::distance(spinnerValues_.begin(), iterator);
 }

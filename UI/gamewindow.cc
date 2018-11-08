@@ -5,9 +5,10 @@
 #include "hexgraphicsitem.hh"
 #include "initialize.hh"
 #include "player.hh"
+#include "spinnercontainerwidget.hh"
 #include "startdialog.hh"
 #include "ui_gamewindow.h"
-#include "spinnercontainerwidget.hh"
+#include <QPushButton>
 #include <qboxlayout.h>
 #include <qlistview.h>
 
@@ -36,10 +37,19 @@ GameWindow::GameWindow(vector<QString> playerNames)
   gameExecuter_ = std::make_unique<Student::GameExecuter>(gamerunner, gameBoard, gameState);
 
   ui->mainLayout->addWidget(boardWidget);
-  auto spinnerWidget = new SpinnerContainerWidget(this, actors);
-  spinnerWidget->setMinimumSize(400, 400);
-  ui->mainLayout->addWidget(spinnerWidget);
-  ui->mainLayout->setAlignment(spinnerWidget, Qt::AlignTop);
+  auto spinnerContainerWidget = new SpinnerContainerWidget(this, actors);
+  spinnerContainerWidget->setMinimumSize(400, 400);
+  ui->mainLayout->addWidget(spinnerContainerWidget);
+  ui->mainLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
+
+  QPushButton *spinButton = new QPushButton("Pyöräytä");
+  connect(spinButton, &QPushButton::clicked, this, [=]() {
+    int actorIndex = std::rand() % actors.size();
+    QString value = actors[actorIndex];
+    spinnerContainerWidget->spinToValue(value);
+  });
+  ui->mainLayout->addWidget(spinButton);
+  ui->mainLayout->setAlignment(spinButton, Qt::AlignHCenter);
 }
 
 GameWindow::~GameWindow() { delete ui; }

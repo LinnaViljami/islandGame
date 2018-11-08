@@ -25,7 +25,8 @@ SOURCES += main.cc \
     spinnergraphicsitem.cc \
     spinnercontainerwidget.cc \
     fittinggraphicsview.cc \
-    gameexecuter.cc
+    gameexecuter.cc \
+    spinnerpointergraphicsitem.cc
 
 HEADERS  += \
     gameboard.hh \
@@ -39,7 +40,8 @@ HEADERS  += \
     spinnergraphicsitem.hh \
     spinnercontainerwidget.hh \
     fittinggraphicsview.hh \
-    gameexecuter.hh
+    gameexecuter.hh \
+    spinnerpointergraphicsitem.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine
