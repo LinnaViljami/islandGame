@@ -21,12 +21,14 @@ QRectF SpinnerGraphicsItem::boundingRect() const {
 void SpinnerGraphicsItem::spinToValue(QString value) {
   int indexOfValue = getIndexOfSpinnerValue(value);
   double targetAngle = indexOfValue * (360.0 / spinnerValues_.size());
-  int extraRounds = std::rand() % 3 + 2;
+  int extraRounds = std::rand() % 2 + 1;
   double totalRotation = extraRounds * 360.0 + targetAngle;
+  double startAngle = (static_cast<int>(pointerItem_.rotation()) % 360) - 360;
 
-  pointerAnimation_ = std::make_unique<QPropertyAnimation>(&pointerItem_, "rotation");
-  pointerAnimation_->setDuration(1500);
-  pointerAnimation_->setStartValue(pointerItem_.rotation());
+  pointerAnimation_ =
+      std::make_unique<QPropertyAnimation>(&pointerItem_, "rotation");
+  pointerAnimation_->setDuration(1000);
+  pointerAnimation_->setStartValue(startAngle);
   pointerAnimation_->setEndValue(totalRotation);
   pointerAnimation_->setEasingCurve(QEasingCurve::OutQuad);
   pointerAnimation_->start();
