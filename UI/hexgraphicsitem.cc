@@ -1,5 +1,7 @@
 #include "hexgraphicsitem.hh"
 
+#include <QGraphicsSceneMouseEvent>
+
 namespace {
 
 static const double R = 1;
@@ -13,6 +15,8 @@ QRectF HexGraphicsItem::boundingRect() const { return QRectF(-R, -R, R, R); }
 void HexGraphicsItem::paint(QPainter *painter,
                             const QStyleOptionGraphicsItem *option,
                             QWidget *widget) {
+  Q_UNUSED(option);
+  Q_UNUSED(widget);
 
   static const double topAndBottomPointX = (sqrt(3) / 2) * R;
   static const double topAndBottomPointY = R / 2;
@@ -31,9 +35,9 @@ void HexGraphicsItem::paint(QPainter *painter,
   painter->restore();
 }
 
-void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    emit hexClicked();
+void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+  event->ignore();
+  emit hexClicked();
 }
 
 } // namespace Student

@@ -20,6 +20,7 @@ void SpinnerWidget::spinToValue(QString value) {
 }
 
 void SpinnerWidget::paintEvent(QPaintEvent *event) {
+  Q_UNUSED(event);
   std::unique_ptr<QPainter> painter = createPainter();
   paintBackground(*painter);
   paintSpinnerValues(*painter);
