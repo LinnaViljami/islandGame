@@ -4,6 +4,8 @@
 #include "spinnerpointergraphicsitem.hh"
 
 #include <qgraphicsitem.h>
+#include <qpropertyanimation.h>
+#include <memory>
 
 class SpinnerGraphicsItem : public QGraphicsItem {
 public:
@@ -19,6 +21,8 @@ public:
 private:
   std::vector<QString> spinnerValues_;
   Student::SpinnerPointerGraphicsItem &pointerItem_;
+
+  std::shared_ptr<QPropertyAnimation> pointerAnimation_;
 
   void paintBackground(QPainter &painter);
   void paintSpinnerValues(QPainter &painter);

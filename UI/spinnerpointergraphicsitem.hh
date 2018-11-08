@@ -5,7 +5,7 @@
 
 namespace Student {
 
-class SpinnerPointerGraphicsItem : public QGraphicsItem {
+class SpinnerPointerGraphicsItem : public QGraphicsObject {
 public:
   explicit SpinnerPointerGraphicsItem(QGraphicsItem *parent);
 

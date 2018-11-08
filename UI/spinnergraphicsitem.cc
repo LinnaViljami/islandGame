@@ -2,6 +2,7 @@
 #include "spinnerpointergraphicsitem.hh"
 
 #include <QPainter>
+#include <QPropertyAnimation>
 
 namespace {
 
@@ -10,6 +11,7 @@ static const double R = 1;
 
 SpinnerGraphicsItem::SpinnerGraphicsItem(std::vector<QString> spinnerValues)
     : QGraphicsItem(nullptr), spinnerValues_(spinnerValues),
+      pointerAnimation_(nullptr),
       pointerItem_(*(new Student::SpinnerPointerGraphicsItem(this))) {}
 
 QRectF SpinnerGraphicsItem::boundingRect() const {
@@ -18,7 +20,16 @@ QRectF SpinnerGraphicsItem::boundingRect() const {
 
 void SpinnerGraphicsItem::spinToValue(QString value) {
   int indexOfValue = getIndexOfSpinnerValue(value);
-  pointerItem_.setRotation(indexOfValue * (360.0 / spinnerValues_.size()));
+  double targetAngle = indexOfValue * (360.0 / spinnerValues_.size());
+  int extraRounds = std::rand() % 3 + 2;
+  double totalRotation = extraRounds * 360.0 + targetAngle;
+
+  pointerAnimation_ = std::make_unique<QPropertyAnimation>(&pointerItem_, "rotation");
+  pointerAnimation_->setDuration(1500);
+  pointerAnimation_->setStartValue(pointerItem_.rotation());
+  pointerAnimation_->setEndValue(totalRotation);
+  pointerAnimation_->setEasingCurve(QEasingCurve::OutQuad);
+  pointerAnimation_->start();
 }
 
 void SpinnerGraphicsItem::paint(QPainter *painter,
