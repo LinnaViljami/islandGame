@@ -18,9 +18,9 @@ public:
              QWidget *widget) override;
 
 protected:
-  void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 signals:
-  void hexClicked();
+  void mouseReleased();
 };
 
 } // namespace Student

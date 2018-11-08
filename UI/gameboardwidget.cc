@@ -2,11 +2,15 @@
 #include "QGraphicsView"
 #include "coordinateconverter.hh"
 
+#include <QDebug>
 #include <qboxlayout.h>
 
-namespace{
-    static int HEX_SCALE = 30;
+namespace {
+static int HEX_SCALE = 30;
 }
+
+using Common::CubeCoordinate;
+using std::shared_ptr;
 
 namespace Student {
 
@@ -31,13 +35,9 @@ void GameBoardWidget::drawHexagon(Common::CubeCoordinate coordinates) {
   item->setPos(HEX_SCALE * cartesianCoord.x, HEX_SCALE * cartesianCoord.y);
   item->setScale(HEX_SCALE);
   scene->addItem(item.get());
-  connect(item.get(),
-          &HexGraphicsItem::hexClicked,
-          this,
-          [coordinates, this](){emit GameBoardWidget::hexClicked(coordinates);});
+  connect(item.get(), &HexGraphicsItem::mouseReleased, this,
+          [coordinates, this]() { emit hexClicked(coordinates); });
 }
-
-
 
 void GameBoardWidget::removeDrawnHexItemAt(Common::CubeCoordinate coord) {
   shared_ptr<HexGraphicsItem> item = getExistingHexItemOrNull(coord);

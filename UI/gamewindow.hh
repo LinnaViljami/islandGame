@@ -1,4 +1,4 @@
-    #ifndef GAMEWINDOW_HH
+#ifndef GAMEWINDOW_HH
 #define GAMEWINDOW_HH
 
 #include "player.hh"

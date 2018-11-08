@@ -3,8 +3,6 @@
 
 #include "cubecoordinate.hh"
 
-using Common::CubeCoordinate;
-
 namespace Student {
 
 struct CartesianCoordinate {
@@ -23,7 +21,7 @@ struct CartesianCoordinate {
   }
 };
 
-CartesianCoordinate convertCoordinates(CubeCoordinate cubeCoord);
+CartesianCoordinate convertCoordinates(Common::CubeCoordinate cubeCoord);
 
 } // namespace Student
 

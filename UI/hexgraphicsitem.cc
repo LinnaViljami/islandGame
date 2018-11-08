@@ -10,7 +10,9 @@ static const double R = 1;
 
 namespace Student {
 
-QRectF HexGraphicsItem::boundingRect() const { return QRectF(-R, -R, R, R); }
+QRectF HexGraphicsItem::boundingRect() const {
+  return QRectF(-R, -R, 2 * R, 2 * R);
+}
 
 void HexGraphicsItem::paint(QPainter *painter,
                             const QStyleOptionGraphicsItem *option,
@@ -35,9 +37,9 @@ void HexGraphicsItem::paint(QPainter *painter,
   painter->restore();
 }
 
-void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+void HexGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   event->ignore();
-  emit hexClicked();
+  emit mouseReleased();
 }
 
 } // namespace Student

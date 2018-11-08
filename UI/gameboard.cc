@@ -2,24 +2,27 @@
 #include "actor.hh"
 #include "hex.hh"
 #include "pawn.hh"
+#include <QDebug>
 #include <QObject>
 
 using Common::Actor;
 using Common::CubeCoordinate;
+using Common::Hex;
 using Common::Pawn;
 using std::map;
 using std::shared_ptr;
 
 namespace Student {
 
-GameBoard::GameBoard(GameBoardWidget *boardWidget)
-    : _boardWidget(boardWidget) {
+GameBoard::GameBoard(GameBoardWidget *boardWidget) : _boardWidget(boardWidget) {
+
+  connect(boardWidget, &GameBoardWidget::hexClicked, this,
+          &GameBoard::handleHexClick);
 }
 
-std::shared_ptr<GameBoardWidget> GameBoard::getBoardWidget()
-{
-    auto widget = std::make_shared<GameBoardWidget>(_boardWidget);
-    return widget;
+std::shared_ptr<GameBoardWidget> GameBoard::getBoardWidget() {
+  auto widget = std::make_shared<GameBoardWidget>(_boardWidget);
+  return widget;
 }
 
 int GameBoard::checkTileOccupation(CubeCoordinate tileCoord) const {
@@ -87,13 +90,6 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
 
 void GameBoard::removeActor(int actorId) { _actorsByIds.erase(actorId); }
 
-void GameBoard::handleHexClick(Common::CubeCoordinate hexCoordinates)
-{
-
-}
-
-void GameBoard::connectSignals()
-{
-}
+void GameBoard::handleHexClick() {}
 
 } // namespace Student

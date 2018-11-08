@@ -3,18 +3,11 @@
 
 #include "hex.hh"
 #include "hexgraphicsitem.hh"
+#include <QFrame>
 #include <QGraphicsView>
 #include <QObject>
 #include <QWidget>
-#include <QFrame>
 #include <map>
-
-using Common::CubeCoordinate;
-using Common::Hex;
-using std::map;
-using std::shared_ptr;
-using std::unique_ptr;
-using Student::HexGraphicsItem;
 
 namespace Student {
 
@@ -23,20 +16,21 @@ class GameBoardWidget : public QWidget {
 public:
   explicit GameBoardWidget(QWidget *parent = nullptr);
 
-  void drawHexagon(CubeCoordinate coordinates);
+  void drawHexagon(Common::CubeCoordinate coordinates);
 
 signals:
-  void hexClicked(CubeCoordinate coordinates);
+  void hexClicked(Common::CubeCoordinate coordinates);
 public slots:
 private:
-  shared_ptr<HexGraphicsItem>
-  getExistingHexItemOrNull(CubeCoordinate coord) const;
-  void removeDrawnHexItemAt(CubeCoordinate coord);
+  std::shared_ptr<Student::HexGraphicsItem>
+  getExistingHexItemOrNull(Common::CubeCoordinate coord) const;
+  void removeDrawnHexItemAt(Common::CubeCoordinate coord);
 
-  map<CubeCoordinate, shared_ptr<HexGraphicsItem>> _hexItemsByCoordinates;
+  std::map<Common::CubeCoordinate, std::shared_ptr<Student::HexGraphicsItem>>
+      _hexItemsByCoordinates;
   QGraphicsView *_graphicsView;
 };
 
-} // namespace Ui
+} // namespace Student
 
 #endif // GAMEBOARDWIDGET_HH

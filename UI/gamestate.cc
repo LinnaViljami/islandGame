@@ -1,5 +1,7 @@
 #include "gamestate.hh"
 
+using Common::GamePhase;
+
 namespace Student{
 
 Student::GameState::GameState() : _gamePhase(GamePhase::MOVEMENT), _idOfPlayerInTurn(-1)

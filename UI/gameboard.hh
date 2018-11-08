@@ -3,11 +3,14 @@
 
 #include "gameboardwidget.hh"
 #include "igameboard.hh"
+#include <QObject>
 #include <map>
 
 namespace Student {
 
-class GameBoard : public Common::IGameBoard {
+class GameBoard : public QObject, public Common::IGameBoard {
+  Q_OBJECT
+
 public:
   explicit GameBoard(Student::GameBoardWidget *boardWidget);
 
@@ -58,9 +61,9 @@ public:
    */
   void removeActor(int actorId) override;
 
-  void handleHexClick(Common::CubeCoordinate hexCoordinates);
+public slots:
+  void handleHexClick();
 
-  void connectSignals();
 private:
   Student::GameBoardWidget *_boardWidget;
 
@@ -69,7 +72,6 @@ private:
   std::map<int, std::shared_ptr<Common::Pawn>> _pawnsByIds;
 
   std::map<int, std::shared_ptr<Common::Actor>> _actorsByIds;
-
 };
 
 } // namespace Student
