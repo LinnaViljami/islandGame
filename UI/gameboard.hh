@@ -3,6 +3,7 @@
 
 #include "gameboardwidget.hh"
 #include "igameboard.hh"
+#include "gamestate.hh"
 #include <QObject>
 #include <map>
 
