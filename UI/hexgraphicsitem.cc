@@ -21,26 +21,36 @@ void HexGraphicsItem::paint(QPainter *painter,
   Q_UNUSED(option);
   Q_UNUSED(widget);
 
+  painter->save();
+  painter->setPen(QPen(Qt::GlobalColor::black, 0));
+  painter->setBrush(QColor(Qt::GlobalColor::yellow));
+  painter->drawConvexPolygon(getShapePolygon());
+  painter->restore();
+}
+
+QPainterPath HexGraphicsItem::shape() const {
+  QPainterPath path;
+  path.addPolygon(getShapePolygon());
+  path.closeSubpath();
+  return path;
+}
+
+void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+  event->ignore();
+  emit mousePressed();
+}
+
+QPolygonF HexGraphicsItem::getShapePolygon() {
   static const double topAndBottomPointX = (sqrt(3) / 2) * R;
   static const double topAndBottomPointY = R / 2;
-  static const QPointF points[] = {
+  static const QVector<QPointF> points = {
       QPointF(0, R),
       QPointF(topAndBottomPointX, topAndBottomPointY),
       QPointF(topAndBottomPointX, -topAndBottomPointY),
       QPointF(0, -R),
       QPointF(-topAndBottomPointX, -topAndBottomPointY),
       QPointF(-topAndBottomPointX, topAndBottomPointY)};
-
-  painter->save();
-  painter->setPen(QPen(Qt::GlobalColor::black, 0));
-  painter->setBrush(QColor(Qt::GlobalColor::yellow));
-  painter->drawConvexPolygon(points, 6);
-  painter->restore();
-}
-
-void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-  event->ignore();
-  emit mouseReleased();
+  return QPolygonF(points);
 }
 
 } // namespace Student

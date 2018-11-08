@@ -35,7 +35,7 @@ void GameBoardWidget::drawHexagon(Common::CubeCoordinate coordinates) {
   item->setPos(HEX_SCALE * cartesianCoord.x, HEX_SCALE * cartesianCoord.y);
   item->setScale(HEX_SCALE);
   scene->addItem(item.get());
-  connect(item.get(), &HexGraphicsItem::mouseReleased, this,
+  connect(item.get(), &HexGraphicsItem::mousePressed, this,
           [coordinates, this]() { emit hexClicked(coordinates); });
 }
 
