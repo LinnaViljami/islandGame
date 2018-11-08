@@ -22,10 +22,10 @@ SOURCES += main.cc \
     coordinateconverter.cc \
     gamestate.cc \ 
     startdialog.cc \
-    gamerunner.cc \
     spinnergraphicsitem.cc \
     spinnercontainerwidget.cc \
-    fittinggraphicsview.cc
+    fittinggraphicsview.cc \
+    gameexecuter.cc
 
 HEADERS  += \
     gameboard.hh \
@@ -36,10 +36,10 @@ HEADERS  += \
     gameboardwidget.hh \
     coordinateconverter.hh \
     startdialog.hh \
-    gamerunner.hh \
     spinnergraphicsitem.hh \
     spinnercontainerwidget.hh \
-    fittinggraphicsview.hh
+    fittinggraphicsview.hh \
+    gameexecuter.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine

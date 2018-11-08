@@ -7,7 +7,6 @@
 #include "player.hh"
 #include "startdialog.hh"
 #include "ui_gamewindow.h"
-#include "gamerunner.hh"
 #include "spinnercontainerwidget.hh"
 #include <qboxlayout.h>
 #include <qlistview.h>
@@ -33,9 +32,8 @@ GameWindow::GameWindow(vector<QString> playerNames)
   auto gameBoard = std::make_shared<Student::GameBoard>(boardWidget);
   auto gameState = std::make_shared<Student::GameState>();
   vector<shared_ptr<IPlayer>> players = createPlayers(playerNames);
-
-  auto gameRunner =
-      Common::Initialization::getGameRunner(gameBoard, gameState, players);
+  auto gamerunner = Common::Initialization::getGameRunner(gameBoard, gameState, players);
+  gameExecuter_ = std::make_unique<Student::GameExecuter>(gamerunner, gameBoard, gameState);
 
   ui->mainLayout->addWidget(boardWidget);
   auto spinnerWidget = new SpinnerContainerWidget(this, actors);

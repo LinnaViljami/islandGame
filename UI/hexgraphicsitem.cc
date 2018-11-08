@@ -37,6 +37,8 @@ QPainterPath HexGraphicsItem::shape() const {
 
 void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   event->ignore();
+  qDebug() << "Mousepressevent: Hex click detected";
+
   emit mousePressed();
 }
 

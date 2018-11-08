@@ -2,6 +2,8 @@
 #define GAMEWINDOW_HH
 
 #include "player.hh"
+#include "gameexecuter.hh"
+
 #include <QMainWindow>
 #include <cubecoordinate.hh>
 #include <igamerunner.hh>
@@ -21,7 +23,7 @@ public:
 
 private:
   Ui::GameWindow *ui;
-  std::shared_ptr<Common::IGameRunner> gameRunner_;
+  std::unique_ptr<Student::GameExecuter> gameExecuter_;
 
   std::vector<std::shared_ptr<Common::IPlayer>>
   createPlayers(std::vector<QString> names);

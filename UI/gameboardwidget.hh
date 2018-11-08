@@ -25,7 +25,6 @@ private:
   std::shared_ptr<Student::HexGraphicsItem>
   getExistingHexItemOrNull(Common::CubeCoordinate coord) const;
   void removeDrawnHexItemAt(Common::CubeCoordinate coord);
-
   std::map<Common::CubeCoordinate, std::shared_ptr<Student::HexGraphicsItem>>
       _hexItemsByCoordinates;
   QGraphicsView *_graphicsView;

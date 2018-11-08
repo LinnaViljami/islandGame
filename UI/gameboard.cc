@@ -3,6 +3,8 @@
 #include "hex.hh"
 #include "pawn.hh"
 #include <QObject>
+#include <QDebug>
+#include <iostream>
 
 
 using Common::Actor;
@@ -91,6 +93,7 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
 void GameBoard::removeActor(int actorId) { _actorsByIds.erase(actorId); }
 
 void GameBoard::handleHexClick(CubeCoordinate coordinates) {
+    qDebug() << "GameBoard: Hex click detected at coordinate " << coordinates.x;
     //if(GameState)
     //if movement
         //if hex not already selected or not pawns to clicked hex
