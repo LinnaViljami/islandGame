@@ -1,6 +1,8 @@
 #ifndef SPINNERGRAPHICSITEM_HH
 #define SPINNERGRAPHICSITEM_HH
 
+#include "spinnerpointergraphicsitem.hh"
+
 #include <qgraphicsitem.h>
 
 class SpinnerGraphicsItem : public QGraphicsItem {
@@ -16,13 +18,13 @@ public:
 
 private:
   std::vector<QString> spinnerValues_;
-  double currentPointerAngle_ = 0;
+  Student::SpinnerPointerGraphicsItem &pointerItem_;
 
   void paintBackground(QPainter &painter);
   void paintSpinnerValues(QPainter &painter);
   void paintSingleSpinnerValue(QPainter &painter, QString value,
                                double rotation);
-  void paintPointer(QPainter &painter);
+  int getIndexOfSpinnerValue(QString value);
 };
 
 #endif // SPINNERGRAPHICSITEM_HH

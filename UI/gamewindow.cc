@@ -5,10 +5,9 @@
 #include "hexgraphicsitem.hh"
 #include "initialize.hh"
 #include "player.hh"
-#include "spinnerwidget.hh"
+#include "spinnercontainerwidget.hh"
 #include "startdialog.hh"
 #include "ui_gamewindow.h"
-#include "spinnercontainerwidget.hh"
 #include <qboxlayout.h>
 #include <qlistview.h>
 
@@ -38,10 +37,11 @@ GameWindow::GameWindow(vector<QString> playerNames)
       Common::Initialization::getGameRunner(gameBoard, gameState, players);
 
   ui->mainLayout->addWidget(boardWidget);
-  auto spinnerWidget = new SpinnerContainerWidget(this, actors);
-  spinnerWidget->setMinimumSize(400, 400);
-  ui->mainLayout->addWidget(spinnerWidget);
-  ui->mainLayout->setAlignment(spinnerWidget, Qt::AlignTop);
+  auto spinnerContainerWidget = new SpinnerContainerWidget(this, actors);
+  spinnerContainerWidget->setMinimumSize(400, 400);
+  ui->mainLayout->addWidget(spinnerContainerWidget);
+  ui->mainLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
+  spinnerContainerWidget->spinToValue("Shark");
 }
 
 GameWindow::~GameWindow() { delete ui; }
