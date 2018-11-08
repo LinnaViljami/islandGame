@@ -20,6 +20,7 @@ GameBoardWidget::GameBoardWidget(QWidget *parent)
   QGraphicsScene *scene = new QGraphicsScene(this);
   _graphicsView->setScene(scene);
   this->layout()->addWidget(_graphicsView);
+  setStyleSheet("background-color: transparent;");
 }
 
 void GameBoardWidget::drawHexagon(Common::CubeCoordinate coordinates) {
