@@ -1,5 +1,6 @@
 #include "hexgraphicsitem.hh"
 
+#include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 
 namespace {
@@ -37,7 +38,7 @@ void HexGraphicsItem::paint(QPainter *painter,
   painter->restore();
 }
 
-void HexGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   event->ignore();
   emit mouseReleased();
 }

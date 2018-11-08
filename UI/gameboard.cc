@@ -2,7 +2,6 @@
 #include "actor.hh"
 #include "hex.hh"
 #include "pawn.hh"
-#include <QDebug>
 #include <QObject>
 
 using Common::Actor;
@@ -90,6 +89,9 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
 
 void GameBoard::removeActor(int actorId) { _actorsByIds.erase(actorId); }
 
-void GameBoard::handleHexClick() {}
+void GameBoard::handleHexClick(CubeCoordinate coordinates) {
+
+    int x = 5;
+}
 
 } // namespace Student

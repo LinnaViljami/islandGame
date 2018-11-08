@@ -12,7 +12,7 @@ class GameBoard : public QObject, public Common::IGameBoard {
   Q_OBJECT
 
 public:
-  explicit GameBoard(Student::GameBoardWidget *boardWidget);
+  explicit GameBoard(GameBoardWidget *boardWidget);
 
   std::shared_ptr<GameBoardWidget> getBoardWidget();
   /**
@@ -62,7 +62,7 @@ public:
   void removeActor(int actorId) override;
 
 public slots:
-  void handleHexClick();
+  void handleHexClick(Common::CubeCoordinate coordinates);
 
 private:
   Student::GameBoardWidget *_boardWidget;

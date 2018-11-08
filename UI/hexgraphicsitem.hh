@@ -18,7 +18,7 @@ public:
              QWidget *widget) override;
 
 protected:
-  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+  void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 signals:
   void mouseReleased();
 };
