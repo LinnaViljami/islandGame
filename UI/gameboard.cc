@@ -112,7 +112,6 @@ void GameBoard::handleHexClick(CubeCoordinate coordinates) {
             //move actor
         //else
             //actor can not move to clicked hex
-
 }
 
 } // namespace Student

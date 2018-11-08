@@ -17,10 +17,16 @@ public:
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
              QWidget *widget) override;
 
+  QPainterPath shape() const override;
+
+signals:
+  void mousePressed();
+
 protected:
   void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-signals:
-  void mouseReleased();
+
+private:
+  static QPolygonF getShapePolygon();
 };
 
 } // namespace Student

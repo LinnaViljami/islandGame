@@ -1,17 +1,20 @@
-#include "spinnerwidget.hh"
+#include "spinnergraphicsitem.hh"
 
-#include <qboxlayout.h>
-#include <qgraphicsview.h>
-#include <qpainter.h>
-#include <qpushbutton.h>
+#include <QPainter>
 
-SpinnerWidget::SpinnerWidget(QWidget *parent,
-                             std::vector<QString> spinnerValues)
-    : QWidget(parent), spinnerValues_(spinnerValues) {
-  this->setLayout(new QHBoxLayout());
+namespace {
+
+static const double R = 1;
 }
 
-void SpinnerWidget::spinToValue(QString value) {
+SpinnerGraphicsItem::SpinnerGraphicsItem(std::vector<QString> spinnerValues)
+    : QGraphicsItem(nullptr), spinnerValues_(spinnerValues) {}
+
+QRectF SpinnerGraphicsItem::boundingRect() const {
+  return QRectF(-100, -100, 200, 200);
+}
+
+void SpinnerGraphicsItem::spinToValue(QString value) {
   int indexOfValue = std::distance(
       spinnerValues_.begin(),
       std::find(spinnerValues_.begin(), spinnerValues_.end(), value));
@@ -19,33 +22,26 @@ void SpinnerWidget::spinToValue(QString value) {
   update();
 }
 
-void SpinnerWidget::paintEvent(QPaintEvent *event) {
-  Q_UNUSED(event);
-  std::unique_ptr<QPainter> painter = createPainter();
+void SpinnerGraphicsItem::paint(QPainter *painter,
+                                const QStyleOptionGraphicsItem *option,
+                                QWidget *widget) {
+
+  Q_UNUSED(option);
+  Q_UNUSED(widget);
+
   paintBackground(*painter);
   paintSpinnerValues(*painter);
   paintPointer(*painter);
 }
 
-std::unique_ptr<QPainter> SpinnerWidget::createPainter() {
-  std::unique_ptr<QPainter> painter = std::make_unique<QPainter>(this);
-  static const int penWidth = 2;
-  painter->setPen(QPen(Qt::black, penWidth));
-  painter->translate(width() / 2, height() / 2);
-  int side = qMin(width(), height());
-  double painterSideLength = (side - penWidth * 2) / 200.0;
-  painter->scale(painterSideLength, painterSideLength);
-  return painter;
-}
-
-void SpinnerWidget::paintBackground(QPainter &painter) {
+void SpinnerGraphicsItem::paintBackground(QPainter &painter) {
   painter.save();
   painter.setBrush(QColor(0, 0, 255, 127));
   painter.drawEllipse(QPoint(0, 0), 100, 100);
   painter.restore();
 }
 
-void SpinnerWidget::paintSpinnerValues(QPainter &painter) {
+void SpinnerGraphicsItem::paintSpinnerValues(QPainter &painter) {
   painter.save();
   // Default rotation for text is +90, but we want first value
   // point towards top.
@@ -59,8 +55,9 @@ void SpinnerWidget::paintSpinnerValues(QPainter &painter) {
   painter.restore();
 }
 
-void SpinnerWidget::paintSingleSpinnerValue(QPainter &painter, QString value,
-                                            double rotation) {
+void SpinnerGraphicsItem::paintSingleSpinnerValue(QPainter &painter,
+                                                  QString value,
+                                                  double rotation) {
   painter.save();
   int flags = Qt::AlignVCenter;
   // If rotation from top is over 180, text cannot just rotated
@@ -77,7 +74,7 @@ void SpinnerWidget::paintSingleSpinnerValue(QPainter &painter, QString value,
   painter.restore();
 }
 
-void SpinnerWidget::paintPointer(QPainter &painter) {
+void SpinnerGraphicsItem::paintPointer(QPainter &painter) {
   painter.save();
   painter.rotate(currentPointerAngle_);
   // Pointer points to top before rotation.
