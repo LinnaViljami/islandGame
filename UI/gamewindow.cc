@@ -5,9 +5,10 @@
 #include "hexgraphicsitem.hh"
 #include "initialize.hh"
 #include "player.hh"
-#include "spinnercontainerwidget.hh"
 #include "startdialog.hh"
 #include "ui_gamewindow.h"
+#include "gamerunner.hh"
+#include "spinnercontainerwidget.hh"
 #include <qboxlayout.h>
 #include <qlistview.h>
 
@@ -33,7 +34,7 @@ GameWindow::GameWindow(vector<QString> playerNames)
   auto gameState = std::make_shared<Student::GameState>();
   vector<shared_ptr<IPlayer>> players = createPlayers(playerNames);
 
-  gameRunner_ =
+  auto gameRunner =
       Common::Initialization::getGameRunner(gameBoard, gameState, players);
 
   ui->mainLayout->addWidget(boardWidget);

@@ -4,6 +4,7 @@
 #include "pawn.hh"
 #include <QObject>
 
+
 using Common::Actor;
 using Common::CubeCoordinate;
 using Common::Hex;
@@ -90,7 +91,27 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
 void GameBoard::removeActor(int actorId) { _actorsByIds.erase(actorId); }
 
 void GameBoard::handleHexClick(CubeCoordinate coordinates) {
-    int x = 5;
+    //if(GameState)
+    //if movement
+        //if hex not already selected or not pawns to clicked hex
+            // select/unselect hex
+        //else
+            //if pawn can move to clicked hex
+                //move pawn
+            //else
+                //pawn cant move to clicked hex
+    //if sinking
+        //if clikced hex can sink
+            //sink hex
+            //play actor
+            //handle pawn changes
+        //else
+            //hex cannot sink
+    //if spinning
+        //if actor can move to clicked hex
+            //move actor
+        //else
+            //actor can not move to clicked hex
 }
 
 } // namespace Student

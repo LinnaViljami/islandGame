@@ -22,6 +22,7 @@ SOURCES += main.cc \
     coordinateconverter.cc \
     gamestate.cc \ 
     startdialog.cc \
+    gamerunner.cc \
     spinnergraphicsitem.cc \
     spinnercontainerwidget.cc \
     fittinggraphicsview.cc \
@@ -36,6 +37,7 @@ HEADERS  += \
     gameboardwidget.hh \
     coordinateconverter.hh \
     startdialog.hh \
+    gamerunner.hh \
     spinnergraphicsitem.hh \
     spinnercontainerwidget.hh \
     fittinggraphicsview.hh \
