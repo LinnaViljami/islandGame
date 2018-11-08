@@ -8,6 +8,7 @@
 #include "spinnerwidget.hh"
 #include "startdialog.hh"
 #include "ui_gamewindow.h"
+#include "spinnercontainerwidget.hh"
 #include <qboxlayout.h>
 #include <qlistview.h>
 
@@ -37,7 +38,7 @@ GameWindow::GameWindow(vector<QString> playerNames)
       Common::Initialization::getGameRunner(gameBoard, gameState, players);
 
   ui->mainLayout->addWidget(boardWidget);
-  auto spinnerWidget = new SpinnerWidget(this, actors);
+  auto spinnerWidget = new SpinnerContainerWidget(this, actors);
   spinnerWidget->setMinimumSize(400, 400);
   ui->mainLayout->addWidget(spinnerWidget);
   ui->mainLayout->setAlignment(spinnerWidget, Qt::AlignTop);

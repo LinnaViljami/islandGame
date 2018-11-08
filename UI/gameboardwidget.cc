@@ -1,6 +1,7 @@
 #include "gameboardwidget.hh"
 #include "QGraphicsView"
 #include "coordinateconverter.hh"
+#include "fittinggraphicsview.hh"
 
 #include <QDebug>
 #include <qboxlayout.h>
@@ -15,7 +16,7 @@ using std::shared_ptr;
 namespace Student {
 
 GameBoardWidget::GameBoardWidget(QWidget *parent)
-    : QWidget(parent), _graphicsView(new QGraphicsView(this)) {
+    : QWidget(parent), _graphicsView(new FittingGraphicsView(this)) {
   this->setLayout(new QHBoxLayout(this));
   QGraphicsScene *scene = new QGraphicsScene(this);
   _graphicsView->setScene(scene);
