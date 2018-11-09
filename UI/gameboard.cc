@@ -16,9 +16,6 @@ using std::shared_ptr;
 namespace Student {
 
 GameBoard::GameBoard(GameBoardWidget *boardWidget) : _boardWidget(boardWidget) {
-
-  connect(boardWidget, &GameBoardWidget::hexClicked, this,
-          &GameBoard::handleHexClick);
 }
 
 GameBoardWidget* GameBoard::getBoardWidget() {
@@ -89,30 +86,5 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
 }
 
 void GameBoard::removeActor(int actorId) { _actorsByIds.erase(actorId); }
-
-void GameBoard::handleHexClick(CubeCoordinate coordinates) {
-    qDebug() << "GameBoard: Hex click detected at coordinate " << coordinates.x;
-    //if(GameState)
-    //if movement
-        //if hex not already selected or not pawns to clicked hex
-            // select/unselect hex
-        //else
-            //if pawn can move to clicked hex
-                //move pawn
-            //else
-                //pawn cant move to clicked hex
-    //if sinking
-        //if clikced hex can sink
-            //sink hex
-            //play actor
-            //handle pawn changes
-        //else
-            //hex cannot sink
-    //if spinning
-        //if actor can move to clicked hex
-            //move actor
-        //else
-            //actor can not move to clicked hex
-}
 
 } // namespace Student

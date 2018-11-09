@@ -16,6 +16,7 @@ public:
   explicit GameBoard(GameBoardWidget *boardWidget);
 
   GameBoardWidget* getBoardWidget();
+
   /**
    * @copydoc IGameBoard::checkTileOccupation()
    */
@@ -61,9 +62,6 @@ public:
    * @copydoc IGameBoard::removeActor()
    */
   void removeActor(int actorId) override;
-
-public slots:
-  void handleHexClick(Common::CubeCoordinate coordinates);
 
 private:
   Student::GameBoardWidget *_boardWidget;

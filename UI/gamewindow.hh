@@ -23,7 +23,7 @@ public:
 
 private:
   Ui::GameWindow *ui;
-  std::shared_ptr<Student::GameExecuter> gameExecuter_;
+  std::unique_ptr<Student::GameExecuter> gameExecuter_;
 
   std::vector<std::shared_ptr<Common::IPlayer>>
   createPlayers(std::vector<QString> names);
