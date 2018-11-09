@@ -1,9 +1,10 @@
 #include "gameboardwidget.hh"
 #include "QGraphicsView"
 #include "coordinateconverter.hh"
-#include "fittinggraphicsview.hh"
+#include "zoomablegraphicsview.hh"
 
 #include <QDebug>
+#include <QPushButton>
 #include <qboxlayout.h>
 
 namespace {
@@ -16,12 +17,11 @@ using std::shared_ptr;
 namespace Student {
 
 GameBoardWidget::GameBoardWidget(QWidget *parent)
-    : QWidget(parent), _graphicsView(new FittingGraphicsView(this)) {
+    : QWidget(parent), _graphicsView(new ZoomableGraphicsView(this)) {
   this->setLayout(new QHBoxLayout(this));
   QGraphicsScene *scene = new QGraphicsScene(this);
   _graphicsView->setScene(scene);
   this->layout()->addWidget(_graphicsView);
-  setStyleSheet("background-color: transparent;");
 }
 
 void GameBoardWidget::drawHexagon(Common::CubeCoordinate coordinates) {

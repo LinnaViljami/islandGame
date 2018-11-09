@@ -3,6 +3,7 @@
 
 #include "hex.hh"
 #include "hexgraphicsitem.hh"
+#include "zoomablegraphicsview.hh"
 #include <QFrame>
 #include <QGraphicsView>
 #include <QObject>
@@ -28,7 +29,7 @@ private:
 
   std::map<Common::CubeCoordinate, std::shared_ptr<Student::HexGraphicsItem>>
       _hexItemsByCoordinates;
-  QGraphicsView *_graphicsView;
+  ZoomableGraphicsView *_graphicsView;
 };
 
 } // namespace Student
