@@ -15,7 +15,7 @@ class GameBoard : public QObject, public Common::IGameBoard {
 public:
   explicit GameBoard(GameBoardWidget *boardWidget);
 
-  std::shared_ptr<GameBoardWidget> getBoardWidget();
+  GameBoardWidget* getBoardWidget();
   /**
    * @copydoc IGameBoard::checkTileOccupation()
    */

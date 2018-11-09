@@ -4,7 +4,6 @@
 #include "pawn.hh"
 #include <QObject>
 #include <QDebug>
-#include <iostream>
 
 
 using Common::Actor;
@@ -22,9 +21,8 @@ GameBoard::GameBoard(GameBoardWidget *boardWidget) : _boardWidget(boardWidget) {
           &GameBoard::handleHexClick);
 }
 
-std::shared_ptr<GameBoardWidget> GameBoard::getBoardWidget() {
-  auto widget = std::make_shared<GameBoardWidget>(_boardWidget);
-  return widget;
+GameBoardWidget* GameBoard::getBoardWidget() {
+  return _boardWidget;
 }
 
 int GameBoard::checkTileOccupation(CubeCoordinate tileCoord) const {

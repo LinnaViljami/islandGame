@@ -33,9 +33,9 @@ GameWindow::GameWindow(vector<QString> playerNames)
   auto gameBoard = std::make_shared<Student::GameBoard>(boardWidget);
   auto gameState = std::make_shared<Student::GameState>();
   vector<shared_ptr<IPlayer>> players = createPlayers(playerNames);
-  auto gamerunner = Common::Initialization::getGameRunner(gameBoard, gameState, players);
-  gameExecuter_ = std::make_unique<Student::GameExecuter>(gamerunner, gameBoard, gameState);
-
+  auto gameRunner = Common::Initialization::getGameRunner(gameBoard, gameState, players);
+  auto gameExecuter = std::make_shared<Student::GameExecuter>(gameRunner, gameBoard, gameState);
+  gameExecuter_ = gameExecuter;
   ui->mainLayout->addWidget(boardWidget);
   auto spinnerContainerWidget = new SpinnerContainerWidget(this, actors);
   spinnerContainerWidget->setMinimumSize(400, 400);

@@ -5,6 +5,7 @@
 #include "igamerunner.hh"
 #include "gameboard.hh"
 #include "gamestate.hh"
+#include "cubecoordinate.hh"
 
 namespace Student {
 
