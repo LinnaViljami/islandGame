@@ -18,13 +18,6 @@ void ZoomableGraphicsView::wheelEvent(QWheelEvent *event) {
   if (event->modifiers().testFlag(Qt::ControlModifier)) {
     double angle = event->angleDelta().y();
     double scaleFactor = qPow(zoomFactorBase_, angle);
-
-    static const double minScale = 1;
-    if (angle < 0 && currentScale_ <= minScale) {
-      return;
-    }
-    currentScale_ *= scaleFactor;
-
     QPointF targetViewportPos = event->pos();
     QPointF targetScenePos = mapToScene(event->pos());
     this->scale(scaleFactor, scaleFactor);

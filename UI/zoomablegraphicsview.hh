@@ -19,8 +19,6 @@ protected:
 
 private:
   const double zoomFactorBase_;
-
-  double currentScale_ = 1;
 };
 
 #endif // ZOOMABLEGRAPHICSVIEW_HH
