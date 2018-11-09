@@ -22,12 +22,12 @@ SOURCES += main.cc \
     coordinateconverter.cc \
     gamestate.cc \ 
     startdialog.cc \
-    gamerunner.cc \
     spinnergraphicsitem.cc \
     spinnercontainerwidget.cc \
     fittinggraphicsview.cc \
-    spinnerpointergraphicsitem.cc \
-    zoomablegraphicsview.cc
+    zoomablegraphicsview.cc \
+    gameexecuter.cc \
+    spinnerpointergraphicsitem.cc
 
 HEADERS  += \
     gameboard.hh \
@@ -38,12 +38,12 @@ HEADERS  += \
     gameboardwidget.hh \
     coordinateconverter.hh \
     startdialog.hh \
-    gamerunner.hh \
     spinnergraphicsitem.hh \
     spinnercontainerwidget.hh \
     fittinggraphicsview.hh \
     spinnerpointergraphicsitem.hh \
-    zoomablegraphicsview.hh
+    zoomablegraphicsview.hh \
+    gameexecuter.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine
