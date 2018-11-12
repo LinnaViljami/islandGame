@@ -4,6 +4,7 @@
 #include "zoomablegraphicsview.hh"
 
 #include <QDebug>
+#include <QEvent>
 #include <QPushButton>
 #include <qboxlayout.h>
 
@@ -51,7 +52,6 @@ void GameBoardWidget::removeDrawnHexItemAt(Common::CubeCoordinate coord) {
 
 shared_ptr<HexGraphicsItem>
 GameBoardWidget::getExistingHexItemOrNull(CubeCoordinate coord) const {
-
   auto iterator = _hexItemsByCoordinates.find(coord);
   if (iterator == _hexItemsByCoordinates.end())
     return nullptr;

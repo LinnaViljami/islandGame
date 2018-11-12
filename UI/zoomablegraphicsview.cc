@@ -1,5 +1,6 @@
 #include "zoomablegraphicsview.hh"
-#include <QDebug>>
+#include <QDebug>
+#include <QGraphicsSceneMouseEvent>
 #include <QScrollBar>
 #include <QWheelEvent>
 #include <qmath.h>
@@ -31,13 +32,17 @@ void ZoomableGraphicsView::wheelEvent(QWheelEvent *event) {
 }
 
 void ZoomableGraphicsView::keyPressEvent(QKeyEvent *event) {
-  if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+  if (keyEventHasShiftModifier(event)) {
     setDragMode(QGraphicsView::ScrollHandDrag);
   }
 }
 
 void ZoomableGraphicsView::keyReleaseEvent(QKeyEvent *event) {
-  if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+  if (keyEventHasShiftModifier(event)) {
     setDragMode(QGraphicsView::NoDrag);
   }
+}
+
+bool ZoomableGraphicsView::keyEventHasShiftModifier(QKeyEvent *event) {
+  return event->modifiers().testFlag(Qt::ShiftModifier);
 }

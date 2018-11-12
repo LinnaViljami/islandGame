@@ -18,6 +18,8 @@ protected:
   void keyReleaseEvent(QKeyEvent *event) override;
 
 private:
+  bool keyEventHasShiftModifier(QKeyEvent *event);
+
   const double zoomFactorBase_;
 };
 
