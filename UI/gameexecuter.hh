@@ -21,6 +21,10 @@ private:
 
     std::shared_ptr<Student::GameState> _gameState;
 
+    Common::CubeCoordinate _selectedHexCoordinates;
+
+
+
 public slots:
     void handleHexClick(Common::CubeCoordinate coordinates);
 };
