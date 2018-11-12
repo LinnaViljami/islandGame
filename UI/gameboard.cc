@@ -2,9 +2,8 @@
 #include "actor.hh"
 #include "hex.hh"
 #include "pawn.hh"
-#include <QObject>
 #include <QDebug>
-
+#include <QObject>
 
 using Common::Actor;
 using Common::CubeCoordinate;
@@ -15,12 +14,10 @@ using std::shared_ptr;
 
 namespace Student {
 
-GameBoard::GameBoard(GameBoardWidget *boardWidget) : _boardWidget(boardWidget) {
-}
+GameBoard::GameBoard(GameBoardWidget *boardWidget)
+    : _boardWidget(boardWidget) {}
 
-GameBoardWidget* GameBoard::getBoardWidget() {
-  return _boardWidget;
-}
+GameBoardWidget *GameBoard::getBoardWidget() { return _boardWidget; }
 
 int GameBoard::checkTileOccupation(CubeCoordinate tileCoord) const {
   shared_ptr<Hex> hex = getHex(tileCoord);
@@ -68,16 +65,19 @@ void GameBoard::addPawn(int playerId, int pawnId) {
 void GameBoard::movePawn(int pawnId, Common::CubeCoordinate pawnCoord) {
   shared_ptr<Pawn> pawn = _pawnsByIds[pawnId];
   pawn->setCoordinates(pawnCoord);
-  // TODO: remove from current hex?
+  // TODO: remove from current hex
   auto newHex = getHex(pawnCoord);
   newHex->addPawn(pawn);
 }
 
 void GameBoard::removePawn(int pawnId) {
   shared_ptr<Pawn> pawn = _pawnsByIds[pawnId];
-  // TODO: remove from current hex?
+  // TODO: remove from current hex
   _pawnsByIds.erase(pawnId);
 }
+
+void GameBoard::addActor(std::shared_ptr<Common::Actor> actor,
+                         Common::CubeCoordinate actorCoord) {}
 
 void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
   shared_ptr<Actor> actor = _actorsByIds[actorId];
@@ -86,5 +86,12 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
 }
 
 void GameBoard::removeActor(int actorId) { _actorsByIds.erase(actorId); }
+
+void GameBoard::addTransport(std::shared_ptr<Common::Transport> transport,
+                             Common::CubeCoordinate coord) {}
+
+void GameBoard::moveTransport(int id, Common::CubeCoordinate coord) {}
+
+void GameBoard::removeTransport(int id) {}
 
 } // namespace Student

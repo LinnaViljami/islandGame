@@ -21,7 +21,7 @@ public:
 
 signals:
   void hexClicked(Common::CubeCoordinate coordinates);
-public slots:
+
 private:
   std::shared_ptr<Student::HexGraphicsItem>
   getExistingHexItemOrNull(Common::CubeCoordinate coord) const;

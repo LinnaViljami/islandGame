@@ -2,8 +2,8 @@
 #define GAMEBOARD_HH
 
 #include "gameboardwidget.hh"
-#include "igameboard.hh"
 #include "gamestate.hh"
+#include "igameboard.hh"
 #include <QObject>
 #include <map>
 
@@ -15,7 +15,7 @@ class GameBoard : public QObject, public Common::IGameBoard {
 public:
   explicit GameBoard(GameBoardWidget *boardWidget);
 
-  GameBoardWidget* getBoardWidget();
+  GameBoardWidget *getBoardWidget();
 
   /**
    * @copydoc IGameBoard::checkTileOccupation()
@@ -54,6 +54,12 @@ public:
   void removePawn(int pawnId) override;
 
   /**
+   * @copydoc IGameBoard::addActor()
+   */
+  void addActor(std::shared_ptr<Common::Actor> actor,
+                Common::CubeCoordinate actorCoord) override;
+
+  /**
    * @copydoc IGameBoard::moveActor()
    */
   void moveActor(int actorId, Common::CubeCoordinate actorCoord) override;
@@ -63,6 +69,22 @@ public:
    */
   void removeActor(int actorId) override;
 
+  /**
+   * @copydoc IGameBoard::addTransport()
+   */
+  void addTransport(std::shared_ptr<Common::Transport> transport,
+                    Common::CubeCoordinate coord) override;
+
+  /**
+   * @copydoc IGameBoard::moveTransport()
+   */
+  void moveTransport(int id, Common::CubeCoordinate coord) override;
+
+  /**
+   * @copydoc IGameBoard::removeTransport()
+   */
+  void removeTransport(int id) override;
+
 private:
   Student::GameBoardWidget *_boardWidget;
 
@@ -71,6 +93,7 @@ private:
   std::map<int, std::shared_ptr<Common::Pawn>> _pawnsByIds;
 
   std::map<int, std::shared_ptr<Common::Actor>> _actorsByIds;
+
 };
 
 } // namespace Student

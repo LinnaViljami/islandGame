@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsView>
 
 namespace {
 
@@ -37,8 +38,12 @@ QPainterPath HexGraphicsItem::shape() const {
 
 void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   event->ignore();
-  qDebug() << "Mousepressevent: Hex click detected";
 
+  if (!scene()->views().isEmpty()) {
+    if (scene()->views().first()->dragMode() == QGraphicsView::ScrollHandDrag) {
+      return;
+    }
+  }
   emit mousePressed();
 }
 
