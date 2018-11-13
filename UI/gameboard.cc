@@ -2,6 +2,7 @@
 #include "actor.hh"
 #include "hex.hh"
 #include "pawn.hh"
+#include "transport.hh"
 #include <QDebug>
 #include <QObject>
 
@@ -85,13 +86,21 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
   actor->move(hex);
 }
 
-void GameBoard::removeActor(int actorId) { _actorsByIds.erase(actorId); }
+void GameBoard::removeActor(int actorId) {
+    _actorsByIds.erase(actorId);
+}
 
 void GameBoard::addTransport(std::shared_ptr<Common::Transport> transport,
-                             Common::CubeCoordinate coord) {}
+                             Common::CubeCoordinate coord) {
+    //transportsByIds_[transport->getId()] =
+}
 
-void GameBoard::moveTransport(int id, Common::CubeCoordinate coord) {}
+void GameBoard::moveTransport(int id, Common::CubeCoordinate coord) {
+    transportsByIds_.at(id)->move(_hexMap.at(coord));
+}
 
-void GameBoard::removeTransport(int id) {}
+void GameBoard::removeTransport(int id) {
+    transportsByIds_.erase(id);
+}
 
 } // namespace Student

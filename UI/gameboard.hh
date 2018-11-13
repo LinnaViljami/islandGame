@@ -94,6 +94,8 @@ private:
 
   std::map<int, std::shared_ptr<Common::Actor>> _actorsByIds;
 
+  std::map<int, std::shared_ptr<Common::Transport>> transportsByIds_;
+
 };
 
 } // namespace Student

@@ -7,10 +7,10 @@ namespace Student {
 
 
 GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState) :
-    _gameRunner(gameRunner), _gameBoard(gameBoard), _gameState(gameState), _selectedHexCoordinates(Common::CubeCoordinate())
+    gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState), selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false)
 {
 
-    connect(_gameBoard->getBoardWidget(), &GameBoardWidget::hexClicked,
+    connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked,
             this, &GameExecuter::handleHexClick);
 }
 
@@ -19,24 +19,24 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
     qDebug() << "GameExecuter: Hex click detected at coordinate " << coordinates.x;
 
 
-    if(_gameState->currentGamePhase() == Common::GamePhase::MOVEMENT){
+    if(gameState_->currentGamePhase() == Common::GamePhase::MOVEMENT){
         //if hex not selected
-        if(_selectedHexCoordinates == Common::CubeCoordinate()){
-            if(_gameState->currentPlayer())//if pawns in hex
+        if(not isHexSelected_){
+            if(gameState_->currentPlayer())//if pawns in hex
             //select pressed hex
-            _selectedHexCoordinates = coordinates;
+            selectedHexCoordinates_ = coordinates;
             //else error: not pawns in selected hex
         }
-        else if(_selectedHexCoordinates.operator ==(coordinates)){
+        else if(selectedHexCoordinates_.operator ==(coordinates)){
             //unselect hex
-            _selectedHexCoordinates = Common::CubeCoordinate();
+            isHexSelected_ = true;
         }
         else{
             //if able to move pawns -> move
             //else error: not able to move
         }
     }
-    else if(_gameState->currentGamePhase() == Common::GamePhase::SINKING){
+    else if(gameState_->currentGamePhase() == Common::GamePhase::SINKING){
         //if clikced hex can sink
             //sink hex
             //play actor
@@ -44,7 +44,7 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
         //else
             //hex cannot sink
     }
-    else if(_gameState->currentGamePhase() == Common::GamePhase::SPINNING){
+    else if(gameState_->currentGamePhase() == Common::GamePhase::SPINNING){
         //if player has spin the wheel
             //if actor can move to clicked hex
                 //move actor

@@ -15,13 +15,15 @@ class GameExecuter : public QObject
 public:
     GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std::shared_ptr<Student::GameBoard> gameBoard, std::shared_ptr<Student::GameState> gameState);
 private:
-    std::shared_ptr<Common::IGameRunner> _gameRunner;
+    std::shared_ptr<Common::IGameRunner> gameRunner_;
 
-    std::shared_ptr<Student::GameBoard> _gameBoard;
+    std::shared_ptr<Student::GameBoard> gameBoard_;
 
-    std::shared_ptr<Student::GameState> _gameState;
+    std::shared_ptr<Student::GameState> gameState_;
 
-    Common::CubeCoordinate _selectedHexCoordinates;
+    Common::CubeCoordinate selectedHexCoordinates_;
+
+    bool isHexSelected_;
 
 
 
