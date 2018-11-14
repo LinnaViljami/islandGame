@@ -9,26 +9,26 @@
 
 class SpinnerGraphicsItem : public QGraphicsItem {
 public:
-  explicit SpinnerGraphicsItem(std::vector<QString> spinnerValues);
+  explicit SpinnerGraphicsItem(std::vector<std::string> spinnerValues);
 
   QRectF boundingRect() const override;
 
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
              QWidget *widget) override;
 
-  void spinToValue(QString value);
+  void spinToValue(std::string value);
 
 private:
-  std::vector<QString> spinnerValues_;
+  std::vector<std::string> spinnerValues_;
   Student::SpinnerPointerGraphicsItem &pointerItem_;
 
   std::shared_ptr<QPropertyAnimation> pointerAnimation_;
 
   void paintBackground(QPainter &painter);
   void paintSpinnerValues(QPainter &painter);
-  void paintSingleSpinnerValue(QPainter &painter, QString value,
+  void paintSingleSpinnerValue(QPainter &painter, std::string value,
                                double rotation);
-  int getIndexOfSpinnerValue(QString value);
+  int getIndexOfSpinnerValue(std::string value);
 };
 
 #endif // SPINNERGRAPHICSITEM_HH

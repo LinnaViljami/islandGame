@@ -5,9 +5,10 @@
 #include <QGraphicsScene>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <set>
 
-SpinnerContainerWidget::SpinnerContainerWidget(
-    QWidget *parent, std::vector<QString> spinnerValues)
+SpinnerContainerWidget::SpinnerContainerWidget(QWidget *parent,
+                                               SpinnerLayout layout)
     : QWidget(parent) {
   this->setLayout(new QHBoxLayout(this));
   QGraphicsView *graphicsView = new FittingGraphicsView(this);
@@ -18,10 +19,39 @@ SpinnerContainerWidget::SpinnerContainerWidget(
   this->layout()->addWidget(graphicsView);
   setStyleSheet("background-color: transparent;");
 
-  spinnerItem_ = new SpinnerGraphicsItem(spinnerValues);
-  scene->addItem(spinnerItem_);
+  std::vector<std::string> actorOptions = getActorOptions(layout);
+  std::vector<std::string> moveOptions = getMoveOptions(layout);
+
+  actorSpinnerItem_ = new SpinnerGraphicsItem(actorOptions);
+  movesSpinnerItem_ = new SpinnerGraphicsItem(moveOptions);
+  movesSpinnerItem_->setPos(0, actorSpinnerItem_->boundingRect().height() + 10);
+  scene->addItem(actorSpinnerItem_);
+  scene->addItem(movesSpinnerItem_);
 }
 
-void SpinnerContainerWidget::spinToValue(QString value) {
-  spinnerItem_->spinToValue(value);
+void SpinnerContainerWidget::spin(std::string actor, std::string moves) {
+  actorSpinnerItem_->spinToValue(actor);
+  movesSpinnerItem_->spinToValue(moves);
+}
+
+std::vector<std::string>
+SpinnerContainerWidget::getActorOptions(SpinnerLayout layout) {
+  std::vector<std::string> ret;
+  for (auto const &actorSectionsPair : layout) {
+    ret.push_back(actorSectionsPair.first);
+  }
+  return ret;
+}
+
+std::vector<std::string>
+SpinnerContainerWidget::getMoveOptions(SpinnerLayout layout) {
+  std::set<std::string> set;
+  for (auto const &actorSectionsPair : layout) {
+    for (auto const &sectionsChangesPair : actorSectionsPair.second) {
+      set.insert(sectionsChangesPair.first);
+    }
+  }
+  std::vector<std::string> ret;
+  std::copy(set.begin(), set.end(), std::back_inserter(ret));
+  return ret;
 }
