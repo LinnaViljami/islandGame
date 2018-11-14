@@ -51,6 +51,11 @@ shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
 void GameBoard::addHex(shared_ptr<Common::Hex> newHex) {
   _hexMap[newHex->getCoordinates()] = newHex;
   _boardWidget->drawHexagon(newHex->getCoordinates());
+
+  //Next made because testing, not final implementation
+  int newId = rand() % 100000 + 1;
+  addPawn(1,newId);
+  movePawn(newId, newHex->getCoordinates());
 }
 
 void GameBoard::addPawn(int playerId, int pawnId) {
@@ -65,8 +70,9 @@ void GameBoard::addPawn(int playerId, int pawnId) {
 
 void GameBoard::movePawn(int pawnId, Common::CubeCoordinate pawnCoord) {
   shared_ptr<Pawn> pawn = _pawnsByIds[pawnId];
+  Common::CubeCoordinate pawnOldCoord = pawn->getCoordinates();
+  _hexMap.at(pawnOldCoord)->removePawn(pawn);
   pawn->setCoordinates(pawnCoord);
-  // TODO: remove from current hex
   auto newHex = getHex(pawnCoord);
   newHex->addPawn(pawn);
 }
@@ -81,7 +87,6 @@ void GameBoard::removePawn(int pawnId) {
 void GameBoard::addActor(std::shared_ptr<Common::Actor> actor,
                          Common::CubeCoordinate actorCoord) {
     _actorsByIds[actor->getId()] = actor;
-    //addHex adds actor to Hex, not add hex to actor.
     actor->addHex(_hexMap.at(actorCoord));
 }
 
@@ -94,7 +99,7 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
 void GameBoard::removeActor(int actorId) {
     _actorsByIds.erase(actorId);
     //TODO: remove actor from hex
-    //requires actor.getHex() function implemented to actor
+    //requires actor.getHex() function implemented to actor or actor.remove
 }
 
 void GameBoard::addTransport(std::shared_ptr<Common::Transport> transport,
@@ -108,7 +113,22 @@ void GameBoard::moveTransport(int id, Common::CubeCoordinate coord) {
 }
 
 void GameBoard::removeTransport(int id) {
+    //TODO: remove transport from hex
+    //requires transport.getHex() function implemented or transport.remove
     transportsByIds_.erase(id);
+}
+
+std::vector<std::shared_ptr<Common::Pawn> > GameBoard::getPlayerPawnsInCoordinate(Common::CubeCoordinate coord, int playerId)
+{
+    std::vector<std::shared_ptr<Common::Pawn>> playerPawns;
+    for(auto const &pawn : _pawnsByIds){
+        if(coord.operator==(pawn.second->getCoordinates())){
+            if(pawn.second->getPlayerId() == playerId){
+                playerPawns.push_back(pawn.second);
+            }
+        }
+    }
+    return playerPawns;
 }
 
 } // namespace Student

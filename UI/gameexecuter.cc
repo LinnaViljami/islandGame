@@ -1,6 +1,8 @@
 #include "gameexecuter.hh"
 #include <QDebug>
 #include <iostream>
+#include "gameexception.hh"
+#include <vector>
 
 
 namespace Student {
@@ -12,6 +14,7 @@ GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std:
 
     connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked,
             this, &GameExecuter::handleHexClick);
+    gameState->changePlayerTurn(1);
 }
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
@@ -20,9 +23,16 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
 
 
     if(gameState_->currentGamePhase() == Common::GamePhase::MOVEMENT){
+         std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(coordinates);
+        if(clickedHex == nullptr){
+            throw Common::GameException("Clicked hex not exist in game-executer gameboard_");
+        }
+        std::vector<std::shared_ptr<Common::Pawn>> pawnVector =
+        gameBoard_->getPlayerPawnsInCoordinate(coordinates, gameState_->currentPlayer());
         //if hex not selected
-        if(not isHexSelected_){
-            if(gameState_->currentPlayer())//if pawns in hex
+        if(isHexSelected_){
+            //clickedHex->get
+            //if(clickedHex)//if pawns in hex
             //select pressed hex
             selectedHexCoordinates_ = coordinates;
             //else error: not pawns in selected hex

@@ -6,6 +6,7 @@
 #include "igameboard.hh"
 #include <QObject>
 #include <map>
+#include <vector>
 
 namespace Student {
 
@@ -84,6 +85,8 @@ public:
    * @copydoc IGameBoard::removeTransport()
    */
   void removeTransport(int id) override;
+
+  std::vector<std::shared_ptr<Common::Pawn>> getPlayerPawnsInCoordinate(Common::CubeCoordinate coord, int playerId);
 
 private:
   Student::GameBoardWidget *_boardWidget;
