@@ -45,6 +45,11 @@ public:
   void addPawn(int playerId, int pawnId) override;
 
   /**
+   * @copydoc IGameBoard::addPawn()
+   */
+  virtual void addPawn(int playerId, int pawnId, Common::CubeCoordinate coord);
+
+  /**
    * @copydoc IGameBoard::movePawn()
    */
   void movePawn(int pawnId, Common::CubeCoordinate pawnCoord) override;
@@ -99,6 +104,7 @@ private:
 
   std::map<int, std::shared_ptr<Common::Transport>> transportsByIds_;
 
+public:
 };
 
 } // namespace Student
