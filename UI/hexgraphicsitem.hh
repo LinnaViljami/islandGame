@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QPainter>
 #include <QRectF>
+#include <hex.hh>
 #include <math.h>
 
 namespace Student {
@@ -12,6 +13,8 @@ namespace Student {
 class HexGraphicsItem : public QGraphicsObject {
   Q_OBJECT
 public:
+  explicit HexGraphicsItem(std::shared_ptr<Common::Hex> hex);
+
   QRectF boundingRect() const override;
 
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -26,7 +29,11 @@ protected:
   void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
+  std::shared_ptr<Common::Hex> hex_;
+
   static QPolygonF getShapePolygon();
+
+  void drawPawns(QPainter *painter);
 };
 
 } // namespace Student

@@ -27,7 +27,8 @@ SOURCES += main.cc \
     zoomablegraphicsview.cc \
     gameexecuter.cc \
     spinnerpointergraphicsitem.cc \
-    fittocontentgraphicsview.cc
+    fittocontentgraphicsview.cc \
+    pawngraphicsitem.cc
 
 HEADERS  += \
     gameboard.hh \
@@ -43,7 +44,8 @@ HEADERS  += \
     spinnerpointergraphicsitem.hh \
     zoomablegraphicsview.hh \
     gameexecuter.hh \
-    fittocontentgraphicsview.hh
+    fittocontentgraphicsview.hh \
+    pawngraphicsitem.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine

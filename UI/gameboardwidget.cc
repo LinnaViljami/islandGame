@@ -3,10 +3,10 @@
 #include "coordinateconverter.hh"
 #include "zoomablegraphicsview.hh"
 
+#include <QBoxLayout>
 #include <QDebug>
 #include <QEvent>
 #include <QPushButton>
-#include <qboxlayout.h>
 
 namespace {
 static int HEX_SCALE = 30;
@@ -25,16 +25,17 @@ GameBoardWidget::GameBoardWidget(QWidget *parent)
   this->layout()->addWidget(_graphicsView);
 }
 
-void GameBoardWidget::drawHexagon(Common::CubeCoordinate coordinates) {
+void GameBoardWidget::drawHex(std::shared_ptr<Common::Hex> hex) {
   QGraphicsScene *scene = _graphicsView->scene();
 
+  CubeCoordinate coordinates = hex->getCoordinates();
   removeDrawnHexItemAt(coordinates);
 
-  shared_ptr<HexGraphicsItem> item = std::make_shared<HexGraphicsItem>();
+  shared_ptr<HexGraphicsItem> item = std::make_shared<HexGraphicsItem>(hex);
   _hexItemsByCoordinates[coordinates] = item;
 
   Student::CartesianCoordinate cartesianCoord =
-      Student::convertCoordinates(coordinates);
+      Student::convertCoordinates(hex->getCoordinates());
   item->setPos(HEX_SCALE * cartesianCoord.x, HEX_SCALE * cartesianCoord.y);
   item->setScale(HEX_SCALE);
   scene->addItem(item.get());

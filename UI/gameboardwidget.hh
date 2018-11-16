@@ -9,6 +9,7 @@
 #include <QObject>
 #include <QWidget>
 #include <map>
+#include <memory>
 
 namespace Student {
 
@@ -17,7 +18,7 @@ class GameBoardWidget : public QWidget {
 public:
   explicit GameBoardWidget(QWidget *parent = nullptr);
 
-  void drawHexagon(Common::CubeCoordinate coordinates);
+  void drawHex(std::shared_ptr<Common::Hex> hex);
 
 signals:
   void hexClicked(Common::CubeCoordinate coordinates);

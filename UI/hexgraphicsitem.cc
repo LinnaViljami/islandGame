@@ -12,8 +12,10 @@ static const double R = 1;
 
 namespace Student {
 
+HexGraphicsItem::HexGraphicsItem(std::shared_ptr<Common::Hex> hex) : hex_(hex) {}
+
 QRectF HexGraphicsItem::boundingRect() const {
-  return QRectF(-R, -R, 2 * R, 2 * R);
+    return QRectF(-R, -R, 2 * R, 2 * R);
 }
 
 void HexGraphicsItem::paint(QPainter *painter,
@@ -57,6 +59,11 @@ QPolygonF HexGraphicsItem::getShapePolygon() {
       QPointF(-topAndBottomPointX, -topAndBottomPointY),
       QPointF(-topAndBottomPointX, topAndBottomPointY)};
   return QPolygonF(points);
+}
+
+void HexGraphicsItem::drawPawns(QPainter *painter)
+{
+
 }
 
 } // namespace Student
