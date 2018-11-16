@@ -104,6 +104,8 @@ private:
 
   std::map<int, std::shared_ptr<Common::Transport>> transportsByIds_;
 
+  std::map<int, Common::CubeCoordinate> actorCoordById_;
+
 public:
 };
 

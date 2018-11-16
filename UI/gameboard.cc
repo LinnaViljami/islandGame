@@ -90,7 +90,9 @@ void GameBoard::removePawn(int pawnId) {
 
 void GameBoard::addActor(std::shared_ptr<Common::Actor> actor,
                          Common::CubeCoordinate actorCoord) {
+    //TODo remove actors by ids
   _actorsByIds[actor->getId()] = actor;
+  actorCoordById_[actor->getId()] = actorCoord;
   actor->addHex(_hexMap.at(actorCoord));
 }
 
@@ -101,9 +103,12 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
 }
 
 void GameBoard::removeActor(int actorId) {
+    //remove actor from it's hex
+  _hexMap.at(actorCoordById_.at(actorId))->removeActor(_hexMap.at(actorCoordById_.at(actorId))->giveActor(actorId));
+  actorCoordById_.erase(actorId);
+
+  //next map should may be deleted
   _actorsByIds.erase(actorId);
-  // TODO: remove actor from hex
-  // requires actor.getHex() function implemented to actor or actor.remove
 }
 
 void GameBoard::addTransport(std::shared_ptr<Common::Transport> transport,
