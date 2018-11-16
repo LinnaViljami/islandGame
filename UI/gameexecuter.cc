@@ -15,27 +15,50 @@ GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std:
     connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked,
             this, &GameExecuter::handleHexClick);
     gameState->changePlayerTurn(1);
+    gameState->changeGamePhase(Common::GamePhase::MOVEMENT);
+}
+
+bool GameExecuter::isPlayerPawnsInHex(Common::CubeCoordinate coord)
+{
+    std::vector<std::shared_ptr<Common::Pawn>> playerPawns = getPlayerPawnsInCoordinate(coord);
+    return (playerPawns.size()!=0);
+
+}
+
+std::vector<std::shared_ptr<Common::Pawn> > GameExecuter::getPlayerPawnsInCoordinate(Common::CubeCoordinate coord)
+{
+    std::vector<std::shared_ptr<Common::Pawn>> pawnsInClickedHex = gameBoard_->getHex(coord)->getPawns();
+    std::vector<std::shared_ptr<Common::Pawn>> playerPawns;
+    for(auto const& pawn : pawnsInClickedHex){
+        if(pawn->getPlayerId() == gameState_->currentPlayer()){
+            playerPawns.push_back(pawn);
+        }
+    }
+    return playerPawns;
 }
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
 {
-    qDebug() << "GameExecuter: Hex click detected at coordinate " << coordinates.x;
-
-
     if(gameState_->currentGamePhase() == Common::GamePhase::MOVEMENT){
          std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(coordinates);
+
         if(clickedHex == nullptr){
             throw Common::GameException("Clicked hex not exist in game-executer gameboard_");
         }
-        std::vector<std::shared_ptr<Common::Pawn>> pawnVector =
-        gameBoard_->getPlayerPawnsInCoordinate(coordinates, gameState_->currentPlayer());
-        //if hex not selected
-        if(isHexSelected_){
-            //clickedHex->get
-            //if(clickedHex)//if pawns in hex
-            //select pressed hex
-            selectedHexCoordinates_ = coordinates;
-            //else error: not pawns in selected hex
+        else if(!isHexSelected_){
+            bool testi = isPlayerPawnsInHex(coordinates);
+            //if player has pawns in selected hex
+            if(isPlayerPawnsInHex(coordinates)){
+                selectedHexCoordinates_ = coordinates;
+                isHexSelected_ = true;
+            }
+            else{
+                qDebug() << "Cannot select clicked hex because you dont have pawns in it";
+            }
+
+        }
+        //if hex is selected
+        else if(isHexSelected_){
         }
         else if(selectedHexCoordinates_.operator ==(coordinates)){
             //unselect hex

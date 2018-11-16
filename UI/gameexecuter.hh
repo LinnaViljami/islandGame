@@ -25,7 +25,9 @@ private:
 
     bool isHexSelected_;
 
+    bool isPlayerPawnsInHex(Common::CubeCoordinate coord);
 
+    std::vector<std::shared_ptr<Common::Pawn>> getPlayerPawnsInCoordinate(Common::CubeCoordinate coord);
 
 public slots:
     void handleHexClick(Common::CubeCoordinate coordinates);

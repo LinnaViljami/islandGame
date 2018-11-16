@@ -38,7 +38,6 @@ QPainterPath HexGraphicsItem::shape() const {
 
 void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   event->ignore();
-
   if (!scene()->views().isEmpty()) {
     if (scene()->views().first()->dragMode() == QGraphicsView::ScrollHandDrag) {
       return;
