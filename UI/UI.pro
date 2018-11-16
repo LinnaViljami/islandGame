@@ -24,10 +24,10 @@ SOURCES += main.cc \
     startdialog.cc \
     spinnergraphicsitem.cc \
     spinnercontainerwidget.cc \
-    fittinggraphicsview.cc \
     zoomablegraphicsview.cc \
     gameexecuter.cc \
-    spinnerpointergraphicsitem.cc
+    spinnerpointergraphicsitem.cc \
+    fittocontentgraphicsview.cc
 
 HEADERS  += \
     gameboard.hh \
@@ -40,10 +40,10 @@ HEADERS  += \
     startdialog.hh \
     spinnergraphicsitem.hh \
     spinnercontainerwidget.hh \
-    fittinggraphicsview.hh \
     spinnerpointergraphicsitem.hh \
     zoomablegraphicsview.hh \
-    gameexecuter.hh
+    gameexecuter.hh \
+    fittocontentgraphicsview.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine
