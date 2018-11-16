@@ -29,9 +29,11 @@ SpinnerContainerWidget::SpinnerContainerWidget(QWidget *parent,
   scene->addItem(movesSpinnerItem_);
 }
 
-void SpinnerContainerWidget::spin(std::string actor, std::string moves) {
-  actorSpinnerItem_->spinToValue(actor);
-  movesSpinnerItem_->spinToValue(moves);
+void SpinnerContainerWidget::beginSpin(std::string actor, std::string moves) {
+  actorSpinnerItem_->beginSpinToValue(actor);
+  movesSpinnerItem_->beginSpinToValue(moves);
+  connect(movesSpinnerItem_, &SpinnerGraphicsItem::spinningFinished, this,
+          [this] { emit this->spinningFinished(); });
 }
 
 std::vector<std::string>

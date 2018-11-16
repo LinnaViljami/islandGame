@@ -3,11 +3,13 @@
 
 #include "spinnerpointergraphicsitem.hh"
 
-#include <qgraphicsitem.h>
-#include <qpropertyanimation.h>
+#include <QGraphicsObject>
 #include <memory>
+#include <qpropertyanimation.h>
 
-class SpinnerGraphicsItem : public QGraphicsItem {
+class SpinnerGraphicsItem : public QGraphicsObject {
+  Q_OBJECT
+
 public:
   explicit SpinnerGraphicsItem(std::vector<std::string> spinnerValues);
 
@@ -16,7 +18,10 @@ public:
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
              QWidget *widget) override;
 
-  void spinToValue(std::string value);
+  void beginSpinToValue(std::string value);
+
+signals:
+  void spinningFinished();
 
 private:
   std::vector<std::string> spinnerValues_;

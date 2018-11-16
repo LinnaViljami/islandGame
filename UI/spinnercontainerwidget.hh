@@ -14,7 +14,10 @@ class SpinnerContainerWidget : public QWidget {
 public:
   explicit SpinnerContainerWidget(QWidget *parent, SpinnerLayout layout);
 
-  void spin(std::string actor, std::string moves);
+  void beginSpin(std::string actor, std::string moves);
+
+signals:
+  void spinningFinished();
 
 private:
   SpinnerGraphicsItem *actorSpinnerItem_;
