@@ -10,6 +10,7 @@
 #include <QWidget>
 #include <map>
 #include <memory>
+#include <pawn.hh>
 
 namespace Student {
 
@@ -18,7 +19,9 @@ class GameBoardWidget : public QWidget {
 public:
   explicit GameBoardWidget(QWidget *parent = nullptr);
 
-  void drawHex(std::shared_ptr<Common::Hex> hex);
+  void addOrUpdateHex(std::shared_ptr<Common::Hex> hex);
+
+  void addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn);
 
 signals:
   void hexClicked(Common::CubeCoordinate coordinates);

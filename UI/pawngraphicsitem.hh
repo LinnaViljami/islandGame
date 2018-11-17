@@ -4,12 +4,21 @@
 #include <QGraphicsObject>
 #include <pawn.hh>
 
+namespace Student {
+
 class PawnGraphicsItem : public QGraphicsItem {
 public:
-  explicit PawnGraphicsItem(QGraphicsItem *parent, Common::Pawn pawn);
+  explicit PawnGraphicsItem(QGraphicsItem *parent, std::shared_ptr<Common::Pawn> pawn);
+
+  QRectF boundingRect() const override;
+
+  void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+             QWidget *widget) override;
 
 private:
-  Common::Pawn pawn_;
+  std::shared_ptr<Common::Pawn> pawn_;
 };
+
+} // namespace Student
 
 #endif // PAWNGRAPHICSITEM_HH

@@ -25,7 +25,7 @@ GameBoardWidget::GameBoardWidget(QWidget *parent)
   this->layout()->addWidget(_graphicsView);
 }
 
-void GameBoardWidget::drawHex(std::shared_ptr<Common::Hex> hex) {
+void GameBoardWidget::addOrUpdateHex(std::shared_ptr<Common::Hex> hex) {
   QGraphicsScene *scene = _graphicsView->scene();
 
   CubeCoordinate coordinates = hex->getCoordinates();
@@ -41,6 +41,12 @@ void GameBoardWidget::drawHex(std::shared_ptr<Common::Hex> hex) {
   scene->addItem(item.get());
   connect(item.get(), &HexGraphicsItem::mousePressed, this,
           [coordinates, this]() { emit hexClicked(coordinates); });
+}
+
+void GameBoardWidget::addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn) {
+  shared_ptr<HexGraphicsItem> hexItem =
+      getExistingHexItemOrNull(pawn->getCoordinates());
+  hexItem->addOrUpdatePawn(pawn);
 }
 
 void GameBoardWidget::removeDrawnHexItemAt(Common::CubeCoordinate coord) {
