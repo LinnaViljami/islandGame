@@ -51,11 +51,6 @@ shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
 void GameBoard::addHex(shared_ptr<Common::Hex> newHex) {
   _hexMap[newHex->getCoordinates()] = newHex;
   _boardWidget->addOrUpdateHex(newHex);
-
-  // Next made because testing, not final implementation
-  int newId = rand() % 100000 + 1;
-  addPawn(1, newId);
-  movePawn(newId, newHex->getCoordinates());
 }
 
 void GameBoard::addPawn(int playerId, int pawnId) {
