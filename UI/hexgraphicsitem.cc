@@ -40,7 +40,8 @@ QPainterPath HexGraphicsItem::shape() const {
 }
 
 void HexGraphicsItem::addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn) {
-  auto pawnItem = std::make_unique<Student::PawnGraphicsItem>(this, pawn);
+  auto pawnItem =
+      std::make_unique<Student::PawnGraphicsItem>(this, pawn);
   pawnItem->setScale(0.1);
   pawnItem->setPos(getPositionForNewPawn());
   pawnItemsByIds_[pawn->getId()] = std::move(pawnItem);
