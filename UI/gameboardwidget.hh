@@ -23,6 +23,12 @@ public:
 
   void addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn);
 
+  void removePawn(std::shared_ptr<Common::Pawn> pawn);
+
+  void movePawn(std::shared_ptr<Common::Pawn> pawn,
+                Common::CubeCoordinate oldCoord,
+                Common::CubeCoordinate newCoord);
+
 signals:
   void hexClicked(Common::CubeCoordinate coordinates);
 

@@ -27,6 +27,8 @@ public:
 
   void addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn);
 
+  void removePawn(int pawnId);
+
 signals:
   void mousePressed();
 

@@ -49,6 +49,23 @@ void GameBoardWidget::addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn) {
   hexItem->addOrUpdatePawn(pawn);
 }
 
+void GameBoardWidget::removePawn(std::shared_ptr<Common::Pawn> pawn) {
+  shared_ptr<HexGraphicsItem> hexItem =
+      getExistingHexItemOrNull(pawn->getCoordinates());
+  hexItem->removePawn(pawn->getId());
+}
+
+void GameBoardWidget::movePawn(std::shared_ptr<Common::Pawn> pawn,
+                               Common::CubeCoordinate oldCoord,
+                               Common::CubeCoordinate newCoord) {
+  shared_ptr<HexGraphicsItem> currentHexItem =
+      getExistingHexItemOrNull(oldCoord);
+  currentHexItem->removePawn(pawn->getId());
+  shared_ptr<HexGraphicsItem> targetHexItem =
+      getExistingHexItemOrNull(newCoord);
+  targetHexItem->addOrUpdatePawn(pawn);
+}
+
 void GameBoardWidget::removeDrawnHexItemAt(Common::CubeCoordinate coord) {
   shared_ptr<HexGraphicsItem> item = getExistingHexItemOrNull(coord);
   if (item != nullptr) {

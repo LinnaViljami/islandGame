@@ -80,11 +80,13 @@ void GameBoard::movePawn(int pawnId, Common::CubeCoordinate pawnCoord) {
   pawn->setCoordinates(pawnCoord);
   auto newHex = getHex(pawnCoord);
   newHex->addPawn(pawn);
+  _boardWidget->movePawn(pawn, pawnOldCoord, pawnCoord);
 }
 
 void GameBoard::removePawn(int pawnId) {
   shared_ptr<Pawn> pawn = _pawnsByIds[pawnId];
   Common::CubeCoordinate pawnCoords = pawn->getCoordinates();
+  _boardWidget->removePawn(pawn);
   _hexMap.at(pawnCoords)->removePawn(pawn);
   _pawnsByIds.erase(pawnId);
 }
