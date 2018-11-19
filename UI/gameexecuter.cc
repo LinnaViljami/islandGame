@@ -59,9 +59,14 @@ void GameExecuter::tryMovePawn(Common::CubeCoordinate to)
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
 {
+
     std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(coordinates);
     if(gameState_->currentGamePhase() == Common::GamePhase::MOVEMENT){
-        if(clickedHex == nullptr){
+        //if no moves left go to sinking
+        if(gameState_->getMovesLeft()<=0){
+            gameState_->changeGamePhase(Common::GamePhase::SINKING);
+        }
+        else if(clickedHex == nullptr){
             throw Common::GameException("Clicked hex not exist in game-executer gameboard_");
         }
         else if(!isHexSelected_){
@@ -84,19 +89,18 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
                 tryMovePawn(coordinates);
             }
         }
-        //if no moves left go to sinking
-        if(gameState_->getMovesLeft()<=0){
-            gameState_->changeGamePhase(Common::GamePhase::SINKING);
-        }
-    }
 
+    }
     else if(gameState_->currentGamePhase() == Common::GamePhase::SINKING){
         std::string actor = gameRunner_->flipTile(coordinates);
         if(!actor.empty()){
             for(auto const& a : clickedHex->getActors()){
                 if(a->getActorType()==actor){
                     a->doAction();
-                    //handle pawn changes?
+                    //TODO: Maybe should handle pawn changes?
+                    //Actor::doaction(); not implemented yet so I am not sure what should do...
+                    gameState_->changeGamePhase(Common::GamePhase::SPINNING);
+                    return;
                 }
             }
         }
