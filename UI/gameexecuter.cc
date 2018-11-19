@@ -41,6 +41,8 @@ std::vector<std::shared_ptr<Common::Pawn> > GameExecuter::getPlayerPawnsInCoordi
 
 void GameExecuter::tryMovePawn(Common::CubeCoordinate to)
 {
+    //take all current player pawns and try to move them one by one.
+    //if move succes, unselect selected hex, update moves left and move pawn.
     std::vector<std::shared_ptr<Common::Pawn>> playerPawnsInSelected = getPlayerPawnsInCoordinate(selectedHexCoordinates_);
     if(playerPawnsInSelected.size()!=0){
         for(auto const& pawn : playerPawnsInSelected){
@@ -49,7 +51,7 @@ void GameExecuter::tryMovePawn(Common::CubeCoordinate to)
                 gameRunner_->movePawn(selectedHexCoordinates_,to,pawn->getId());
                 gameState_->setMovesLeft(movesLeft);
                 isHexSelected_ = false;
-                break;
+                return;
             }
         }
     }
@@ -89,21 +91,16 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
     }
 
     else if(gameState_->currentGamePhase() == Common::GamePhase::SINKING){
-//        if(!gameBoard_->isAnyPiecesOfType("Beach")){
-//            gameState_->changeGamePhase(Common::GamePhase::SPINNING);
-//        }
-//        else if(clickedHex->getPieceType()=="Beach"){
-            std::string actor = gameRunner_->flipTile(coordinates);
-            if(!actor.empty()){
-                for(auto const& a : clickedHex->getActors()){
-                    if(a->getActorType()==actor){
-                        a->doAction();
-                        //handle pawn changes?
-                    }
+        std::string actor = gameRunner_->flipTile(coordinates);
+        if(!actor.empty()){
+            for(auto const& a : clickedHex->getActors()){
+                if(a->getActorType()==actor){
+                    a->doAction();
+                    //handle pawn changes?
                 }
             }
         }
-   // }
+    }
     else if(gameState_->currentGamePhase() == Common::GamePhase::SPINNING){
         if(isWheelSpun_){
             //gameRunner_->checkActorMovement();

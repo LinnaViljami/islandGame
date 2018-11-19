@@ -21,6 +21,9 @@ int Student::GameState::currentPlayer() const
 void Student::GameState::changeGamePhase(Common::GamePhase nextPhase)
 {
     gamePhase_ = nextPhase;
+    if(nextPhase == Common::GamePhase::MOVEMENT){
+        setMovesLeft(3);
+    }
 }
 
 void Student::GameState::changePlayerTurn(int nextPlayer)
