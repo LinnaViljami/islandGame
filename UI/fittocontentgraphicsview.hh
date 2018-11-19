@@ -3,9 +3,9 @@
 
 #include <QGraphicsView>
 
-class FittingGraphicsView : public QGraphicsView {
+class FitToContentGraphicsView : public QGraphicsView {
 public:
-  explicit FittingGraphicsView(QWidget *parent = nullptr);
+  explicit FitToContentGraphicsView(QWidget *parent = nullptr);
 
 protected:
   void resizeEvent(QResizeEvent *event) override;

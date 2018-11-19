@@ -12,15 +12,15 @@ static const double R = 1;
 }
 
 SpinnerGraphicsItem::SpinnerGraphicsItem(std::vector<string> spinnerValues)
-    : QGraphicsItem(nullptr), spinnerValues_(spinnerValues),
-      pointerAnimation_(nullptr),
-      pointerItem_(*(new Student::SpinnerPointerGraphicsItem(this))) {}
+    : QGraphicsObject(nullptr), spinnerValues_(spinnerValues),
+      pointerItem_(*(new Student::SpinnerPointerGraphicsItem(this))),
+      pointerAnimation_(nullptr) {}
 
 QRectF SpinnerGraphicsItem::boundingRect() const {
   return QRectF(-100, -100, 200, 200);
 }
 
-void SpinnerGraphicsItem::spinToValue(std::string value) {
+void SpinnerGraphicsItem::beginSpinToValue(std::string value) {
   int indexOfValue = getIndexOfSpinnerValue(value);
   double targetAngle = indexOfValue * (360.0 / spinnerValues_.size());
   int extraRounds = std::rand() % 2 + 1;
@@ -33,6 +33,8 @@ void SpinnerGraphicsItem::spinToValue(std::string value) {
   pointerAnimation_->setStartValue(startAngle);
   pointerAnimation_->setEndValue(totalRotation);
   pointerAnimation_->setEasingCurve(QEasingCurve::OutQuad);
+  connect(pointerAnimation_.get(), &QPropertyAnimation::finished, this,
+          [this] { emit this->spinningFinished(); });
   pointerAnimation_->start();
 }
 
@@ -83,7 +85,8 @@ void SpinnerGraphicsItem::paintSingleSpinnerValue(QPainter &painter,
     rotation -= 180;
   }
   painter.rotate(rotation);
-  painter.drawText(QRectF(QPointF(-95, -10), QPointF(95, 10)), flags, QString::fromStdString(value));
+  painter.drawText(QRectF(QPointF(-95, -10), QPointF(95, 10)), flags,
+                   QString::fromStdString(value));
   painter.restore();
 }
 

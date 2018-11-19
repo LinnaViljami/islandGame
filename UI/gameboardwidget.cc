@@ -3,10 +3,10 @@
 #include "coordinateconverter.hh"
 #include "zoomablegraphicsview.hh"
 
+#include <QBoxLayout>
 #include <QDebug>
 #include <QEvent>
 #include <QPushButton>
-#include <qboxlayout.h>
 
 namespace {
 static int HEX_SCALE = 30;
@@ -25,21 +25,45 @@ GameBoardWidget::GameBoardWidget(QWidget *parent)
   this->layout()->addWidget(_graphicsView);
 }
 
-void GameBoardWidget::drawHexagon(Common::CubeCoordinate coordinates) {
+void GameBoardWidget::addOrUpdateHex(std::shared_ptr<Common::Hex> hex) {
   QGraphicsScene *scene = _graphicsView->scene();
 
+  CubeCoordinate coordinates = hex->getCoordinates();
   removeDrawnHexItemAt(coordinates);
 
-  shared_ptr<HexGraphicsItem> item = std::make_shared<HexGraphicsItem>();
+  shared_ptr<HexGraphicsItem> item = std::make_shared<HexGraphicsItem>(hex);
   _hexItemsByCoordinates[coordinates] = item;
 
   Student::CartesianCoordinate cartesianCoord =
-      Student::convertCoordinates(coordinates);
+      Student::convertCoordinates(hex->getCoordinates());
   item->setPos(HEX_SCALE * cartesianCoord.x, HEX_SCALE * cartesianCoord.y);
   item->setScale(HEX_SCALE);
   scene->addItem(item.get());
   connect(item.get(), &HexGraphicsItem::mousePressed, this,
           [coordinates, this]() { emit hexClicked(coordinates); });
+}
+
+void GameBoardWidget::addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn) {
+  shared_ptr<HexGraphicsItem> hexItem =
+      getExistingHexItemOrNull(pawn->getCoordinates());
+  hexItem->addOrUpdatePawn(pawn);
+}
+
+void GameBoardWidget::removePawn(std::shared_ptr<Common::Pawn> pawn) {
+  shared_ptr<HexGraphicsItem> hexItem =
+      getExistingHexItemOrNull(pawn->getCoordinates());
+  hexItem->removePawn(pawn->getId());
+}
+
+void GameBoardWidget::movePawn(std::shared_ptr<Common::Pawn> pawn,
+                               Common::CubeCoordinate oldCoord,
+                               Common::CubeCoordinate newCoord) {
+  shared_ptr<HexGraphicsItem> currentHexItem =
+      getExistingHexItemOrNull(oldCoord);
+  currentHexItem->removePawn(pawn->getId());
+  shared_ptr<HexGraphicsItem> targetHexItem =
+      getExistingHexItemOrNull(newCoord);
+  targetHexItem->addOrUpdatePawn(pawn);
 }
 
 void GameBoardWidget::removeDrawnHexItemAt(Common::CubeCoordinate coord) {

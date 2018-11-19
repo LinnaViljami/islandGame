@@ -39,8 +39,9 @@ GameWindow::GameWindow(vector<QString> playerNames)
   ui->mainLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
 
   QPushButton *spinButton = new QPushButton("Pyöräytä");
-  connect(spinButton, &QPushButton::clicked, this,
-          [=]() { spinnerContainerWidget->spin("shark", std::string("2")); });
+  connect(spinButton, &QPushButton::clicked, this, [=]() {
+    spinnerContainerWidget->beginSpin("shark", std::string("2"));
+  });
   ui->mainLayout->addWidget(spinButton);
   ui->mainLayout->setAlignment(spinButton, Qt::AlignHCenter);
 }

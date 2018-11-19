@@ -9,6 +9,8 @@
 #include <QObject>
 #include <QWidget>
 #include <map>
+#include <memory>
+#include <pawn.hh>
 
 namespace Student {
 
@@ -17,7 +19,15 @@ class GameBoardWidget : public QWidget {
 public:
   explicit GameBoardWidget(QWidget *parent = nullptr);
 
-  void drawHexagon(Common::CubeCoordinate coordinates);
+  void addOrUpdateHex(std::shared_ptr<Common::Hex> hex);
+
+  void addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn);
+
+  void removePawn(std::shared_ptr<Common::Pawn> pawn);
+
+  void movePawn(std::shared_ptr<Common::Pawn> pawn,
+                Common::CubeCoordinate oldCoord,
+                Common::CubeCoordinate newCoord);
 
 signals:
   void hexClicked(Common::CubeCoordinate coordinates);

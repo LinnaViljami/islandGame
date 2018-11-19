@@ -50,7 +50,7 @@ shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
 
 void GameBoard::addHex(shared_ptr<Common::Hex> newHex) {
   _hexMap[newHex->getCoordinates()] = newHex;
-  _boardWidget->drawHexagon(newHex->getCoordinates());
+  _boardWidget->addOrUpdateHex(newHex);
 
   // Next made because testing, not final implementation
   int newId = rand() % 100000 + 1;
@@ -70,6 +70,7 @@ void GameBoard::addPawn(int playerId, int pawnId,
   _pawnsByIds[pawnId] = pawn;
   auto hex = getHex(coord);
   hex->addPawn(pawn);
+  _boardWidget->addOrUpdatePawn(pawn);
 }
 
 void GameBoard::movePawn(int pawnId, Common::CubeCoordinate pawnCoord) {
@@ -79,18 +80,20 @@ void GameBoard::movePawn(int pawnId, Common::CubeCoordinate pawnCoord) {
   pawn->setCoordinates(pawnCoord);
   auto newHex = getHex(pawnCoord);
   newHex->addPawn(pawn);
+  _boardWidget->movePawn(pawn, pawnOldCoord, pawnCoord);
 }
 
 void GameBoard::removePawn(int pawnId) {
   shared_ptr<Pawn> pawn = _pawnsByIds[pawnId];
   Common::CubeCoordinate pawnCoords = pawn->getCoordinates();
+  _boardWidget->removePawn(pawn);
   _hexMap.at(pawnCoords)->removePawn(pawn);
   _pawnsByIds.erase(pawnId);
 }
 
 void GameBoard::addActor(std::shared_ptr<Common::Actor> actor,
                          Common::CubeCoordinate actorCoord) {
-    //TODo remove actors by ids
+  // TODo remove actors by ids
   _actorsByIds[actor->getId()] = actor;
   actorCoordById_[actor->getId()] = actorCoord;
   actor->addHex(_hexMap.at(actorCoord));
@@ -103,11 +106,13 @@ void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
 }
 
 void GameBoard::removeActor(int actorId) {
-    //remove actor from it's hex
-  _hexMap.at(actorCoordById_.at(actorId))->removeActor(_hexMap.at(actorCoordById_.at(actorId))->giveActor(actorId));
+  // remove actor from it's hex
+  _hexMap.at(actorCoordById_.at(actorId))
+      ->removeActor(
+          _hexMap.at(actorCoordById_.at(actorId))->giveActor(actorId));
   actorCoordById_.erase(actorId);
 
-  //next map should may be deleted
+  // next map should may be deleted
   _actorsByIds.erase(actorId);
 }
 

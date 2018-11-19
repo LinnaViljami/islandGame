@@ -3,16 +3,16 @@
 namespace Student {
 
 Player::Player(int id, unsigned int actionsLeft, QString name)
-    : _id(id), _actionsLeft(actionsLeft), _name(name) {}
+    : id_(id), actionsLeft_(actionsLeft), name_(name) {}
 
-int Player::getPlayerId() const { return _id; }
+int Player::getPlayerId() const { return id_; }
 
 void Player::setActionsLeft(unsigned int actionsLeft) {
-  _actionsLeft = actionsLeft;
+  actionsLeft_ = actionsLeft;
 }
 
-unsigned int Player::getActionsLeft() const { return _actionsLeft; }
+unsigned int Player::getActionsLeft() const { return actionsLeft_; }
 
-QString Player::getName() { return _name; }
+QString Player::getName() { return name_; }
 
 } // namespace Student

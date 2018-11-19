@@ -2,6 +2,7 @@
 #define PLAYER_HH
 
 #include "iplayer.hh"
+#include <QColor>
 #include <QString>
 
 namespace Student {
@@ -20,11 +21,11 @@ public:
   QString getName();
 
 private:
-  int _id;
+  int id_;
 
-  unsigned int _actionsLeft;
+  unsigned int actionsLeft_;
 
-  QString _name;
+  QString name_;
 };
 
 } // namespace Student

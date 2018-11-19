@@ -1,7 +1,7 @@
 #include "spinnercontainerwidget.hh"
 #include "spinnergraphicsitem.hh"
 
-#include "fittinggraphicsview.hh"
+#include "fittocontentgraphicsview.hh"
 #include <QGraphicsScene>
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -11,7 +11,7 @@ SpinnerContainerWidget::SpinnerContainerWidget(QWidget *parent,
                                                SpinnerLayout layout)
     : QWidget(parent) {
   this->setLayout(new QHBoxLayout(this));
-  QGraphicsView *graphicsView = new FittingGraphicsView(this);
+  QGraphicsView *graphicsView = new FitToContentGraphicsView(this);
   graphicsView->setSizePolicy(QSizePolicy::Policy::Ignored,
                               QSizePolicy::Policy::Preferred);
   QGraphicsScene *scene = new QGraphicsScene(this);
@@ -29,9 +29,11 @@ SpinnerContainerWidget::SpinnerContainerWidget(QWidget *parent,
   scene->addItem(movesSpinnerItem_);
 }
 
-void SpinnerContainerWidget::spin(std::string actor, std::string moves) {
-  actorSpinnerItem_->spinToValue(actor);
-  movesSpinnerItem_->spinToValue(moves);
+void SpinnerContainerWidget::beginSpin(std::string actor, std::string moves) {
+  actorSpinnerItem_->beginSpinToValue(actor);
+  movesSpinnerItem_->beginSpinToValue(moves);
+  connect(movesSpinnerItem_, &SpinnerGraphicsItem::spinningFinished, this,
+          [this] { emit this->spinningFinished(); });
 }
 
 std::vector<std::string>

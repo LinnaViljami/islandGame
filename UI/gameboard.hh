@@ -106,7 +106,6 @@ private:
 
   std::map<int, Common::CubeCoordinate> actorCoordById_;
 
-public:
 };
 
 } // namespace Student

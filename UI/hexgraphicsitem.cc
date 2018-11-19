@@ -12,6 +12,9 @@ static const double R = 1;
 
 namespace Student {
 
+HexGraphicsItem::HexGraphicsItem(std::shared_ptr<Common::Hex> hex)
+    : hex_(hex) {}
+
 QRectF HexGraphicsItem::boundingRect() const {
   return QRectF(-R, -R, 2 * R, 2 * R);
 }
@@ -36,6 +39,15 @@ QPainterPath HexGraphicsItem::shape() const {
   return path;
 }
 
+void HexGraphicsItem::addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn) {
+  auto pawnItem = std::make_unique<Student::PawnGraphicsItem>(this, pawn);
+  pawnItem->setScale(0.1);
+  pawnItem->setPos(getPositionForNewPawn());
+  pawnItemsByIds_[pawn->getId()] = std::move(pawnItem);
+}
+
+void HexGraphicsItem::removePawn(int pawnId) { pawnItemsByIds_.erase(pawnId); }
+
 void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   event->ignore();
   if (!scene()->views().isEmpty()) {
@@ -44,6 +56,19 @@ void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     }
   }
   emit mousePressed();
+}
+
+QPointF HexGraphicsItem::getPositionForNewPawn() {
+  static const double DIST = 0.7;
+  static const double X = sqrt(3) / 2;
+  switch (pawnItemsByIds_.size()) {
+  default:
+    return QPointF(0, 1) * DIST;
+  case 1:
+    return QPointF(-X, -1.0 / 2) * DIST;
+  case 2:
+    return QPointF(X, -1.0 / 2) * DIST;
+  }
 }
 
 QPolygonF HexGraphicsItem::getShapePolygon() {
