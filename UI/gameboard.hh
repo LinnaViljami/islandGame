@@ -91,7 +91,7 @@ public:
    */
   void removeTransport(int id) override;
 
-  std::vector<std::shared_ptr<Common::Pawn>> getPlayerPawnsInCoordinate(Common::CubeCoordinate coord, int playerId);
+  bool isAnyPiecesOfType(std::string type);
 
 private:
   Student::GameBoardWidget *_boardWidget;

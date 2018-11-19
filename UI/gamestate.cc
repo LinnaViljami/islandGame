@@ -4,28 +4,44 @@ using Common::GamePhase;
 
 namespace Student{
 
-Student::GameState::GameState() : _gamePhase(GamePhase::MOVEMENT), _idOfPlayerInTurn(-1)
+Student::GameState::GameState() : gamePhase_(GamePhase::MOVEMENT), idOfPlayerInTurn_(-1), movesLeft_(3)
 {
 }
 
 GamePhase Student::GameState::currentGamePhase() const
 {
-    return _gamePhase;
+    return gamePhase_;
 }
 
 int Student::GameState::currentPlayer() const
 {
-    return _idOfPlayerInTurn;
+    return idOfPlayerInTurn_;
 }
 
 void Student::GameState::changeGamePhase(Common::GamePhase nextPhase)
 {
-    _gamePhase = nextPhase;
+    gamePhase_ = nextPhase;
+    if(nextPhase == Common::GamePhase::MOVEMENT){
+        //TODO: update movesleft checking to tests
+        setMovesLeft(3);
+    }
 }
 
 void Student::GameState::changePlayerTurn(int nextPlayer)
 {
-    _idOfPlayerInTurn = nextPlayer;
+    idOfPlayerInTurn_ = nextPlayer;
+}
+
+//TODO Update tests
+int GameState::getMovesLeft()
+{
+    return movesLeft_;
+}
+
+//TODO update tests
+void GameState::setMovesLeft(int movesLeft)
+{
+    movesLeft_=movesLeft;
 }
 
 }
