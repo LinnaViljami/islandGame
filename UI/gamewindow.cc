@@ -27,16 +27,16 @@ GameWindow::GameWindow(vector<QString> playerNames)
   vector<shared_ptr<IPlayer>> players = createPlayers(playerNames);
   auto gameRunner =
       Common::Initialization::getGameRunner(gameBoard, gameState, players);
-  gameExecuter_ =
-      std::make_unique<Student::GameExecuter>(gameRunner, gameBoard, gameState);
 
   ui->mainLayout->addWidget(boardWidget);
 
   SpinnerLayout spinnerLayout = gameRunner->getSpinnerLayout();
-  auto spinnerContainerWidget = new SpinnerContainerWidget(this, spinnerLayout);
+  auto spinnerContainerWidget = std::make_shared<SpinnerContainerWidget>(this, spinnerLayout);
   spinnerContainerWidget->setMinimumSize(400, 400);
-  ui->mainLayout->addWidget(spinnerContainerWidget);
-  ui->mainLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
+  ui->mainLayout->addWidget(spinnerContainerWidget.get());
+  ui->mainLayout->setAlignment(spinnerContainerWidget.get(), Qt::AlignTop);
+
+  gameExecuter_ = std::make_unique<Student::GameExecuter>(gameRunner, gameBoard, gameState, spinnerContainerWidget);
 
   QPushButton *spinButton = new QPushButton("Pyöräytä");
   connect(spinButton, &QPushButton::clicked, this, [=]() {

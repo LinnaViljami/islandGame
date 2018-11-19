@@ -9,9 +9,9 @@
 namespace Student {
 
 
-GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std::shared_ptr<GameBoard> gameBoard,
-                           std::shared_ptr<GameState> gameState, std::shared_ptr<SpinnerContainerWidget> spinnerWidget) :
-    gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState), spinnerWidget_(spinnerWidget), selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
+GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState,
+                           std::shared_ptr<SpinnerContainerWidget> spinnerWidget) :
+    gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState), spinnerWidget_(spinnerWidget) ,selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
     isWheelSpun_(false), selectedActorId_(-1), selectedActorMoves_(std::string())
 {
 
