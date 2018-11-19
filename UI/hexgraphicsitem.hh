@@ -40,7 +40,7 @@ private:
 
   std::map<int, std::unique_ptr<Student::PawnGraphicsItem>> pawnItemsByIds_;
 
-  QPointF getPositionForNewPawn();
+  QPointF getPositionForPawn(int pawnNumber);
 
   static QPolygonF getShapePolygon();
 };

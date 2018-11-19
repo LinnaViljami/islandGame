@@ -42,7 +42,8 @@ QPainterPath HexGraphicsItem::shape() const {
 void HexGraphicsItem::addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn) {
   auto pawnItem = std::make_unique<Student::PawnGraphicsItem>(this, pawn);
   pawnItem->setScale(0.1);
-  pawnItem->setPos(getPositionForNewPawn());
+  QPointF position = getPositionForPawn(pawnItemsByIds_.size() + 1);
+  pawnItem->setPos(position);
   pawnItemsByIds_[pawn->getId()] = std::move(pawnItem);
 }
 
@@ -58,10 +59,10 @@ void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   emit mousePressed();
 }
 
-QPointF HexGraphicsItem::getPositionForNewPawn() {
+QPointF HexGraphicsItem::getPositionForPawn(int pawnNumber) {
   static const double DIST = 0.7;
   static const double X = sqrt(3) / 2;
-  switch (pawnItemsByIds_.size()) {
+  switch (pawnNumber) {
   default:
     return QPointF(0, 1) * DIST;
   case 1:
