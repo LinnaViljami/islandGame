@@ -31,15 +31,19 @@ private:
 
     bool isWheelSpun_;
 
-    std::string selectedActorType_;
+    std::string spunActorType_;
     int selectedActorId_;
 
-    std::string selectedActorMoves_;
+    std::string spunActorMoves_;
 
     bool isPlayerPawnsInHex(Common::CubeCoordinate coord);
 
     std::vector<std::shared_ptr<Common::Pawn>>
     getPlayerPawnsInCoordinate(Common::CubeCoordinate coord);
+
+
+    //Set new id to attribute "selectedActorId_", if "coord" have type "actorType" actor, else set -1;
+    void trySelectActor(std::string actorType, Common::CubeCoordinate coord);
 
     void gamePhaseToSpinning();
 

@@ -12,7 +12,7 @@ namespace Student {
 GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState,
                            std::shared_ptr<SpinnerContainerWidget> spinnerWidget) :
     gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState), spinnerWidget_(spinnerWidget) ,selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
-    isWheelSpun_(false), selectedActorId_(-1), selectedActorMoves_(std::string())
+    isWheelSpun_(false), selectedActorId_(-1), spunActorMoves_(std::string())
 {
 
     connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked,
@@ -42,14 +42,26 @@ std::vector<std::shared_ptr<Common::Pawn> > GameExecuter::getPlayerPawnsInCoordi
     return playerPawns;
 }
 
+void GameExecuter::trySelectActor(std::string actorType, Common::CubeCoordinate coord)
+{
+    for(auto const& a : gameBoard_->getHex(coord)->getActors()){
+        if(a->getActorType()==actorType){
+            selectedActorId_=a->getId();
+            return;
+        }
+    }
+    selectedActorId_ = -1;
+    return;
+}
+
 void GameExecuter::gamePhaseToSpinning()
 {
     isWheelSpun_ = false;
     isHexSelected_ = false;
     gameState_->changeGamePhase(Common::GamePhase::SPINNING);
     std::pair<std::string,std::string> spinResult = gameRunner_->spinWheel();
-    selectedActorType_ = spinResult.first;
-    selectedActorMoves_ = spinResult.second;
+    spunActorType_ = spinResult.first;
+    spunActorMoves_ = spinResult.second;
     spinnerWidget_->beginSpin(spinResult.first, spinResult.second);
 }
 
@@ -112,15 +124,13 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
         std::string actor = gameRunner_->flipTile(coordinates);
         //if flip success
         if(!actor.empty()){
-            //find right factor to hex
+            //find right actor to hex
             for(auto const& a : clickedHex->getActors()){
                 if(a->getActorType()==actor){
                     a->doAction();
                     //TODO: Maybe should handle pawn changes?
                     //Actor::doaction(); not implemented yet so I am not sure what should do...
-                    gameState_->changeGamePhase(Common::GamePhase::SPINNING);
-                    gameRunner_->spinWheel();
-                    isHexSelected_ = false;
+                    gamePhaseToSpinning();
                     return;
                 }
             }
@@ -129,12 +139,16 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
     else if(gameState_->currentGamePhase() == Common::GamePhase::SPINNING){
         if(isWheelSpun_){
             if(!isHexSelected_){
-                selectedHexCoordinates_ = coordinates;
-                isHexSelected_ = true;
+                trySelectActor(spunActorType_, coordinates);
+                //if select success
+                if(selectedActorId_ != -1){
+                    selectedHexCoordinates_ = coordinates;
+                    isHexSelected_ = true;
+                }
             }
             else{
-                if(gameRunner_->checkActorMovement(selectedHexCoordinates_, coordinates, selectedActorId_, selectedActorMoves_)){
-                    gameRunner_->moveActor(selectedHexCoordinates_, coordinates, selectedActorId_, selectedActorMoves_);
+                if(gameRunner_->checkActorMovement(selectedHexCoordinates_, coordinates, selectedActorId_, spunActorMoves_)){
+                    gameRunner_->moveActor(selectedHexCoordinates_, coordinates, selectedActorId_, spunActorMoves_);
                     gameState_->changeGamePhase(Common::GamePhase::MOVEMENT);
                 }
             }
