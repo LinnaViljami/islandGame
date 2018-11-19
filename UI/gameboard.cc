@@ -124,21 +124,20 @@ void GameBoard::moveTransport(int id, Common::CubeCoordinate coord) {
 void GameBoard::removeTransport(int id) {
   // TODO: remove transport from hex
   // requires transport.getHex() function implemented or transport.remove
-  transportsByIds_.erase(id);
+    transportsByIds_.erase(id);
 }
 
-std::vector<std::shared_ptr<Common::Pawn>>
-GameBoard::getPlayerPawnsInCoordinate(Common::CubeCoordinate coord,
-                                      int playerId) {
-  std::vector<std::shared_ptr<Common::Pawn>> playerPawns;
-  for (auto const &pawn : _pawnsByIds) {
-    if (coord.operator==(pawn.second->getCoordinates())) {
-      if (pawn.second->getPlayerId() == playerId) {
-        playerPawns.push_back(pawn.second);
-      }
+bool GameBoard::isAnyPiecesOfType(std::string type)
+{
+    for(auto const& hex : _hexMap){
+        if(hex.second->getPieceType() == type){
+            return true;
+        }
     }
-  }
-  return playerPawns;
+    return false;
+
 }
+
+
 
 } // namespace Student

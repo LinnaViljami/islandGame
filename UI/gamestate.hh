@@ -16,10 +16,12 @@ public:
     virtual int currentPlayer() const ;
     virtual void changeGamePhase(Common::GamePhase nextPhase);
     virtual void changePlayerTurn(int nextPlayer);
-
+    int getMovesLeft();
+    void setMovesLeft(int movesLeft);
 private:
-    Common::GamePhase _gamePhase;
-    int _idOfPlayerInTurn;
+    Common::GamePhase gamePhase_;
+    int idOfPlayerInTurn_;
+    int movesLeft_;
 };
 }
 

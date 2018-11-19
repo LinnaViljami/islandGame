@@ -3,13 +3,15 @@
 #include <iostream>
 #include "gameexception.hh"
 #include <vector>
+#include "actor.hh"
 
 
 namespace Student {
 
 
 GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState) :
-    gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState), selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false)
+    gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState), selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
+    isWheelSpun_(false)
 {
 
     connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked,
@@ -37,17 +39,30 @@ std::vector<std::shared_ptr<Common::Pawn> > GameExecuter::getPlayerPawnsInCoordi
     return playerPawns;
 }
 
+void GameExecuter::tryMovePawn(Common::CubeCoordinate to)
+{
+    std::vector<std::shared_ptr<Common::Pawn>> playerPawnsInSelected = getPlayerPawnsInCoordinate(selectedHexCoordinates_);
+    if(playerPawnsInSelected.size()!=0){
+        for(auto const& pawn : playerPawnsInSelected){
+            int movesLeft = gameRunner_->checkPawnMovement(selectedHexCoordinates_, to, pawn->getId());
+            if(movesLeft>=0){
+                gameRunner_->movePawn(selectedHexCoordinates_,to,pawn->getId());
+                gameState_->setMovesLeft(movesLeft);
+                isHexSelected_ = false;
+                break;
+            }
+        }
+    }
+}
+
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
 {
+    std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(coordinates);
     if(gameState_->currentGamePhase() == Common::GamePhase::MOVEMENT){
-         std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(coordinates);
-
         if(clickedHex == nullptr){
             throw Common::GameException("Clicked hex not exist in game-executer gameboard_");
         }
         else if(!isHexSelected_){
-            bool testi = isPlayerPawnsInHex(coordinates);
-            //if player has pawns in selected hex
             if(isPlayerPawnsInHex(coordinates)){
                 selectedHexCoordinates_ = coordinates;
                 isHexSelected_ = true;
@@ -55,29 +70,44 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
             else{
                 qDebug() << "Cannot select clicked hex because you dont have pawns in it";
             }
-
         }
         //if hex is selected
         else if(isHexSelected_){
+            if(selectedHexCoordinates_.operator ==(coordinates)){
+                //unselect hex
+                isHexSelected_ = false;
+            }
+            else{
+                //tryToMovePawn
+                tryMovePawn(coordinates);
+            }
         }
-        else if(selectedHexCoordinates_.operator ==(coordinates)){
-            //unselect hex
-            isHexSelected_ = true;
-        }
-        else{
-            //if able to move pawns -> move
-            //else error: not able to move
+        //if no moves left go to sinking
+        if(gameState_->getMovesLeft()<=0){
+            gameState_->changeGamePhase(Common::GamePhase::SINKING);
         }
     }
+
     else if(gameState_->currentGamePhase() == Common::GamePhase::SINKING){
-        //if clikced hex can sink
-            //sink hex
-            //play actor
-            //handle pawn changes
-        //else
-            //hex cannot sink
-    }
+//        if(!gameBoard_->isAnyPiecesOfType("Beach")){
+//            gameState_->changeGamePhase(Common::GamePhase::SPINNING);
+//        }
+//        else if(clickedHex->getPieceType()=="Beach"){
+            std::string actor = gameRunner_->flipTile(coordinates);
+            if(!actor.empty()){
+                for(auto const& a : clickedHex->getActors()){
+                    if(a->getActorType()==actor){
+                        a->doAction();
+                        //handle pawn changes?
+                    }
+                }
+            }
+        }
+   // }
     else if(gameState_->currentGamePhase() == Common::GamePhase::SPINNING){
+        if(isWheelSpun_){
+            //gameRunner_->checkActorMovement();
+        }
         //if player has spin the wheel
             //if actor can move to clicked hex
                 //move actor

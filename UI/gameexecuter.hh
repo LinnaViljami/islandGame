@@ -25,10 +25,13 @@ private:
 
     bool isHexSelected_;
 
+    bool isWheelSpun_;
+
     bool isPlayerPawnsInHex(Common::CubeCoordinate coord);
 
     std::vector<std::shared_ptr<Common::Pawn>> getPlayerPawnsInCoordinate(Common::CubeCoordinate coord);
 
+    void tryMovePawn(Common::CubeCoordinate to);
 public slots:
     void handleHexClick(Common::CubeCoordinate coordinates);
 };
