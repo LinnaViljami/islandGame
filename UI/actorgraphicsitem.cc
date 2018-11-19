@@ -1,20 +1,24 @@
 #include "actorgraphicsitem.hh"
 
+namespace Student {
+
 ActorGraphicsItem::ActorGraphicsItem(QGraphicsItem *parent,
                                      std::shared_ptr<Common::Actor> actor)
-    : QGraphicsSimpleTextItem(parent, actorToText(actor)) {}
+    : QGraphicsSimpleTextItem(actorToText(actor), parent) {}
 
 QString ActorGraphicsItem::actorToText(std::shared_ptr<Common::Actor> actor) {
-  switch (actor->getActorType()) {
-  case "kraken":
+  std::string type = actor->getActorType();
+  if (type == "kraken") {
     return QString("Kraken");
-  case "sea munster":
+  } else if (type == "sea munster") {
     return QString("Hirviö");
-  case "shark":
+  } else if (type == "shark") {
     return QString("Hai");
-  case "vortex":
+  } else if (type == "vortex") {
     return QString("Pyörre");
-  default:
+  } else {
     return QString("X");
   }
 }
+
+} // namespace Student

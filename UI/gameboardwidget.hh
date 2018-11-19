@@ -29,6 +29,13 @@ public:
                 Common::CubeCoordinate oldCoord,
                 Common::CubeCoordinate newCoord);
 
+  void addOrUpdateActor(std::shared_ptr<Common::Actor> actor);
+
+  void removeActor(std::shared_ptr<Common::Actor> actor);
+
+  void moveActor(std::shared_ptr<Common::Actor> actor,
+                Common::CubeCoordinate oldCoord,
+                Common::CubeCoordinate newCoord);
 signals:
   void hexClicked(Common::CubeCoordinate coordinates);
 

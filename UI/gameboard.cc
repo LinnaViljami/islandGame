@@ -5,8 +5,10 @@
 #include "transport.hh"
 #include <QDebug>
 #include <QObject>
+#include <transport.hh>
 
 using Common::Actor;
+using Common::Transport;
 using Common::CubeCoordinate;
 using Common::Hex;
 using Common::Pawn;
@@ -88,26 +90,22 @@ void GameBoard::removePawn(int pawnId) {
 
 void GameBoard::addActor(std::shared_ptr<Common::Actor> actor,
                          Common::CubeCoordinate actorCoord) {
-  // TODo remove actors by ids
   _actorsByIds[actor->getId()] = actor;
-  actorCoordById_[actor->getId()] = actorCoord;
   actor->addHex(_hexMap.at(actorCoord));
+  _boardWidget->addOrUpdateActor(actor);
 }
 
 void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
   shared_ptr<Actor> actor = _actorsByIds[actorId];
-  shared_ptr<Hex> hex = getHex(actorCoord);
-  actor->move(hex);
+  shared_ptr<Hex> targetHex = getHex(actorCoord);
+  _boardWidget->moveActor(actor, actor->getHex()->getCoordinates(), actorCoord);
+  actor->move(targetHex);
 }
 
 void GameBoard::removeActor(int actorId) {
-  // remove actor from it's hex
-  _hexMap.at(actorCoordById_.at(actorId))
-      ->removeActor(
-          _hexMap.at(actorCoordById_.at(actorId))->giveActor(actorId));
-  actorCoordById_.erase(actorId);
-
-  // next map should may be deleted
+  shared_ptr<Actor> actor = _actorsByIds[actorId];
+  _boardWidget->removeActor(actor);
+  actor->getHex()->removeActor(actor);
   _actorsByIds.erase(actorId);
 }
 
@@ -122,22 +120,18 @@ void GameBoard::moveTransport(int id, Common::CubeCoordinate coord) {
 }
 
 void GameBoard::removeTransport(int id) {
-  // TODO: remove transport from hex
-  // requires transport.getHex() function implemented or transport.remove
-    transportsByIds_.erase(id);
+   shared_ptr<Transport> transport = transportsByIds_[id];
+   transport->getHex()->removeTransport(transport);
+  transportsByIds_.erase(id);
 }
 
-bool GameBoard::isAnyPiecesOfType(std::string type)
-{
-    for(auto const& hex : _hexMap){
-        if(hex.second->getPieceType() == type){
-            return true;
-        }
+bool GameBoard::isAnyPiecesOfType(std::string type) {
+  for (auto const &hex : _hexMap) {
+    if (hex.second->getPieceType() == type) {
+      return true;
     }
-    return false;
-
+  }
+  return false;
 }
-
-
 
 } // namespace Student

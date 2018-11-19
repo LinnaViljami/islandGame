@@ -47,7 +47,19 @@ void HexGraphicsItem::addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn) {
   pawnItemsByIds_[pawn->getId()] = std::move(pawnItem);
 }
 
-void HexGraphicsItem::removePawn(int pawnId) { pawnItemsByIds_.erase(pawnId); }
+void HexGraphicsItem::removePawn(int actorId) {
+  pawnItemsByIds_.erase(actorId);
+}
+
+void HexGraphicsItem::addOrUpdateActor(std::shared_ptr<Common::Actor> actor) {
+  auto actorItem = std::make_unique<Student::ActorGraphicsItem>(this, actor);
+  actorItem->setScale(0.1);
+  actorItemsByIds_[actor->getId()] = std::move(actorItem);
+}
+
+void HexGraphicsItem::removeActor(int actorId) {
+  actorItemsByIds_.erase(actorId);
+}
 
 void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   event->ignore();

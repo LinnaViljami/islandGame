@@ -1,6 +1,7 @@
 #ifndef HEXGRAPHICSITEM_HH
 #define HEXGRAPHICSITEM_HH
 
+#include "actorgraphicsitem.hh"
 #include "pawngraphicsitem.hh"
 
 #include <QGraphicsItem>
@@ -29,6 +30,10 @@ public:
 
   void removePawn(int pawnId);
 
+  void addOrUpdateActor(std::shared_ptr<Common::Actor> actor);
+
+  void removeActor(int actorId);
+
 signals:
   void mousePressed();
 
@@ -39,6 +44,8 @@ private:
   std::shared_ptr<Common::Hex> hex_;
 
   std::map<int, std::unique_ptr<Student::PawnGraphicsItem>> pawnItemsByIds_;
+
+  std::map<int, std::unique_ptr<Student::ActorGraphicsItem>> actorItemsByIds_;
 
   QPointF getPositionForPawn(int pawnNumber);
 
