@@ -31,17 +31,22 @@ private:
 
     bool isWheelSpun_;
 
+    std::string selectedActorType_;
     int selectedActorId_;
 
     std::string selectedActorMoves_;
 
     bool isPlayerPawnsInHex(Common::CubeCoordinate coord);
 
-    std::vector<std::shared_ptr<Common::Pawn>> getPlayerPawnsInCoordinate(Common::CubeCoordinate coord);
+    std::vector<std::shared_ptr<Common::Pawn>>
+    getPlayerPawnsInCoordinate(Common::CubeCoordinate coord);
+
+    void gamePhaseToSpinning();
 
     void tryMovePawn(Common::CubeCoordinate to);
 public slots:
     void handleHexClick(Common::CubeCoordinate coordinates);
+    void handleSpin();
 };
 }
 

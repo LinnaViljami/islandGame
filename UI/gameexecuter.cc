@@ -17,6 +17,8 @@ GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std:
 
     connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked,
             this, &GameExecuter::handleHexClick);
+    connect(spinnerWidget_.get(), &SpinnerContainerWidget::spinningFinished,
+            this, &GameExecuter::handleSpin);
     gameState->changePlayerTurn(1);
     gameState->changeGamePhase(Common::GamePhase::MOVEMENT);
 }
@@ -38,6 +40,17 @@ std::vector<std::shared_ptr<Common::Pawn> > GameExecuter::getPlayerPawnsInCoordi
         }
     }
     return playerPawns;
+}
+
+void GameExecuter::gamePhaseToSpinning()
+{
+    isWheelSpun_ = false;
+    isHexSelected_ = false;
+    gameState_->changeGamePhase(Common::GamePhase::SPINNING);
+    std::pair<std::string,std::string> spinResult = gameRunner_->spinWheel();
+    selectedActorType_ = spinResult.first;
+    selectedActorMoves_ = spinResult.second;
+    spinnerWidget_->beginSpin(spinResult.first, spinResult.second);
 }
 
 void GameExecuter::tryMovePawn(Common::CubeCoordinate to)
@@ -130,6 +143,11 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
         //Example "Spin wheel before trying to move actor"
     }
 
+}
+
+void GameExecuter::handleSpin()
+{
+    isWheelSpun_=true;
 }
 
 }
