@@ -15,7 +15,7 @@ class GameExecuter : public QObject
         Q_OBJECT
 public:
     GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std::shared_ptr<Student::GameBoard> gameBoard,
-                 std::shared_ptr<Student::GameState> gameState, std::shared_ptr<SpinnerContainerWidget> spinnerWidget);
+                 std::shared_ptr<Student::GameState> gameState, SpinnerContainerWidget *spinnerWidget);
 private:
     std::shared_ptr<Common::IGameRunner> gameRunner_;
 
@@ -23,7 +23,7 @@ private:
 
     std::shared_ptr<Student::GameState> gameState_;
 
-    std::shared_ptr<SpinnerContainerWidget> spinnerWidget_;
+    SpinnerContainerWidget *spinnerWidget_;
 
     Common::CubeCoordinate selectedHexCoordinates_;
 

@@ -10,14 +10,14 @@ namespace Student {
 
 
 GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState,
-                           std::shared_ptr<SpinnerContainerWidget> spinnerWidget) :
+                           SpinnerContainerWidget *spinnerWidget) :
     gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState), spinnerWidget_(spinnerWidget) ,selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
     isWheelSpun_(false), selectedActorId_(-1), spunActorMoves_(std::string())
 {
 
     connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked,
             this, &GameExecuter::handleHexClick);
-    connect(spinnerWidget_.get(), &SpinnerContainerWidget::spinningFinished,
+    connect(spinnerWidget_, &SpinnerContainerWidget::spinningFinished,
             this, &GameExecuter::handleSpin);
     gameState->changePlayerTurn(1);
     gameState->changeGamePhase(Common::GamePhase::MOVEMENT);
