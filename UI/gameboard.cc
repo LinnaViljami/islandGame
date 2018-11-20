@@ -91,7 +91,8 @@ void GameBoard::removePawn(int pawnId) {
 void GameBoard::addActor(std::shared_ptr<Common::Actor> actor,
                          Common::CubeCoordinate actorCoord) {
   _actorsByIds[actor->getId()] = actor;
-  actor->addHex(_hexMap.at(actorCoord));
+  shared_ptr<Hex> hex = _hexMap.at(actorCoord);
+  actor->addHex(hex);
   _boardWidget->addOrUpdateActor(actor);
 }
 

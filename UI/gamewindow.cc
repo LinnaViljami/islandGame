@@ -32,19 +32,12 @@ GameWindow::GameWindow(vector<QString> playerNames)
 
   SpinnerLayout spinnerLayout = gameRunner->getSpinnerLayout();
   auto spinnerContainerWidget = new SpinnerContainerWidget(this, spinnerLayout);
-  spinnerContainerWidget->setMinimumSize(400, 400);
+  spinnerContainerWidget->setMinimumSize(300, 600);
   ui->mainLayout->addWidget(spinnerContainerWidget);
   ui->mainLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
 
-  gameExecuter_ = std::make_unique<Student::GameExecuter>(gameRunner, gameBoard,
-                                                          gameState, spinnerContainerWidget);
-
-  QPushButton *spinButton = new QPushButton("Pyöräytä");
-  connect(spinButton, &QPushButton::clicked, this, [=]() {
-    spinnerContainerWidget->beginSpin("shark", std::string("2"));
-  });
-  ui->mainLayout->addWidget(spinButton);
-  ui->mainLayout->setAlignment(spinButton, Qt::AlignHCenter);
+  gameExecuter_ = std::make_unique<Student::GameExecuter>(
+      gameRunner, gameBoard, gameState, spinnerContainerWidget);
 }
 
 GameWindow::~GameWindow() { delete ui; }

@@ -9,13 +9,13 @@ ActorGraphicsItem::ActorGraphicsItem(QGraphicsItem *parent,
 QString ActorGraphicsItem::actorToText(std::shared_ptr<Common::Actor> actor) {
   std::string type = actor->getActorType();
   if (type == "kraken") {
-    return QString("Kraken");
+    return QString("K");
   } else if (type == "sea munster") {
-    return QString("Hirviö");
+    return QString("MH");
   } else if (type == "shark") {
-    return QString("Hai");
+    return QString("H");
   } else if (type == "vortex") {
-    return QString("Pyörre");
+    return QString("P");
   } else {
     return QString("X");
   }
