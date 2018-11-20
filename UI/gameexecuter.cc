@@ -58,6 +58,24 @@ void GameExecuter::trySelectActor(std::string actorType,
   return;
 }
 
+bool GameExecuter::tryMoveTransport(Common::CubeCoordinate to)
+{
+    std::shared_ptr<Common::Hex> selectedHex = gameBoard_->getHex(selectedHexCoordinates_);
+    std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(to);
+
+
+    std::vector<std::shared_ptr<Common::Transport>> hexTransports = selectedHex->getTransports();
+    if(hexTransports.size()!=0){
+        for(auto const& transport : hexTransports){
+            if(transport->canMove(getCurrentPlayer()->getPlayerId())){
+                transport->move(clickedHex);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void GameExecuter::gamePhaseToSpinning() {
   isWheelSpun_ = false;
   isHexSelected_ = false;
@@ -106,21 +124,20 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
       throw Common::GameException(
           "Clicked hex not exist in game-executer gameboard_");
     } else if (!isHexSelected_) {
-        // TODO: if pawns in transports
         if (isPlayerPawnsInHex(coordinates)) {
         selectedHexCoordinates_ = coordinates;
         isHexSelected_ = true;
         }
     }
-    // if hex is selected
     else if (isHexSelected_) {
         if (selectedHexCoordinates_.operator==(coordinates)) {
-        // unselect hex
-        isHexSelected_ = false;
+            isHexSelected_ = false;
         }
         else {
-            // TODO: Move transport to transport
-            tryMovePawn(coordinates);
+            //TODO: Player must able to choose if he move transport or only pawns
+            if(!tryMoveTransport(coordinates)){
+                tryMovePawn(coordinates);
+            }
         }
     }
   } else if (gameState_->currentGamePhase() == Common::GamePhase::SINKING) {
