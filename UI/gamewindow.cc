@@ -43,7 +43,7 @@ GameWindow::GameWindow(vector<QString> playerNames)
   gameBoard->addPawn(1,1);
   gameBoard->addPawn(1,2);
   gameBoard->addPawn(1,3);
-  gameBoard->movePawn(1,Common::CubeCoordinate(1,1,1));
+  gameBoard->movePawn(1,Common::CubeCoordinate(0,0,0));
   gameBoard->movePawn(2,Common::CubeCoordinate(0,0,0));
   gameBoard->movePawn(3,Common::CubeCoordinate(0,0,0));
 }
