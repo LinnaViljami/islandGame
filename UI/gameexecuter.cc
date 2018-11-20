@@ -76,6 +76,57 @@ bool GameExecuter::tryMoveTransport(Common::CubeCoordinate to)
     return false;
 }
 
+bool GameExecuter::tryFlipTile(Common::CubeCoordinate coord)
+{
+    std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(coord);
+    try{
+        std::string actor = gameRunner_->flipTile(coord);
+        //TODO if actor is transport
+
+        if(tryDoActor(actor, coord)){
+            gamePhaseToSpinning();
+            return true;
+        }
+    }
+    catch(Common::IllegalMoveException& e){
+        qDebug() << "Et voi kääntää klikkaamaasi ruutua";
+        return false;
+    }
+}
+
+bool GameExecuter::tryDoActor(std::string type, Common::CubeCoordinate coord)
+{
+    std::shared_ptr<Common::Hex> hexInCoord = gameBoard_->getHex(coord);
+    for (auto const &a : hexInCoord->getActors()) {
+        if (a->getActorType() == type) {
+        a->doAction();
+        // TODO: Maybe should handle pawn changes?
+        // Actor::doaction(); not implemented yet so I am not sure what should
+        // do...
+        gamePhaseToSpinning();
+        return true;
+        }
+    }
+    return false;
+}
+
+int GameExecuter::putPawnsToTransport(std::string type, Common::CubeCoordinate coord)
+{
+    int pawnsCarry = 0;
+    std::shared_ptr<Common::Hex> hexInCoord = gameBoard_->getHex(coord);
+    for (auto const &t : hexInCoord->getTransports()){
+        if(t->getTransportType() == type){
+            for(auto const &pawn : hexInCoord->getPawns()){
+                if(t->getCapacity()>0){
+                    t->addPawn(pawn);
+                    pawnsCarry++;
+                }
+            }
+        }
+    }
+    return pawnsCarry;
+}
+
 void GameExecuter::gamePhaseToSpinning() {
   isWheelSpun_ = false;
   isHexSelected_ = false;
@@ -107,9 +158,7 @@ void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
       if (movesLeft >= 0) {
         gameRunner_->movePawn(selectedHexCoordinates_, to, pawn->getId());
         getCurrentPlayer()->setActionsLeft(movesLeft);
-        if (movesLeft == 0) {
-          gameState_->changeGamePhase(Common::GamePhase::SINKING);
-        }
+
         break;
       }
     }
@@ -135,10 +184,14 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
         }
         else {
             //TODO: Player must able to choose if he move transport or only pawns
+            //Current implement try first move actor, then pawns if actor cant move
             if(!tryMoveTransport(coordinates)){
                 tryMovePawn(coordinates);
             }
         }
+    }
+    if (getCurrentPlayer()->getActionsLeft()==0) {
+      gameState_->changeGamePhase(Common::GamePhase::SINKING);
     }
   } else if (gameState_->currentGamePhase() == Common::GamePhase::SINKING) {
         try{

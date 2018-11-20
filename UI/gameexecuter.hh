@@ -52,7 +52,16 @@ private:
   // Set new id to attribute "selectedActorId_", if "coord" have type
   // "actorType" actor, else set -1;
   void trySelectActor(std::string actorType, Common::CubeCoordinate coord);
+
   bool tryMoveTransport(Common::CubeCoordinate to);
+
+  bool tryFlipTile(Common::CubeCoordinate coord);
+
+  bool tryDoActor(std::string type, Common::CubeCoordinate coord);
+
+  //return amount of pawns moved to transport
+  int putPawnsToTransport(std::string type, Common::CubeCoordinate coord);
+
   void gamePhaseToSpinning();
 
   std::shared_ptr<Common::IPlayer> getCurrentPlayer();
