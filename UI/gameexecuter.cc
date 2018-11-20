@@ -10,9 +10,10 @@ namespace Student {
 
 
 GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState,
-                           std::shared_ptr<SpinnerContainerWidget> spinnerWidget) :
-    gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState), spinnerWidget_(spinnerWidget) ,selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
-    isWheelSpun_(false), selectedActorId_(-1), spunActorMoves_(std::string())
+                           std::shared_ptr<SpinnerContainerWidget> spinnerWidget, std::vector<std::shared_ptr<Common::IPlayer>> playerVector) :
+    gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState), spinnerWidget_(spinnerWidget), playerVector_(playerVector) ,
+    selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
+    isWheelSpun_(false), selectedActorId_(-1), spunActorMoves_(std::string()), movesLeft_(3)
 {
 
     connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked,
@@ -65,6 +66,16 @@ void GameExecuter::gamePhaseToSpinning()
     spinnerWidget_->beginSpin(spinResult.first, spinResult.second);
 }
 
+std::shared_ptr<Common::IPlayer> GameExecuter::getCurrentPlayer()
+{
+    for(auto player : playerVector_){
+        if(player->getPlayerId()==gameState_->currentPlayer()){
+            return player;
+        }
+    }
+    return nullptr;
+}
+
 void GameExecuter::tryMovePawn(Common::CubeCoordinate to)
 {
     //take all current player pawns and try to move them one by one.
@@ -75,25 +86,23 @@ void GameExecuter::tryMovePawn(Common::CubeCoordinate to)
             int movesLeft = gameRunner_->checkPawnMovement(selectedHexCoordinates_, to, pawn->getId());
             if(movesLeft>=0){
                 gameRunner_->movePawn(selectedHexCoordinates_,to,pawn->getId());
-                gameState_->setMovesLeft(movesLeft);
                 isHexSelected_ = false;
+                getCurrentPlayer()->setActionsLeft(movesLeft);
+                if(movesLeft==0){
+                    gameState_->changeGamePhase(Common::GamePhase::SINKING);
+                }
                 return;
             }
         }
     }
+    isHexSelected_ = false;
 }
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
 {
-
     std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(coordinates);
     if(gameState_->currentGamePhase() == Common::GamePhase::MOVEMENT){
-        //if no moves left go to sinking
-        if(gameState_->getMovesLeft()<=0){
-            gameState_->changeGamePhase(Common::GamePhase::SINKING);
-            isHexSelected_ = false;
-        }
-        else if(clickedHex == nullptr){
+        if(clickedHex == nullptr){
             throw Common::GameException("Clicked hex not exist in game-executer gameboard_");
         }
         else if(!isHexSelected_){
@@ -113,12 +122,10 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates)
                 isHexSelected_ = false;
             }
             else{
-                //tryToMovePawn
                 //TODO: Move transport to transport
                 tryMovePawn(coordinates);
             }
         }
-
     }
     else if(gameState_->currentGamePhase() == Common::GamePhase::SINKING){
         std::string actor = gameRunner_->flipTile(coordinates);

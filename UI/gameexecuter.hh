@@ -7,6 +7,8 @@
 #include "gamestate.hh"
 #include "cubecoordinate.hh"
 #include "spinnercontainerwidget.hh"
+#include <vector>
+#include<iplayer.hh>
 
 namespace Student {
 
@@ -15,7 +17,8 @@ class GameExecuter : public QObject
         Q_OBJECT
 public:
     GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner, std::shared_ptr<Student::GameBoard> gameBoard,
-                 std::shared_ptr<Student::GameState> gameState, std::shared_ptr<SpinnerContainerWidget> spinnerWidget);
+                 std::shared_ptr<Student::GameState> gameState, std::shared_ptr<SpinnerContainerWidget> spinnerWidget,
+                 std::vector<std::shared_ptr<Common::IPlayer>> playerVector);
 private:
     std::shared_ptr<Common::IGameRunner> gameRunner_;
 
@@ -25,13 +28,18 @@ private:
 
     std::shared_ptr<SpinnerContainerWidget> spinnerWidget_;
 
+    std::vector<std::shared_ptr<Common::IPlayer>> playerVector_;
+
     Common::CubeCoordinate selectedHexCoordinates_;
 
     bool isHexSelected_;
 
     bool isWheelSpun_;
 
+    int movesLeft_;
+
     std::string spunActorType_;
+
     int selectedActorId_;
 
     std::string spunActorMoves_;
@@ -41,11 +49,12 @@ private:
     std::vector<std::shared_ptr<Common::Pawn>>
     getPlayerPawnsInCoordinate(Common::CubeCoordinate coord);
 
-
     //Set new id to attribute "selectedActorId_", if "coord" have type "actorType" actor, else set -1;
     void trySelectActor(std::string actorType, Common::CubeCoordinate coord);
 
     void gamePhaseToSpinning();
+
+    std::shared_ptr<Common::IPlayer> getCurrentPlayer();
 
     void tryMovePawn(Common::CubeCoordinate to);
 public slots:

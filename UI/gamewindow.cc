@@ -36,7 +36,7 @@ GameWindow::GameWindow(vector<QString> playerNames)
   ui->mainLayout->addWidget(spinnerContainerWidget.get());
   ui->mainLayout->setAlignment(spinnerContainerWidget.get(), Qt::AlignTop);
 
-  gameExecuter_ = std::make_unique<Student::GameExecuter>(gameRunner, gameBoard, gameState, spinnerContainerWidget);
+  gameExecuter_ = std::make_unique<Student::GameExecuter>(gameRunner, gameBoard, gameState, spinnerContainerWidget, players);
 
   QPushButton *spinButton = new QPushButton("Pyöräytä");
   connect(spinButton, &QPushButton::clicked, this, [=]() {
