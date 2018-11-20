@@ -32,7 +32,7 @@ GameWindow::GameWindow(vector<QString> playerNames)
 
   SpinnerLayout spinnerLayout = gameRunner->getSpinnerLayout();
   auto spinnerContainerWidget = new SpinnerContainerWidget(this, spinnerLayout);
-  spinnerContainerWidget->setMinimumSize(300, 600);
+  spinnerContainerWidget->setMinimumSize(200, 400);
   ui->mainLayout->addWidget(spinnerContainerWidget);
   ui->mainLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
 
