@@ -49,6 +49,7 @@ void HexGraphicsItem::addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn) {
 
 void HexGraphicsItem::removePawn(int actorId) {
   pawnItemsByIds_.erase(actorId);
+  repositionAllPawnItems();
 }
 
 void HexGraphicsItem::addOrUpdateActor(std::shared_ptr<Common::Actor> actor) {
@@ -81,6 +82,16 @@ void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     }
   }
   emit mousePressed();
+}
+
+void HexGraphicsItem::repositionAllPawnItems() {
+  int pawnNumber = 1;
+  for (auto &&pair : pawnItemsByIds_) {
+    auto &pawnItem = pair.second;
+    QPointF position = getPositionForPawn(pawnNumber);
+    pawnItem->setPos(position);
+    ++pawnNumber;
+  }
 }
 
 void HexGraphicsItem::alignTextItemInsideHex(QGraphicsSimpleTextItem &item) {

@@ -55,6 +55,8 @@ private:
   std::map<int, std::unique_ptr<Student::TransportGraphicsItem>>
       transportItemsByIds_;
 
+  void repositionAllPawnItems();
+
   void alignTextItemInsideHex(QGraphicsSimpleTextItem &item);
 
   QPointF getPositionForPawn(int pawnNumber);
