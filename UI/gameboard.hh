@@ -94,17 +94,15 @@ public:
   bool isAnyPiecesOfType(std::string type);
 
 private:
-  Student::GameBoardWidget *_boardWidget;
+  Student::GameBoardWidget *boardWidget_;
 
-  std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> _hexMap;
+  std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap_;
 
-  std::map<int, std::shared_ptr<Common::Pawn>> _pawnsByIds;
+  std::map<int, std::shared_ptr<Common::Pawn>> pawnsByIds_;
 
-  std::map<int, std::shared_ptr<Common::Actor>> _actorsByIds;
+  std::map<int, std::shared_ptr<Common::Actor>> actorsByIds_;
 
   std::map<int, std::shared_ptr<Common::Transport>> transportsByIds_;
-
-  std::map<int, Common::CubeCoordinate> actorCoordById_;
 
 };
 

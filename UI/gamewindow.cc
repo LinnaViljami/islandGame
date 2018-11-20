@@ -31,19 +31,18 @@ GameWindow::GameWindow(vector<QString> playerNames)
   ui->mainLayout->addWidget(boardWidget);
 
   SpinnerLayout spinnerLayout = gameRunner->getSpinnerLayout();
-  auto spinnerContainerWidget = std::make_shared<SpinnerContainerWidget>(this, spinnerLayout);
-  spinnerContainerWidget->setMinimumSize(400, 400);
-  ui->mainLayout->addWidget(spinnerContainerWidget.get());
-  ui->mainLayout->setAlignment(spinnerContainerWidget.get(), Qt::AlignTop);
+  auto spinnerContainerWidget = new SpinnerContainerWidget(this, spinnerLayout);
+  spinnerContainerWidget->setMinimumSize(200, 400);
+  ui->mainLayout->addWidget(spinnerContainerWidget);
+  ui->mainLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
 
-  gameExecuter_ = std::make_unique<Student::GameExecuter>(gameRunner, gameBoard, gameState, spinnerContainerWidget, players);
+  gameExecuter_ = std::make_unique<Student::GameExecuter>(
+      gameRunner, gameBoard, gameState, spinnerContainerWidget, players);
 
-  QPushButton *spinButton = new QPushButton("Pyöräytä");
-  connect(spinButton, &QPushButton::clicked, this, [=]() {
-    spinnerContainerWidget->beginSpin("shark", std::string("2"));
-  });
-  ui->mainLayout->addWidget(spinButton);
-  ui->mainLayout->setAlignment(spinButton, Qt::AlignHCenter);
+  // testikoodia
+  gameBoard->addPawn(1, 1);
+  gameBoard->addPawn(1, 2);
+  gameBoard->addPawn(1, 3);
 }
 
 GameWindow::~GameWindow() { delete ui; }

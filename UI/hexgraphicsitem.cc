@@ -27,7 +27,7 @@ void HexGraphicsItem::paint(QPainter *painter,
 
   painter->save();
   painter->setPen(QPen(Qt::GlobalColor::black, 0));
-  painter->setBrush(QColor(Qt::GlobalColor::yellow));
+  painter->setBrush(getPieceColor());
   painter->drawConvexPolygon(getShapePolygon());
   painter->restore();
 }
@@ -42,11 +42,37 @@ QPainterPath HexGraphicsItem::shape() const {
 void HexGraphicsItem::addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn) {
   auto pawnItem = std::make_unique<Student::PawnGraphicsItem>(this, pawn);
   pawnItem->setScale(0.1);
-  pawnItem->setPos(getPositionForNewPawn());
+  QPointF position = getPositionForPawn(pawnItemsByIds_.size() + 1);
+  pawnItem->setPos(position);
   pawnItemsByIds_[pawn->getId()] = std::move(pawnItem);
 }
 
-void HexGraphicsItem::removePawn(int pawnId) { pawnItemsByIds_.erase(pawnId); }
+void HexGraphicsItem::removePawn(int actorId) {
+  pawnItemsByIds_.erase(actorId);
+  repositionAllPawnItems();
+}
+
+void HexGraphicsItem::addOrUpdateActor(std::shared_ptr<Common::Actor> actor) {
+  auto actorItem = std::make_unique<Student::ActorGraphicsItem>(this, actor);
+  alignTextItemInsideHex(*actorItem);
+  actorItemsByIds_[actor->getId()] = std::move(actorItem);
+}
+
+void HexGraphicsItem::removeActor(int actorId) {
+  actorItemsByIds_.erase(actorId);
+}
+
+void HexGraphicsItem::addOrUpdateTransport(
+    std::shared_ptr<Common::Transport> transport) {
+  auto transportItem =
+      std::make_unique<Student::TransportGraphicsItem>(this, transport);
+  alignTextItemInsideHex(*transportItem);
+  transportItemsByIds_[transport->getId()] = std::move(transportItem);
+}
+
+void HexGraphicsItem::removeTransport(int transportId) {
+  transportItemsByIds_.erase(transportId);
+}
 
 void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   event->ignore();
@@ -58,10 +84,48 @@ void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   emit mousePressed();
 }
 
-QPointF HexGraphicsItem::getPositionForNewPawn() {
+QColor HexGraphicsItem::getPieceColor() {
+  std::string pieceType = hex_->getPieceType();
+  if (pieceType == "Coral") {
+    return QColor(124, 211, 208);
+  } else if (pieceType == "Water") {
+    return QColor(75, 165, 234);
+  } else if (pieceType == "Beach") {
+    return QColor(214, 202, 72);
+  } else if (pieceType == "Forest") {
+    return QColor(60, 140, 53);
+  } else if (pieceType == "Mountain") {
+    return QColor(154, 158, 157);
+  } else if (pieceType == "Peak") {
+    return QColor(80, 81, 81);
+  } else {
+    return QColor(Qt::GlobalColor::black);
+  }
+}
+
+void HexGraphicsItem::repositionAllPawnItems() {
+  int pawnNumber = 1;
+  for (auto &&pair : pawnItemsByIds_) {
+    auto &pawnItem = pair.second;
+    QPointF position = getPositionForPawn(pawnNumber);
+    pawnItem->setPos(position);
+    ++pawnNumber;
+  }
+}
+
+void HexGraphicsItem::alignTextItemInsideHex(QGraphicsSimpleTextItem &item) {
+  static const double TEXT_SCALE = 0.05;
+  QRectF boundingRect = item.boundingRect();
+  QPointF pos(-boundingRect.width() / 2, -boundingRect.height() / 2);
+  pos *= TEXT_SCALE;
+  item.setPos(pos);
+  item.setScale(TEXT_SCALE);
+}
+
+QPointF HexGraphicsItem::getPositionForPawn(int pawnNumber) {
   static const double DIST = 0.7;
   static const double X = sqrt(3) / 2;
-  switch (pawnItemsByIds_.size()) {
+  switch (pawnNumber) {
   default:
     return QPointF(0, 1) * DIST;
   case 1:

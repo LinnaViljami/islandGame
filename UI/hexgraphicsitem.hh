@@ -1,7 +1,9 @@
 #ifndef HEXGRAPHICSITEM_HH
 #define HEXGRAPHICSITEM_HH
 
+#include "actorgraphicsitem.hh"
 #include "pawngraphicsitem.hh"
+#include "transportgraphicsitem.hh"
 
 #include <QGraphicsItem>
 #include <QObject>
@@ -29,6 +31,14 @@ public:
 
   void removePawn(int pawnId);
 
+  void addOrUpdateActor(std::shared_ptr<Common::Actor> actor);
+
+  void removeActor(int actorId);
+
+  void addOrUpdateTransport(std::shared_ptr<Common::Transport> transport);
+
+  void removeTransport(int transportId);
+
 signals:
   void mousePressed();
 
@@ -40,7 +50,18 @@ private:
 
   std::map<int, std::unique_ptr<Student::PawnGraphicsItem>> pawnItemsByIds_;
 
-  QPointF getPositionForNewPawn();
+  std::map<int, std::unique_ptr<Student::ActorGraphicsItem>> actorItemsByIds_;
+
+  std::map<int, std::unique_ptr<Student::TransportGraphicsItem>>
+      transportItemsByIds_;
+
+  QColor getPieceColor();
+
+  void repositionAllPawnItems();
+
+  void alignTextItemInsideHex(QGraphicsSimpleTextItem &item);
+
+  QPointF getPositionForPawn(int pawnNumber);
 
   static QPolygonF getShapePolygon();
 };
