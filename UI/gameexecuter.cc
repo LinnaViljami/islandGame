@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <iostream>
 #include <vector>
+#include "illegalmoveexception.hh"
 
 namespace Student {
 
@@ -15,8 +16,8 @@ GameExecuter::GameExecuter(
     : gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState),
       spinnerWidget_(spinnerWidget), playerVector_(playerVector),
       selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
-      isWheelSpun_(false), selectedActorId_(-1), spunActorMoves_(std::string()),
-      movesLeft_(3) {
+      isWheelSpun_(false), selectedActorId_(-1), spunActorMoves_(std::string())
+{
 
   connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked, this,
           &GameExecuter::handleHexClick);
@@ -87,12 +88,11 @@ void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
                                                      to, pawn->getId());
       if (movesLeft >= 0) {
         gameRunner_->movePawn(selectedHexCoordinates_, to, pawn->getId());
-        isHexSelected_ = false;
         getCurrentPlayer()->setActionsLeft(movesLeft);
         if (movesLeft == 0) {
           gameState_->changeGamePhase(Common::GamePhase::SINKING);
         }
-        return;
+        break;
       }
     }
   }
@@ -106,41 +106,41 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
       throw Common::GameException(
           "Clicked hex not exist in game-executer gameboard_");
     } else if (!isHexSelected_) {
-      // TODO: if pawns in transports
-      if (isPlayerPawnsInHex(coordinates)) {
+        // TODO: if pawns in transports
+        if (isPlayerPawnsInHex(coordinates)) {
         selectedHexCoordinates_ = coordinates;
         isHexSelected_ = true;
-      } else {
-        qDebug()
-            << "Cannot select clicked hex because you dont have pawns in it";
-      }
+        }
     }
     // if hex is selected
     else if (isHexSelected_) {
-      if (selectedHexCoordinates_.operator==(coordinates)) {
+        if (selectedHexCoordinates_.operator==(coordinates)) {
         // unselect hex
         isHexSelected_ = false;
-      } else {
-        // TODO: Move transport to transport
-        tryMovePawn(coordinates);
-      }
+        }
+        else {
+            // TODO: Move transport to transport
+            tryMovePawn(coordinates);
+        }
     }
   } else if (gameState_->currentGamePhase() == Common::GamePhase::SINKING) {
-    std::string actor = gameRunner_->flipTile(coordinates);
-    // if flip success
-    if (!actor.empty()) {
-      // find right actor to hex
-      for (auto const &a : clickedHex->getActors()) {
-        if (a->getActorType() == actor) {
-          a->doAction();
-          // TODO: Maybe should handle pawn changes?
-          // Actor::doaction(); not implemented yet so I am not sure what should
-          // do...
-          gamePhaseToSpinning();
-          return;
+        try{
+            std::string actor = gameRunner_->flipTile(coordinates);
+            //TODO if actor is transport
+            for (auto const &a : clickedHex->getActors()) {
+                if (a->getActorType() == actor) {
+                a->doAction();
+                // TODO: Maybe should handle pawn changes?
+                // Actor::doaction(); not implemented yet so I am not sure what should
+                // do...
+                gamePhaseToSpinning();
+                break;
+                }
+            }
         }
-      }
-    }
+        catch(Common::IllegalMoveException& e){
+            qDebug() << "Et voi kääntää klikkaamaasi ruutua";
+        }
   } else if (gameState_->currentGamePhase() == Common::GamePhase::SPINNING) {
     if (isWheelSpun_) {
       if (!isHexSelected_) {

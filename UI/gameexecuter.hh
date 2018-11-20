@@ -38,8 +38,6 @@ private:
 
   bool isWheelSpun_;
 
-  int movesLeft_;
-
   std::string spunActorType_;
 
   int selectedActorId_;
