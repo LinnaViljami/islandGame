@@ -53,17 +53,24 @@ void HexGraphicsItem::removePawn(int actorId) {
 
 void HexGraphicsItem::addOrUpdateActor(std::shared_ptr<Common::Actor> actor) {
   auto actorItem = std::make_unique<Student::ActorGraphicsItem>(this, actor);
-  static const double TEXT_SCALE = 0.05;
-  QRectF boundingRect = actorItem->boundingRect();
-  QPointF pos(-boundingRect.width() / 2, -boundingRect.height() / 2);
-  pos *= TEXT_SCALE;
-  actorItem->setPos(pos);
-  actorItem->setScale(TEXT_SCALE);
+  alignTextItemInsideHex(*actorItem);
   actorItemsByIds_[actor->getId()] = std::move(actorItem);
 }
 
 void HexGraphicsItem::removeActor(int actorId) {
   actorItemsByIds_.erase(actorId);
+}
+
+void HexGraphicsItem::addOrUpdateTransport(
+    std::shared_ptr<Common::Transport> transport) {
+  auto transportItem =
+      std::make_unique<Student::TransportGraphicsItem>(this, transport);
+  alignTextItemInsideHex(*transportItem);
+  transportItemsByIds_[transport->getId()] = std::move(transportItem);
+}
+
+void HexGraphicsItem::removeTransport(int transportId) {
+  transportItemsByIds_.erase(transportId);
 }
 
 void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
@@ -74,6 +81,15 @@ void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     }
   }
   emit mousePressed();
+}
+
+void HexGraphicsItem::alignTextItemInsideHex(QGraphicsSimpleTextItem &item) {
+  static const double TEXT_SCALE = 0.05;
+  QRectF boundingRect = item.boundingRect();
+  QPointF pos(-boundingRect.width() / 2, -boundingRect.height() / 2);
+  pos *= TEXT_SCALE;
+  item.setPos(pos);
+  item.setScale(TEXT_SCALE);
 }
 
 QPointF HexGraphicsItem::getPositionForPawn(int pawnNumber) {

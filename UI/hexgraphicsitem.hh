@@ -3,6 +3,7 @@
 
 #include "actorgraphicsitem.hh"
 #include "pawngraphicsitem.hh"
+#include "transportgraphicsitem.hh"
 
 #include <QGraphicsItem>
 #include <QObject>
@@ -34,6 +35,10 @@ public:
 
   void removeActor(int actorId);
 
+  void addOrUpdateTransport(std::shared_ptr<Common::Transport> transport);
+
+  void removeTransport(int transportId);
+
 signals:
   void mousePressed();
 
@@ -46,6 +51,11 @@ private:
   std::map<int, std::unique_ptr<Student::PawnGraphicsItem>> pawnItemsByIds_;
 
   std::map<int, std::unique_ptr<Student::ActorGraphicsItem>> actorItemsByIds_;
+
+  std::map<int, std::unique_ptr<Student::TransportGraphicsItem>>
+      transportItemsByIds_;
+
+  void alignTextItemInsideHex(QGraphicsSimpleTextItem &item);
 
   QPointF getPositionForPawn(int pawnNumber);
 

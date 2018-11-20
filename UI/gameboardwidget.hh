@@ -34,8 +34,16 @@ public:
   void removeActor(std::shared_ptr<Common::Actor> actor);
 
   void moveActor(std::shared_ptr<Common::Actor> actor,
-                Common::CubeCoordinate oldCoord,
-                Common::CubeCoordinate newCoord);
+                 Common::CubeCoordinate oldCoord,
+                 Common::CubeCoordinate newCoord);
+
+  void addOrUpdateTransport(std::shared_ptr<Common::Transport> transport);
+
+  void removeTransport(std::shared_ptr<Common::Transport> transport);
+
+  void moveTransport(std::shared_ptr<Common::Transport> transport,
+                     Common::CubeCoordinate oldCoord,
+                     Common::CubeCoordinate newCoord);
 signals:
   void hexClicked(Common::CubeCoordinate coordinates);
 
