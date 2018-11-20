@@ -27,7 +27,7 @@ void HexGraphicsItem::paint(QPainter *painter,
 
   painter->save();
   painter->setPen(QPen(Qt::GlobalColor::black, 0));
-  painter->setBrush(QColor(Qt::GlobalColor::yellow));
+  painter->setBrush(getPieceColor());
   painter->drawConvexPolygon(getShapePolygon());
   painter->restore();
 }
@@ -82,6 +82,25 @@ void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     }
   }
   emit mousePressed();
+}
+
+QColor HexGraphicsItem::getPieceColor() {
+  std::string pieceType = hex_->getPieceType();
+  if (pieceType == "Coral") {
+    return QColor(124, 211, 208);
+  } else if (pieceType == "Water") {
+    return QColor(75, 165, 234);
+  } else if (pieceType == "Beach") {
+    return QColor(214, 202, 72);
+  } else if (pieceType == "Forest") {
+    return QColor(60, 140, 53);
+  } else if (pieceType == "Mountain") {
+    return QColor(154, 158, 157);
+  } else if (pieceType == "Peak") {
+    return QColor(80, 81, 81);
+  } else {
+    return QColor(Qt::GlobalColor::black);
+  }
 }
 
 void HexGraphicsItem::repositionAllPawnItems() {
