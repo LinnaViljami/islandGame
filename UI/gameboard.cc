@@ -112,9 +112,11 @@ void GameBoard::removeActor(int actorId) {
 
 void GameBoard::addTransport(std::shared_ptr<Common::Transport> transport,
                              Common::CubeCoordinate coord) {
-  transportsByIds_[transport->getId()] = transport;
-  hexMap_.at(coord)->addTransport(transport);
+  auto hex = hexMap_.at(coord);
+  hex->addTransport(transport);
+  transport->move(hex);
   boardWidget_->addOrUpdateTransport(transport);
+  transportsByIds_[transport->getId()] = transport;
 }
 
 void GameBoard::moveTransport(int id, Common::CubeCoordinate coord) {
