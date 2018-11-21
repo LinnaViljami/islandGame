@@ -140,19 +140,40 @@ bool GameBoard::isAnyPiecesOfType(std::string type) {
   return false;
 }
 
-bool GameBoard::isAnyActorsOrTransportsOfType(std::string type)
-{
-    for(auto const &actor : actorsByIds_) {
-        if(actor.second->getActorType() == type){
-            return true;
-        }
+bool GameBoard::isAnyActorsOrTransportsOfType(std::string type) {
+  for (auto const &actor : actorsByIds_) {
+    if (actor.second->getActorType() == type) {
+      return true;
     }
-    for(auto const &transport : transportsByIds_){
-        if(transport.second->getTransportType() == type){
-            return true;
-        }
+  }
+  for (auto const &transport : transportsByIds_) {
+    if (transport.second->getTransportType() == type) {
+      return true;
     }
-    return false;
+  }
+  return false;
+}
+
+void GameBoard::initializePawns(
+    std::vector<std::shared_ptr<Common::IPlayer>> players) {
+  std::vector<shared_ptr<Hex>> possibleHexes;
+  for (auto &&pair : hexMap_) {
+    auto &hex = pair.second;
+    if (!hex->isWaterTile()) {
+      possibleHexes.push_back(hex);
+    }
+  }
+  std::random_shuffle(possibleHexes.begin(), possibleHexes.end());
+  static const int PAWN_COUNT = 4;
+  int counter = 0;
+  for (auto &&player : players) {
+    for (int i = 0; i < PAWN_COUNT; ++i) {
+      Common::CubeCoordinate coord =
+          possibleHexes.at(counter)->getCoordinates();
+      addPawn(player->getPlayerId(), counter, coord);
+      ++counter;
+    }
+  }
 }
 
 } // namespace Student
