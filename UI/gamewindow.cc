@@ -39,10 +39,6 @@ GameWindow::GameWindow(vector<QString> playerNames)
   gameExecuter_ = std::make_unique<Student::GameExecuter>(
       gameRunner, gameBoard, gameState, spinnerContainerWidget, players);
 
-  // testikoodia
-  gameBoard->addPawn(1, 1);
-  gameBoard->addPawn(1, 2);
-  gameBoard->addPawn(1, 3);
 }
 
 GameWindow::~GameWindow() { delete ui; }
