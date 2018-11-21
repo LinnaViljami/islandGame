@@ -2,6 +2,6 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     GameState \
-    CoordinateConverter
+    CoordinateConverter \
     GameBoard
 

@@ -4,13 +4,14 @@
 #
 #-------------------------------------------------
 
-QT       += testlib
+QT       += testlib core widgets
 
 QT       -= gui
 
 TARGET = tst_gameboardtest
 CONFIG   += console
 CONFIG   -= app_bundle
+CONFIG   += c++14
 
 TEMPLATE = app
 
@@ -38,7 +39,14 @@ SOURCES += \
     ../../../GameLogic/Engine/ioexception.cpp \
     ../../../GameLogic/Engine/formatexception.cpp \
     ../../../GameLogic/Engine/gameexception.cpp \
-    ../../../UI/gameboard.cpp \
+    ../../../UI/gameboard.cc \
+    ../../../UI/gameboardwidget.cc \
+    ../../../UI/zoomablegraphicsview.cc \
+    ../../../UI/hexgraphicsitem.cc \
+    ../../../UI/transportgraphicsitem.cc \
+    ../../../UI/pawngraphicsitem.cc \
+    ../../../UI/actorgraphicsitem.cc \
+    ../../../UI/coordinateconverter.cc \
     ../../../GameLogic/Engine/pawn.cpp \
     ../../../GameLogic/Engine/transport.cpp \
     ../../../GameLogic/Engine/dolphin.cpp \
@@ -61,6 +69,13 @@ HEADERS += \
     ../../../GameLogic/Engine/gameexception.hh \
     ../../../GameLogic/Engine/igameboard.hh \
     ../../../UI/gameboard.hh \
+    ../../../UI/hexgraphicsitem.hh \
+    ../../../UI/transportgraphicsitem.hh \
+    ../../../UI/pawngraphicsitem.hh \
+    ../../../UI/actorgraphicsitem.hh \
+    ../../../UI/gameboardwidget.hh \
+    ../../../UI/zoomablegraphicsview.hh \
+    ../../../UI/coordinateconverter.hh \
     ../../../GameLogic/Engine/pawn.hh \
     ../../../GameLogic/Engine/transport.hh \
     ../../../GameLogic/Engine/dolphin.hh \
