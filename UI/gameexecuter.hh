@@ -9,7 +9,7 @@
 #include <QObject>
 #include <iplayer.hh>
 #include <vector>
-#include <QTextEdit>
+#include <QLabel>
 
 namespace Student {
 
@@ -21,7 +21,7 @@ public:
                std::shared_ptr<Student::GameState> gameState,
                SpinnerContainerWidget *spinnerWidget,
                std::vector<std::shared_ptr<Common::IPlayer>> playerVector,
-               std::shared_ptr<QTextEdit> userGuideText);
+               std::shared_ptr<QLabel> userGuideText);
 
 private:
   std::shared_ptr<Common::IGameRunner> gameRunner_;
@@ -34,7 +34,7 @@ private:
 
   std::vector<std::shared_ptr<Common::IPlayer>> playerVector_;
 
-  std::shared_ptr<QTextEdit> userGuideText_;
+  std::shared_ptr<QLabel> userGuideText_;
 
   Common::CubeCoordinate selectedHexCoordinates_;
 

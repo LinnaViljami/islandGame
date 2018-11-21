@@ -30,7 +30,8 @@ SOURCES += main.cc \
     fittocontentgraphicsview.cc \
     pawngraphicsitem.cc \
     actorgraphicsitem.cc \
-    transportgraphicsitem.cc
+    transportgraphicsitem.cc \
+    userguidewidget.cc
 
 HEADERS  += \
     gameboard.hh \
@@ -49,7 +50,8 @@ HEADERS  += \
     fittocontentgraphicsview.hh \
     pawngraphicsitem.hh \
     actorgraphicsitem.hh \
-    transportgraphicsitem.hh
+    transportgraphicsitem.hh \
+    userguidewidget.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine

@@ -9,9 +9,9 @@
 #include "startdialog.hh"
 #include "ui_gamewindow.h"
 #include <QPushButton>
-#include <QTextEdit>
 #include <qboxlayout.h>
 #include <qlistview.h>
+#include <QLabel>
 
 using Common::IPlayer;
 using std::shared_ptr;
@@ -30,7 +30,7 @@ GameWindow::GameWindow(vector<QString> playerNames)
       Common::Initialization::getGameRunner(gameBoard, gameState, players);
 
   auto vLayout = new QVBoxLayout(this);
-  auto userGuideText  = std::make_shared<QTextEdit>("Tervetuloa pelaamaan LoveIsland SUomi2018!");
+  auto userGuideText  = std::make_shared<QLabel>("Tervetuloa pelaamaan LoveIsland SUomi2018!");
   ui->mainLayout->addLayout(vLayout);
   vLayout->addWidget(userGuideText.get());
   vLayout->addWidget(boardWidget);

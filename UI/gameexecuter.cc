@@ -14,7 +14,7 @@ GameExecuter::GameExecuter(
     std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState,
     SpinnerContainerWidget *spinnerWidget,
     std::vector<std::shared_ptr<Common::IPlayer>> playerVector,
-    std::shared_ptr<QTextEdit> userGuideText)
+    std::shared_ptr<QLabel> userGuideText)
     : gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState),
       spinnerWidget_(spinnerWidget), playerVector_(playerVector), userGuideText_(userGuideText),
       selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
@@ -27,10 +27,15 @@ GameExecuter::GameExecuter(
           &GameExecuter::handleSpin);
   gameState->changePlayerTurn(1);
   gameState->changeGamePhase(Common::GamePhase::MOVEMENT);
+
+  userGuideText->setText("Tervetuloa pelaamaan Loveisland Suomi 2018!<br>"
+                         "Klikkaa aluksi ruutua josta haluat siirtää napin");
+
   // testikoodia
   gameBoard->addPawn(1, 1);
   gameBoard->addPawn(0, 2);
   gameBoard->addPawn(1, 3);
+
 }
 
 
@@ -89,24 +94,27 @@ void GameExecuter::handlePhaseSinking(Common::CubeCoordinate coord)
 void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord)
 {
     if(!isWheelSpun_) {
-        qDebug() << "Spinneri ei ollut vielä pyörähtänyt";
+        userGuideText_->setText("Spinneri ei ollut vielä pyörähtänyt<br>"
+                                "Valitse ruutu josta haluat aktorin/transportin siirtyvän");
         return;
     }
 
     if (!isHexSelected_) {
         if(trySelectActor(typeOfSpunActor_, coord)){
             selectedHexCoordinates_ = coord;
-            qDebug() << "Aktori valittu";
+            userGuideText_->setText("Aktori valittu.<br>"
+                                    "Klikkaa ruutua johon haluat siirtää aktorin");
             isHexSelected_ = true;
             return;
         }
         else if(trySelectTransport(typeOfSpunActor_, coord)){
             selectedHexCoordinates_ = coord;
-            qDebug() << "Transport valittu";
+            userGuideText_->setText("Transport valittu.<br>"
+                                    "Klikkaa ruutua johon haluat siirtää transportin");
             isHexSelected_ = true;
             return;
         }
-        qDebug() << "Et voi valita aktoria/transporttia klikkaamassasi ruudussa";
+        userGuideText_->setText("Et voi valita aktoria/transporttia klikkaamassasi ruudussa");
         return;
     }
 
