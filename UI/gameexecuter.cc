@@ -13,11 +13,12 @@ GameExecuter::GameExecuter(
     std::shared_ptr<Common::IGameRunner> gameRunner,
     std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState,
     SpinnerContainerWidget *spinnerWidget,
-    std::vector<std::shared_ptr<Common::IPlayer>> playerVector)
+    std::vector<std::shared_ptr<Common::IPlayer>> playerVector,
+    std::shared_ptr<QTextEdit> userGuideText)
     : gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState),
-      spinnerWidget_(spinnerWidget), playerVector_(playerVector),
+      spinnerWidget_(spinnerWidget), playerVector_(playerVector), userGuideText_(userGuideText),
       selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
-      isWheelSpun_(false), selectedActorId_(-1), spunActorMoves_(std::string())
+      isWheelSpun_(false), selectedActorId_(-1), movesOfSpunActor_(std::string())
 {
 
   connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked, this,
@@ -93,15 +94,17 @@ void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord)
     }
 
     if (!isHexSelected_) {
-        if(trySelectActor(spunActorType_, coord)){
+        if(trySelectActor(typeOfSpunActor_, coord)){
             selectedHexCoordinates_ = coord;
             qDebug() << "Aktori valittu";
             isHexSelected_ = true;
+            return;
         }
-        else if(trySelectTransport(spunActorType_, coord)){
+        else if(trySelectTransport(typeOfSpunActor_, coord)){
             selectedHexCoordinates_ = coord;
             qDebug() << "Transport valittu";
             isHexSelected_ = true;
+            return;
         }
         qDebug() << "Et voi valita aktoria/transporttia klikkaamassasi ruudussa";
         return;
@@ -114,8 +117,9 @@ void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord)
     }
 
     if (tryMoveActor(coord)){
+        tryDoActor(typeOfSpunActor_, coord);
         gamePhaseToMovement();
-        qDebug() << "Aktori liikutettu, pelitilaksi vaihdettu movement, vuorossa oleva pelaaja vaihtui";
+        qDebug() << "Aktori liikutettu, toiminto toteutettu ja pelitilaksi vaihdettu movement, vuorossa oleva pelaaja vaihtui";
         return;
     }
 
@@ -127,24 +131,10 @@ void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord)
     qDebug() << "Et voi liikuttaa aktoria/transporttia valitsemaasi ruutuun";
 }
 
-bool GameExecuter::isPlayerPawnsInHex(Common::CubeCoordinate coord) {
-  std::vector<std::shared_ptr<Common::Pawn>> playerPawns =
-      getPlayerPawnsInCoordinate(coord);
-  return (playerPawns.size() != 0);
+void GameExecuter::handleSpin() {
+    isWheelSpun_ = true;
 }
 
-std::vector<std::shared_ptr<Common::Pawn>>
-GameExecuter::getPlayerPawnsInCoordinate(Common::CubeCoordinate coord) {
-  std::vector<std::shared_ptr<Common::Pawn>> pawnsInClickedHex =
-      gameBoard_->getHex(coord)->getPawns();
-  std::vector<std::shared_ptr<Common::Pawn>> playerPawns;
-  for (auto const &pawn : pawnsInClickedHex) {
-    if (pawn->getPlayerId() == gameState_->currentPlayer()) {
-      playerPawns.push_back(pawn);
-    }
-  }
-  return playerPawns;
-}
 
 bool GameExecuter::trySelectActor(std::string actorType,
                                   Common::CubeCoordinate coord) {
@@ -172,8 +162,8 @@ bool GameExecuter::trySelectTransport(std::string type, Common::CubeCoordinate c
 
 bool GameExecuter::tryMoveActor(Common::CubeCoordinate to)
 {
-    if(gameRunner_->checkActorMovement(selectedHexCoordinates_, to, selectedActorId_, spunActorMoves_)){
-        gameRunner_->moveActor(selectedHexCoordinates_, to, selectedActorId_, spunActorMoves_);
+    if(gameRunner_->checkActorMovement(selectedHexCoordinates_, to, selectedActorId_, movesOfSpunActor_)){
+        gameRunner_->moveActor(selectedHexCoordinates_, to, selectedActorId_, movesOfSpunActor_);
         return true;
     }
     return false;
@@ -223,9 +213,6 @@ bool GameExecuter::tryDoActor(std::string type, Common::CubeCoordinate coord)
     for (auto const &a : hexInCoord->getActors()) {
         if (a->getActorType() == type) {
         a->doAction();
-        // TODO: Maybe should handle pawn changes?
-        // Actor::doaction(); not implemented yet so I am not sure what should
-        // do...
         gamePhaseToSpinning();
         return true;
         }
@@ -238,34 +225,8 @@ void GameExecuter::gamePhaseToMovement()
     isWheelSpun_ = false;
     isHexSelected_ = false;
     gameState_->changeGamePhase(Common::GamePhase::MOVEMENT);
-    if (playerVector_.back()->getPlayerId()==getCurrentPlayer()->getPlayerId()){
-        gameState_->changePlayerTurn(playerVector_.front()->getPlayerId());
-        playerVector_.front()->setActionsLeft(3);
-    }
-    else{
-        for(size_t t = 0; t < playerVector_.size()-1; ++t){
-            int i = static_cast<int>(t);
-            if(playerVector_.at(i)->getPlayerId()==getCurrentPlayer()->getPlayerId()){
-                gameState_->changePlayerTurn(playerVector_.at(i+1)->getPlayerId());
-                playerVector_.at(i+1)->setActionsLeft(3);
-                return;
-            }
-        }
-    }
-}
-
-bool GameExecuter::putPawnsToTransport(std::string type, Common::CubeCoordinate coord)
-{
-    std::shared_ptr<Common::Hex> hexInCoord = gameBoard_->getHex(coord);
-    for (auto const &t : hexInCoord->getTransports()){
-        if(t->getTransportType() == type){
-            for(auto const &pawn : hexInCoord->getPawns()){
-                t->addPawn(pawn);
-            }
-            return true;
-        }
-    }
-    return false;
+    qDebug() << "Pelitilaksi vaihdettu Movement";
+    nextTurn();
 }
 
 void GameExecuter::gamePhaseToSpinning() {
@@ -273,22 +234,13 @@ void GameExecuter::gamePhaseToSpinning() {
   isHexSelected_ = false;
   gameState_->changeGamePhase(Common::GamePhase::SPINNING);
   std::pair<std::string, std::string> spinResult = gameRunner_->spinWheel();
-  spunActorType_ = spinResult.first;
-  spunActorMoves_ = spinResult.second;
+  typeOfSpunActor_ = spinResult.first;
+  movesOfSpunActor_ = spinResult.second;
   spinnerWidget_->beginSpin(spinResult.first, spinResult.second);
-  if(!gameBoard_->isAnyActorsOrTransportsOfType(spunActorType_)){
+  if(!gameBoard_->isAnyActorsOrTransportsOfType(typeOfSpunActor_)){
       gamePhaseToMovement();
       return;
   }
-}
-
-std::shared_ptr<Common::IPlayer> GameExecuter::getCurrentPlayer() {
-  for (auto player : playerVector_) {
-    if (player->getPlayerId() == gameState_->currentPlayer()) {
-      return player;
-    }
-  }
-  return nullptr;
 }
 
 void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
@@ -306,10 +258,65 @@ void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
   isHexSelected_ = false;
 }
 
-
-
-void GameExecuter::handleSpin() {
-    isWheelSpun_ = true;
+bool GameExecuter::putPawnsToTransport(std::string type, Common::CubeCoordinate coord)
+{
+    std::shared_ptr<Common::Hex> hexInCoord = gameBoard_->getHex(coord);
+    for (auto const &t : hexInCoord->getTransports()){
+        if(t->getTransportType() == type){
+            for(auto const &pawn : hexInCoord->getPawns()){
+                t->addPawn(pawn);
+            }
+            return true;
+        }
+    }
+    return false;
 }
+
+std::vector<std::shared_ptr<Common::Pawn>>
+GameExecuter::getPlayerPawnsInCoordinate(Common::CubeCoordinate coord) {
+  std::vector<std::shared_ptr<Common::Pawn>> pawnsInClickedHex =
+      gameBoard_->getHex(coord)->getPawns();
+  std::vector<std::shared_ptr<Common::Pawn>> playerPawns;
+  for (auto const &pawn : pawnsInClickedHex) {
+    if (pawn->getPlayerId() == gameState_->currentPlayer()) {
+      playerPawns.push_back(pawn);
+    }
+  }
+  return playerPawns;
+}
+
+std::shared_ptr<Common::IPlayer> GameExecuter::getCurrentPlayer() {
+  for (auto player : playerVector_) {
+    if (player->getPlayerId() == gameState_->currentPlayer()) {
+      return player;
+    }
+  }
+  return nullptr;
+}
+
+bool GameExecuter::isPlayerPawnsInHex(Common::CubeCoordinate coord) {
+  std::vector<std::shared_ptr<Common::Pawn>> playerPawns =
+      getPlayerPawnsInCoordinate(coord);
+  return (playerPawns.size() != 0);
+}
+
+void GameExecuter::nextTurn()
+{
+    qDebug() << "Vuoro vaihdettu seuraavalle pelaajalle";
+    if (playerVector_.back()->getPlayerId()==getCurrentPlayer()->getPlayerId()){
+        gameState_->changePlayerTurn(playerVector_.front()->getPlayerId());
+        playerVector_.front()->setActionsLeft(3);
+        return;
+    }
+    for(size_t t = 0; t < playerVector_.size()-1; ++t){
+        int i = static_cast<int>(t);
+        if(playerVector_.at(i)->getPlayerId()==getCurrentPlayer()->getPlayerId()){
+            gameState_->changePlayerTurn(playerVector_.at(i+1)->getPlayerId());
+            playerVector_.at(i+1)->setActionsLeft(3);
+            return;
+        }
+    }
+}
+
 
 } // namespace Student

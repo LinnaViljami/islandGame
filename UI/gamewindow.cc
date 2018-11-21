@@ -9,6 +9,7 @@
 #include "startdialog.hh"
 #include "ui_gamewindow.h"
 #include <QPushButton>
+#include <QTextEdit>
 #include <qboxlayout.h>
 #include <qlistview.h>
 
@@ -28,7 +29,11 @@ GameWindow::GameWindow(vector<QString> playerNames)
   auto gameRunner =
       Common::Initialization::getGameRunner(gameBoard, gameState, players);
 
-  ui->mainLayout->addWidget(boardWidget);
+  auto vLayout = new QVBoxLayout(this);
+  auto userGuideText  = std::make_shared<QTextEdit>("Tervetuloa pelaamaan LoveIsland SUomi2018!");
+  ui->mainLayout->addLayout(vLayout);
+  vLayout->addWidget(userGuideText.get());
+  vLayout->addWidget(boardWidget);
 
   SpinnerLayout spinnerLayout = gameRunner->getSpinnerLayout();
   auto spinnerContainerWidget = new SpinnerContainerWidget(this, spinnerLayout);
@@ -37,7 +42,7 @@ GameWindow::GameWindow(vector<QString> playerNames)
   ui->mainLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
 
   gameExecuter_ = std::make_unique<Student::GameExecuter>(
-      gameRunner, gameBoard, gameState, spinnerContainerWidget, players);
+      gameRunner, gameBoard, gameState, spinnerContainerWidget, players, userGuideText);
 
 }
 
