@@ -68,8 +68,6 @@ void GameBoard::addPawn(int playerId, int pawnId,
   pawnsByIds_[pawnId] = pawn;
   auto hex = getHex(coord);
   hex->addPawn(pawn);
-  if (boardWidget_ != nullptr)
-    boardWidget_->addOrUpdatePawn(pawn);
 }
 
 void GameBoard::movePawn(int pawnId, Common::CubeCoordinate pawnCoord) {
@@ -80,16 +78,12 @@ void GameBoard::movePawn(int pawnId, Common::CubeCoordinate pawnCoord) {
     hexMap_.at(pawnOldCoord)->removePawn(pawn);
     pawn->setCoordinates(pawnCoord);
     targetHex->addPawn(pawn);
-    if (boardWidget_ != nullptr)
-      boardWidget_->movePawn(pawn, pawnOldCoord, pawnCoord);
   }
 }
 
 void GameBoard::removePawn(int pawnId) {
   shared_ptr<Pawn> pawn = pawnsByIds_[pawnId];
   Common::CubeCoordinate pawnCoords = pawn->getCoordinates();
-  if (boardWidget_ != nullptr)
-    boardWidget_->removePawn(pawn);
   hexMap_.at(pawnCoords)->removePawn(pawn);
   pawnsByIds_.erase(pawnId);
 }
@@ -99,25 +93,18 @@ void GameBoard::addActor(std::shared_ptr<Common::Actor> actor,
   actorsByIds_[actor->getId()] = actor;
   shared_ptr<Hex> hex = getHex(actorCoord);
   actor->addHex(hex);
-  if (boardWidget_ != nullptr)
-    boardWidget_->addOrUpdateActor(actor);
 }
 
 void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord) {
   shared_ptr<Hex> targetHex = getHex(actorCoord);
   if (targetHex != nullptr) {
     shared_ptr<Actor> actor = actorsByIds_[actorId];
-    if (boardWidget_ != nullptr)
-      boardWidget_->moveActor(actor, actor->getHex()->getCoordinates(),
-                              actorCoord);
     actor->move(targetHex);
   }
 }
 
 void GameBoard::removeActor(int actorId) {
   shared_ptr<Actor> actor = actorsByIds_[actorId];
-  if (boardWidget_ != nullptr)
-    boardWidget_->removeActor(actor);
   actor->getHex()->removeActor(actor);
   actorsByIds_.erase(actorId);
 }
@@ -127,8 +114,6 @@ void GameBoard::addTransport(std::shared_ptr<Common::Transport> transport,
   auto hex = getHex(coord);
   hex->addTransport(transport);
   transport->move(hex);
-  if (boardWidget_ != nullptr)
-    boardWidget_->addOrUpdateTransport(transport);
   transportsByIds_[transport->getId()] = transport;
 }
 
@@ -136,17 +121,12 @@ void GameBoard::moveTransport(int id, Common::CubeCoordinate coord) {
   shared_ptr<Hex> targetHex = getHex(coord);
   if (targetHex != nullptr) {
     shared_ptr<Transport> transport = transportsByIds_.at(id);
-    if (boardWidget_ != nullptr)
-      boardWidget_->moveTransport(transport,
-                                  transport->getHex()->getCoordinates(), coord);
     transport->move(targetHex);
   }
 }
 
 void GameBoard::removeTransport(int id) {
   shared_ptr<Transport> transport = transportsByIds_[id];
-  if (boardWidget_ != nullptr)
-    boardWidget_->removeTransport(transport);
   transport->getHex()->removeTransport(transport);
   transportsByIds_.erase(id);
 }

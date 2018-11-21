@@ -39,41 +39,6 @@ QPainterPath HexGraphicsItem::shape() const {
   return path;
 }
 
-void HexGraphicsItem::addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn) {
-  auto pawnItem = std::make_unique<Student::PawnGraphicsItem>(this, pawn);
-  pawnItem->setScale(0.1);
-  QPointF position = getPositionForPawn(pawnItemsByIds_.size() + 1);
-  pawnItem->setPos(position);
-  pawnItemsByIds_[pawn->getId()] = std::move(pawnItem);
-}
-
-void HexGraphicsItem::removePawn(int actorId) {
-  pawnItemsByIds_.erase(actorId);
-  repositionAllPawnItems();
-}
-
-void HexGraphicsItem::addOrUpdateActor(std::shared_ptr<Common::Actor> actor) {
-  auto actorItem = std::make_unique<Student::ActorGraphicsItem>(this, actor);
-  alignTextItemInsideHex(*actorItem);
-  actorItemsByIds_[actor->getId()] = std::move(actorItem);
-}
-
-void HexGraphicsItem::removeActor(int actorId) {
-  actorItemsByIds_.erase(actorId);
-}
-
-void HexGraphicsItem::addOrUpdateTransport(
-    std::shared_ptr<Common::Transport> transport) {
-  auto transportItem =
-      std::make_unique<Student::TransportGraphicsItem>(this, transport);
-  alignTextItemInsideHex(*transportItem);
-  transportItemsByIds_[transport->getId()] = std::move(transportItem);
-}
-
-void HexGraphicsItem::removeTransport(int transportId) {
-  transportItemsByIds_.erase(transportId);
-}
-
 void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   event->ignore();
   if (!scene()->views().isEmpty()) {
@@ -82,6 +47,44 @@ void HexGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     }
   }
   emit mousePressed();
+}
+
+void HexGraphicsItem::updateHexContents()
+{
+    pawnItemsByIds_.clear();
+    for(std::shared_ptr<Common::Pawn> pawn : hex_->getPawns()){
+        addOrUpdatePawnGraphicsItem(pawn);
+    }
+    actorItemsByIds_.clear();
+    for(std::shared_ptr<Common::Actor> actor : hex_->getActors()){
+        addOrUpdateActorGraphicsItem(actor);
+    }
+    transportItemsByIds_.clear();
+    for(std::shared_ptr<Common::Transport> transport : hex_->getTransports()){
+        addOrUpdateTransportGraphicsItem(transport);
+    }
+}
+
+void HexGraphicsItem::addOrUpdatePawnGraphicsItem(std::shared_ptr<Common::Pawn> pawn) {
+  auto pawnItem = std::make_unique<Student::PawnGraphicsItem>(this, pawn);
+  pawnItem->setScale(0.1);
+  QPointF position = getPositionForPawn(pawnItemsByIds_.size() + 1);
+  pawnItem->setPos(position);
+  pawnItemsByIds_[pawn->getId()] = std::move(pawnItem);
+}
+
+void HexGraphicsItem::addOrUpdateActorGraphicsItem(std::shared_ptr<Common::Actor> actor) {
+  auto actorItem = std::make_unique<Student::ActorGraphicsItem>(this, actor);
+  alignTextItemInsideHex(*actorItem);
+  actorItemsByIds_[actor->getId()] = std::move(actorItem);
+}
+
+void HexGraphicsItem::addOrUpdateTransportGraphicsItem(
+    std::shared_ptr<Common::Transport> transport) {
+  auto transportItem =
+      std::make_unique<Student::TransportGraphicsItem>(this, transport);
+  alignTextItemInsideHex(*transportItem);
+  transportItemsByIds_[transport->getId()] = std::move(transportItem);
 }
 
 QColor HexGraphicsItem::getPieceColor() {
@@ -100,16 +103,6 @@ QColor HexGraphicsItem::getPieceColor() {
     return QColor(80, 81, 81);
   } else {
     return QColor(Qt::GlobalColor::black);
-  }
-}
-
-void HexGraphicsItem::repositionAllPawnItems() {
-  int pawnNumber = 1;
-  for (auto &&pair : pawnItemsByIds_) {
-    auto &pawnItem = pair.second;
-    QPointF position = getPositionForPawn(pawnNumber);
-    pawnItem->setPos(position);
-    ++pawnNumber;
   }
 }
 

@@ -39,6 +39,7 @@ GameWindow::GameWindow(vector<QString> playerNames)
   gameExecuter_ = std::make_unique<Student::GameExecuter>(
       gameRunner, gameBoard, gameState, spinnerContainerWidget, players);
 
+  boardWidget->updateBoard();
 }
 
 GameWindow::~GameWindow() { delete ui; }
