@@ -47,6 +47,7 @@ void GameBoardWidget::updateBoard() {
   for (auto &&pair : _hexItemsByCoordinates) {
     auto &hexItem = pair.second;
     hexItem->updateHexContents();
+    hexItem->update();
   }
 }
 

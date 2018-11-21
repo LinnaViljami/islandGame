@@ -52,6 +52,7 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
             handlePhaseSpinning(coordinates);
         break;
     }
+    gameBoard_->getBoardWidget()->updateBoard();
 }
 
 void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord)
