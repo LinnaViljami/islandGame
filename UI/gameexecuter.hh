@@ -9,6 +9,7 @@
 #include <QObject>
 #include <iplayer.hh>
 #include <vector>
+#include <QLabel>
 
 namespace Student {
 
@@ -19,7 +20,8 @@ public:
                std::shared_ptr<Student::GameBoard> gameBoard,
                std::shared_ptr<Student::GameState> gameState,
                SpinnerContainerWidget *spinnerWidget,
-               std::vector<std::shared_ptr<Common::IPlayer>> playerVector);
+               std::vector<std::shared_ptr<Common::IPlayer>> playerVector,
+               std::shared_ptr<QLabel> userGuideText);
 
 private:
   std::shared_ptr<Common::IGameRunner> gameRunner_;
@@ -32,22 +34,26 @@ private:
 
   std::vector<std::shared_ptr<Common::IPlayer>> playerVector_;
 
+  std::shared_ptr<QLabel> userGuideText_;
+
   Common::CubeCoordinate selectedHexCoordinates_;
 
   bool isHexSelected_;
 
   bool isWheelSpun_;
 
-  std::string spunActorType_;
-
   int selectedActorId_;
 
-  std::string spunActorMoves_;
+  std::string movesOfSpunActor_;
 
-  bool isPlayerPawnsInHex(Common::CubeCoordinate coord);
+  std::string typeOfSpunActor_;
 
-  std::vector<std::shared_ptr<Common::Pawn>>
-  getPlayerPawnsInCoordinate(Common::CubeCoordinate coord);
+  void handlePhaseMovement(Common::CubeCoordinate coord);
+
+  void handlePhaseSinking(Common::CubeCoordinate coord);
+
+  void handlePhaseSpinning(Common::CubeCoordinate coord);
+
 
   // Set new id to attribute "selectedActorId_", if "coord" have type
   // "actorType" actor, else set -1;
@@ -65,16 +71,24 @@ private:
 
   void gamePhaseToMovement();
 
-  //return true if hex has transport of type param "type"
+  void gamePhaseToSpinning();
+
+  void tryMovePawn(Common::CubeCoordinate to);
+
   bool putPawnsToTransport(std::string type, Common::CubeCoordinate coord);
 
-  void gamePhaseToSpinning();
+  std::vector<std::shared_ptr<Common::Pawn>>
+  getPlayerPawnsInCoordinate(Common::CubeCoordinate coord);
 
   std::shared_ptr<Common::IPlayer> getCurrentPlayer();
 
-  void tryMovePawn(Common::CubeCoordinate to);
+  bool isPlayerPawnsInHex(Common::CubeCoordinate coord);
+
+  void nextTurn();
+
 public slots:
   void handleHexClick(Common::CubeCoordinate coordinates);
+
   void handleSpin();
 };
 } // namespace Student
