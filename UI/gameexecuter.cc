@@ -196,21 +196,16 @@ std::shared_ptr<Common::IPlayer> GameExecuter::getCurrentPlayer() {
 }
 
 void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
-  // take all current player pawns and try to move them one by one.
-  // if move succes, unselect selected hex, update moves left and move pawn.
   std::vector<std::shared_ptr<Common::Pawn>> playerPawnsInSelected =
       getPlayerPawnsInCoordinate(selectedHexCoordinates_);
   if (playerPawnsInSelected.size() != 0) {
-    for (auto const &pawn : playerPawnsInSelected) {
-      int movesLeft = gameRunner_->checkPawnMovement(selectedHexCoordinates_,
-                                                     to, pawn->getId());
-      if (movesLeft >= 0) {
-        gameRunner_->movePawn(selectedHexCoordinates_, to, pawn->getId());
-        getCurrentPlayer()->setActionsLeft(movesLeft);
-
-        break;
+      try{
+        getCurrentPlayer()->setActionsLeft(gameRunner_->movePawn(selectedHexCoordinates_,
+                                                                 to, playerPawnsInSelected.front()->getId()));
       }
-    }
+      catch(Common::IllegalMoveException){
+          qDebug() << "Pawn cannot move to clicked hex";
+      }
   }
   isHexSelected_ = false;
 }
