@@ -38,11 +38,17 @@ private:
 
   bool isWheelSpun_;
 
-  std::string spunActorType_;
-
   int selectedActorId_;
 
   std::string spunActorMoves_;
+
+  std::string spunActorType_;
+
+  void handlePhaseMovement(Common::CubeCoordinate coord);
+
+  void handlePhaseSinking(Common::CubeCoordinate coord);
+
+  void handlePhaseSpinning(Common::CubeCoordinate coord);
 
   bool isPlayerPawnsInHex(Common::CubeCoordinate coord);
 
@@ -75,6 +81,7 @@ private:
   void tryMovePawn(Common::CubeCoordinate to);
 public slots:
   void handleHexClick(Common::CubeCoordinate coordinates);
+
   void handleSpin();
 };
 } // namespace Student

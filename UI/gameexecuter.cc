@@ -32,6 +32,101 @@ GameExecuter::GameExecuter(
   gameBoard->addPawn(1, 3);
 }
 
+
+
+void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
+    switch (gameState_->currentGamePhase()) {
+        case Common::GamePhase::MOVEMENT :
+            handlePhaseMovement(coordinates);
+        break;
+        case Common::GamePhase::SINKING :
+            handlePhaseSinking(coordinates);
+        break;
+        case Common::GamePhase::SPINNING :
+            handlePhaseSpinning(coordinates);
+        break;
+    }
+}
+
+void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord)
+{
+    std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(coord);
+
+    if (clickedHex == nullptr) {
+      throw Common::GameException(
+          "Clicked hex not exist in game-executer gameboard_");
+    } else if (!isHexSelected_) {
+        if (isPlayerPawnsInHex(coord)) {
+        selectedHexCoordinates_ = coord;
+        isHexSelected_ = true;
+        }
+    }
+    else if (isHexSelected_) {
+        if (selectedHexCoordinates_.operator==(coord)) {
+            isHexSelected_ = false;
+        }
+        else {
+            //TODO: Player must able to choose if he move transport or only pawns
+            //Current implement try first move actor, then pawns if actor cant move
+            if(!tryMoveTransport(coord)){
+                tryMovePawn(coord);
+            }
+        }
+    }
+    if (getCurrentPlayer()->getActionsLeft()==0) {
+      gameState_->changeGamePhase(Common::GamePhase::SINKING);
+    }
+}
+
+void GameExecuter::handlePhaseSinking(Common::CubeCoordinate coord)
+{
+    if(tryFlipTile(coord)){
+        gamePhaseToSpinning();
+    }
+}
+
+void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord)
+{
+    if(!isWheelSpun_) {
+        qDebug() << "Spinneri ei ollut vielä pyörähtänyt";
+        return;
+    }
+
+    if (!isHexSelected_) {
+        if(trySelectActor(spunActorType_, coord)){
+            selectedHexCoordinates_ = coord;
+            qDebug() << "Aktori valittu";
+            isHexSelected_ = true;
+        }
+        else if(trySelectTransport(spunActorType_, coord)){
+            selectedHexCoordinates_ = coord;
+            qDebug() << "Transport valittu";
+            isHexSelected_ = true;
+        }
+        qDebug() << "Et voi valita aktoria/transporttia klikkaamassasi ruudussa";
+        return;
+    }
+
+    if (selectedHexCoordinates_.operator==(coord)) {
+        isHexSelected_ = false;
+        qDebug() << "Valitse ruutu";
+        return;
+    }
+
+    if (tryMoveActor(coord)){
+        gamePhaseToMovement();
+        qDebug() << "Aktori liikutettu, pelitilaksi vaihdettu movement, vuorossa oleva pelaaja vaihtui";
+        return;
+    }
+
+    if(tryMoveTransport(coord)){
+        gamePhaseToMovement();
+        qDebug() << "Transport liikutettu, pelitilaksi vaihdettu movement, vuorossa oleva pelaaja vaihtui";
+        return;
+    }
+    qDebug() << "Et voi liikuttaa aktoria/transporttia valitsemaasi ruutuun";
+}
+
 bool GameExecuter::isPlayerPawnsInHex(Common::CubeCoordinate coord) {
   std::vector<std::shared_ptr<Common::Pawn>> playerPawns =
       getPlayerPawnsInCoordinate(coord);
@@ -119,6 +214,7 @@ bool GameExecuter::tryFlipTile(Common::CubeCoordinate coord)
         qDebug() << "Et voi kääntää klikkaamaasi ruutua";
         return false;
     }
+    return false;
 }
 
 bool GameExecuter::tryDoActor(std::string type, Common::CubeCoordinate coord)
@@ -210,74 +306,7 @@ void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
   isHexSelected_ = false;
 }
 
-void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
-    std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(coordinates);
 
-    switch (gameState_->currentGamePhase()) {
-        case Common::GamePhase::MOVEMENT :
-            if (clickedHex == nullptr) {
-              throw Common::GameException(
-                  "Clicked hex not exist in game-executer gameboard_");
-            } else if (!isHexSelected_) {
-                if (isPlayerPawnsInHex(coordinates)) {
-                selectedHexCoordinates_ = coordinates;
-                isHexSelected_ = true;
-                }
-            }
-            else if (isHexSelected_) {
-                if (selectedHexCoordinates_.operator==(coordinates)) {
-                    isHexSelected_ = false;
-                }
-                else {
-                    //TODO: Player must able to choose if he move transport or only pawns
-                    //Current implement try first move actor, then pawns if actor cant move
-                    if(!tryMoveTransport(coordinates)){
-                        tryMovePawn(coordinates);
-                    }
-                }
-            }
-            if (getCurrentPlayer()->getActionsLeft()==0) {
-              gameState_->changeGamePhase(Common::GamePhase::SINKING);
-            }
-        break;
-
-        case Common::GamePhase::SINKING :
-            if(tryFlipTile(coordinates)){
-                gamePhaseToSpinning();
-            }
-        break;
-
-        case Common::GamePhase::SPINNING :
-            if (isWheelSpun_) {
-                if (!isHexSelected_) {
-                    if(trySelectActor(spunActorType_, coordinates)){
-                        selectedHexCoordinates_ = coordinates;
-                        isHexSelected_ = true;
-                    }
-                    else if(trySelectTransport(spunActorType_, coordinates)){
-                        selectedHexCoordinates_ = coordinates;
-                        isHexSelected_ = true;
-                    }
-                }
-                else {
-                    if (selectedHexCoordinates_.operator==(coordinates)) {
-                        isHexSelected_ = false;
-                    }else{
-                        if (tryMoveActor(coordinates)){
-                            gamePhaseToMovement();
-                        }
-                        else if(tryMoveTransport(coordinates)){
-                            gamePhaseToMovement();
-                        }
-                        else{
-                            qDebug() << "Cannot move actor to clicked hex";
-                        }
-                    }
-                }
-            }
-        break;
-    }
-}
 
 void GameExecuter::handleSpin() {
     isWheelSpun_ = true;
