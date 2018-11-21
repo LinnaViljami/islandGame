@@ -10,6 +10,7 @@
 #include <iplayer.hh>
 #include <vector>
 #include <QLabel>
+#include "userguidewidget.hh"
 
 namespace Student {
 
@@ -21,7 +22,7 @@ public:
                std::shared_ptr<Student::GameState> gameState,
                SpinnerContainerWidget *spinnerWidget,
                std::vector<std::shared_ptr<Common::IPlayer>> playerVector,
-               std::shared_ptr<QLabel> userGuideText);
+               Student::UserGuideWidget* userGuide);
 
 private:
   std::shared_ptr<Common::IGameRunner> gameRunner_;
@@ -34,7 +35,7 @@ private:
 
   std::vector<std::shared_ptr<Common::IPlayer>> playerVector_;
 
-  std::shared_ptr<QLabel> userGuideText_;
+  Student::UserGuideWidget* userGuide_;
 
   Common::CubeCoordinate selectedHexCoordinates_;
 
@@ -85,6 +86,8 @@ private:
   bool isPlayerPawnsInHex(Common::CubeCoordinate coord);
 
   void nextTurn();
+
+
 
 public slots:
   void handleHexClick(Common::CubeCoordinate coordinates);

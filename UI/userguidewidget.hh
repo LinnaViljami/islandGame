@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include <QWidget>
+#include <QLabel>
+
+namespace Student {
 
 class UserGuideWidget : public QWidget
 {
@@ -10,9 +13,12 @@ class UserGuideWidget : public QWidget
 public:
     explicit UserGuideWidget(QWidget *parent = nullptr);
 
-signals:
 
-public slots:
+private:
+    QLabel* playerInTurnText_;
+    QLabel* doNextGuideText_;
+    QLabel* requestToUserText_;
 };
 
+}
 #endif // USERGUIDEWIDGET_HH

@@ -14,9 +14,9 @@ GameExecuter::GameExecuter(
     std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState,
     SpinnerContainerWidget *spinnerWidget,
     std::vector<std::shared_ptr<Common::IPlayer>> playerVector,
-    std::shared_ptr<QLabel> userGuideText)
+    Student::UserGuideWidget* userGuide)
     : gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState),
-      spinnerWidget_(spinnerWidget), playerVector_(playerVector), userGuideText_(userGuideText),
+      spinnerWidget_(spinnerWidget), playerVector_(playerVector), userGuide_(userGuide),
       selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
       isWheelSpun_(false), selectedActorId_(-1), movesOfSpunActor_(std::string())
 {
@@ -28,8 +28,8 @@ GameExecuter::GameExecuter(
   gameState->changePlayerTurn(1);
   gameState->changeGamePhase(Common::GamePhase::MOVEMENT);
 
-  userGuideText->setText("Tervetuloa pelaamaan Loveisland Suomi 2018!<br>"
-                         "Klikkaa aluksi ruutua josta haluat siirtää napin");
+  //userGuideText->setText("Tervetuloa pelaamaan Loveisland Suomi 2018!<br>"
+  //                       "Klikkaa aluksi ruutua josta haluat siirtää napin");
 
   // testikoodia
   gameBoard->addPawn(1, 1);
@@ -94,27 +94,27 @@ void GameExecuter::handlePhaseSinking(Common::CubeCoordinate coord)
 void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord)
 {
     if(!isWheelSpun_) {
-        userGuideText_->setText("Spinneri ei ollut vielä pyörähtänyt<br>"
-                                "Valitse ruutu josta haluat aktorin/transportin siirtyvän");
+        //userGuideText_->setText("Spinneri ei ollut vielä pyörähtänyt<br>"
+        //                        "Valitse ruutu josta haluat aktorin/transportin siirtyvän");
         return;
     }
 
     if (!isHexSelected_) {
         if(trySelectActor(typeOfSpunActor_, coord)){
             selectedHexCoordinates_ = coord;
-            userGuideText_->setText("Aktori valittu.<br>"
-                                    "Klikkaa ruutua johon haluat siirtää aktorin");
+            //userGuideText_->setText("Aktori valittu.<br>"
+            //                        "Klikkaa ruutua johon haluat siirtää aktorin");
             isHexSelected_ = true;
             return;
         }
         else if(trySelectTransport(typeOfSpunActor_, coord)){
             selectedHexCoordinates_ = coord;
-            userGuideText_->setText("Transport valittu.<br>"
-                                    "Klikkaa ruutua johon haluat siirtää transportin");
+            //userGuideText_->setText("Transport valittu.<br>"
+            //                        "Klikkaa ruutua johon haluat siirtää transportin");
             isHexSelected_ = true;
             return;
         }
-        userGuideText_->setText("Et voi valita aktoria/transporttia klikkaamassasi ruudussa");
+        //userGuideText_->setText("Et voi valita aktoria/transporttia klikkaamassasi ruudussa");
         return;
     }
 
