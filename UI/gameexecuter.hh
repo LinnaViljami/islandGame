@@ -38,8 +38,6 @@ private:
 
   bool isWheelSpun_;
 
-  int movesLeft_;
-
   std::string spunActorType_;
 
   int selectedActorId_;
@@ -53,7 +51,22 @@ private:
 
   // Set new id to attribute "selectedActorId_", if "coord" have type
   // "actorType" actor, else set -1;
-  void trySelectActor(std::string actorType, Common::CubeCoordinate coord);
+  bool trySelectActor(std::string actorType, Common::CubeCoordinate coord);
+
+  bool trySelectTransport(std::string type, Common::CubeCoordinate coord);
+
+  bool tryMoveActor(Common::CubeCoordinate to);
+
+  bool tryMoveTransport(Common::CubeCoordinate to);
+
+  bool tryFlipTile(Common::CubeCoordinate coord);
+
+  bool tryDoActor(std::string type, Common::CubeCoordinate coord);
+
+  void gamePhaseToMovement();
+
+  //return true if hex has transport of type param "type"
+  bool putPawnsToTransport(std::string type, Common::CubeCoordinate coord);
 
   void gamePhaseToSpinning();
 
