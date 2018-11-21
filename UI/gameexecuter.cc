@@ -217,6 +217,7 @@ void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
     std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(coordinates);
+
     switch (gameState_->currentGamePhase()) {
         case Common::GamePhase::MOVEMENT :
             if (clickedHex == nullptr) {
@@ -244,11 +245,13 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
               gameState_->changeGamePhase(Common::GamePhase::SINKING);
             }
         break;
+
         case Common::GamePhase::SINKING :
             if(tryFlipTile(coordinates)){
                 gamePhaseToSpinning();
             }
         break;
+
         case Common::GamePhase::SPINNING :
             if (isWheelSpun_) {
                 if (!isHexSelected_) {

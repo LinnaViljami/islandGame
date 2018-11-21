@@ -14,7 +14,7 @@ class GameBoard : public QObject, public Common::IGameBoard {
   Q_OBJECT
 
 public:
-  explicit GameBoard(GameBoardWidget *boardWidget);
+  explicit GameBoard(GameBoardWidget *boardWidget = nullptr);
 
   GameBoardWidget *getBoardWidget();
 
