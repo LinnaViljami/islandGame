@@ -124,6 +124,7 @@ void GameBoard::moveTransport(int id, Common::CubeCoordinate coord) {
   shared_ptr<Hex> targetHex = hexMap_.at(coord);
   boardWidget_->moveTransport(transport, transport->getHex()->getCoordinates(),
                               coord);
+
   transport->move(targetHex);
 }
 
@@ -141,6 +142,21 @@ bool GameBoard::isAnyPiecesOfType(std::string type) {
     }
   }
   return false;
+}
+
+bool GameBoard::isAnyActorsOrTransportsOfType(std::string type)
+{
+    for(auto const &actor : actorsByIds_) {
+        if(actor.second->getActorType() == type){
+            return true;
+        }
+    }
+    for(auto const &transport : transportsByIds_){
+        if(transport.second->getTransportType() == type){
+            return true;
+        }
+    }
+    return false;
 }
 
 } // namespace Student

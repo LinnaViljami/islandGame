@@ -93,6 +93,8 @@ public:
 
   bool isAnyPiecesOfType(std::string type);
 
+  bool isAnyActorsOrTransportsOfType(std::string type);
+
 private:
   Student::GameBoardWidget *boardWidget_;
 
