@@ -43,75 +43,12 @@ void GameBoardWidget::addOrUpdateHex(std::shared_ptr<Common::Hex> hex) {
           [coordinates, this]() { emit hexClicked(coordinates); });
 }
 
-void GameBoardWidget::addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn) {
-  shared_ptr<HexGraphicsItem> hexItem =
-      getExistingHexItemOrNull(pawn->getCoordinates());
-  hexItem->addOrUpdatePawn(pawn);
-}
-
-void GameBoardWidget::removePawn(std::shared_ptr<Common::Pawn> pawn) {
-  shared_ptr<HexGraphicsItem> hexItem =
-      getExistingHexItemOrNull(pawn->getCoordinates());
-  hexItem->removePawn(pawn->getId());
-}
-
-void GameBoardWidget::movePawn(std::shared_ptr<Common::Pawn> pawn,
-                               Common::CubeCoordinate oldCoord,
-                               Common::CubeCoordinate newCoord) {
-  shared_ptr<HexGraphicsItem> currentHexItem =
-      getExistingHexItemOrNull(oldCoord);
-  currentHexItem->removePawn(pawn->getId());
-  shared_ptr<HexGraphicsItem> targetHexItem =
-      getExistingHexItemOrNull(newCoord);
-  targetHexItem->addOrUpdatePawn(pawn);
-}
-
-void GameBoardWidget::addOrUpdateActor(std::shared_ptr<Common::Actor> actor) {
-  shared_ptr<HexGraphicsItem> hexItem =
-      getExistingHexItemOrNull(actor->getHex()->getCoordinates());
-  hexItem->addOrUpdateActor(actor);
-}
-
-void GameBoardWidget::removeActor(std::shared_ptr<Common::Actor> actor) {
-  shared_ptr<HexGraphicsItem> hexItem =
-      getExistingHexItemOrNull(actor->getHex()->getCoordinates());
-  hexItem->removeActor(actor->getId());
-}
-
-void GameBoardWidget::moveActor(std::shared_ptr<Common::Actor> actor,
-                                Common::CubeCoordinate oldCoord,
-                                Common::CubeCoordinate newCoord) {
-  shared_ptr<HexGraphicsItem> currentHexItem =
-      getExistingHexItemOrNull(oldCoord);
-  currentHexItem->removeActor(actor->getId());
-  shared_ptr<HexGraphicsItem> targetHexItem =
-      getExistingHexItemOrNull(newCoord);
-  targetHexItem->addOrUpdateActor(actor);
-}
-
-void GameBoardWidget::addOrUpdateTransport(
-    std::shared_ptr<Common::Transport> transport) {
-  shared_ptr<HexGraphicsItem> hexItem =
-      getExistingHexItemOrNull(transport->getHex()->getCoordinates());
-  hexItem->addOrUpdateTransport(transport);
-}
-
-void GameBoardWidget::removeTransport(
-    std::shared_ptr<Common::Transport> transport) {
-  shared_ptr<HexGraphicsItem> hexItem =
-      getExistingHexItemOrNull(transport->getHex()->getCoordinates());
-  hexItem->removeTransport(transport->getId());
-}
-
-void GameBoardWidget::moveTransport(
-    std::shared_ptr<Common::Transport> transport,
-    Common::CubeCoordinate oldCoord, Common::CubeCoordinate newCoord) {
-  shared_ptr<HexGraphicsItem> currentHexItem =
-      getExistingHexItemOrNull(oldCoord);
-  currentHexItem->removeActor(transport->getId());
-  shared_ptr<HexGraphicsItem> targetHexItem =
-      getExistingHexItemOrNull(newCoord);
-  targetHexItem->addOrUpdateTransport(transport);
+void GameBoardWidget::updateBoard() {
+  for (auto &&pair : _hexItemsByCoordinates) {
+    auto &hexItem = pair.second;
+    hexItem->updateHexContents();
+    hexItem->update();
+  }
 }
 
 void GameBoardWidget::removeDrawnHexItemAt(Common::CubeCoordinate coord) {

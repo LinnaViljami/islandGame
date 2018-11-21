@@ -10,7 +10,7 @@ QString ActorGraphicsItem::actorToText(std::shared_ptr<Common::Actor> actor) {
   std::string type = actor->getActorType();
   if (type == "kraken") {
     return QString("K");
-  } else if (type == "sea munster") {
+  } else if (type == "seamunster") {
     return QString("MH");
   } else if (type == "shark") {
     return QString("H");

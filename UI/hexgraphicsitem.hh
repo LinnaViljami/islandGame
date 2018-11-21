@@ -27,17 +27,7 @@ public:
 
   QPainterPath shape() const override;
 
-  void addOrUpdatePawn(std::shared_ptr<Common::Pawn> pawn);
-
-  void removePawn(int pawnId);
-
-  void addOrUpdateActor(std::shared_ptr<Common::Actor> actor);
-
-  void removeActor(int actorId);
-
-  void addOrUpdateTransport(std::shared_ptr<Common::Transport> transport);
-
-  void removeTransport(int transportId);
+  void updateHexContents();
 
 signals:
   void mousePressed();
@@ -59,11 +49,20 @@ private:
 
   void repositionAllPawnItems();
 
+  void removeAllActors();
+
   void alignTextItemInsideHex(QGraphicsSimpleTextItem &item);
 
   QPointF getPositionForPawn(int pawnNumber);
 
   static QPolygonF getShapePolygon();
+
+  void addOrUpdateActorGraphicsItem(std::shared_ptr<Common::Actor> actor);
+
+  void addOrUpdateTransportGraphicsItem(std::shared_ptr<Common::Transport> transport);
+
+  void addOrUpdatePawnGraphicsItem(std::shared_ptr<Common::Pawn> pawn);
+
 };
 
 } // namespace Student
