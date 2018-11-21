@@ -7,7 +7,7 @@
 #include "igamerunner.hh"
 #include "spinnercontainerwidget.hh"
 #include <QObject>
-#include <iplayer.hh>
+#include <player.hh>
 #include <vector>
 #include <QLabel>
 #include "userguidewidget.hh"

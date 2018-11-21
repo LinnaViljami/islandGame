@@ -28,6 +28,7 @@ GameExecuter::GameExecuter(
   gameState->changePlayerTurn(1);
   gameState->changeGamePhase(Common::GamePhase::MOVEMENT);
 
+  //userGuide_->setPlayerInTurn(getCurrentPlayer());
   //userGuideText->setText("Tervetuloa pelaamaan Loveisland Suomi 2018!<br>"
   //                       "Klikkaa aluksi ruutua josta haluat siirtää napin");
 

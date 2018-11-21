@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QWidget>
 #include <QLabel>
+#include "player.hh"
+#include <memory>
+#include <QString>
 
 namespace Student {
 
@@ -13,7 +16,9 @@ class UserGuideWidget : public QWidget
 public:
     explicit UserGuideWidget(QWidget *parent = nullptr);
 
-
+    void setPlayerInTurn(std::shared_ptr<Student::Player> playerInTurn);
+    void setGuide(QString);
+    void setRequestToUser(QString);
 private:
     QLabel* playerInTurnText_;
     QLabel* doNextGuideText_;

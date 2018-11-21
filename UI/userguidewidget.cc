@@ -16,4 +16,19 @@ UserGuideWidget::UserGuideWidget(QWidget *parent) : QWidget(parent)
     this->layout()->addWidget(requestToUserText_);
 }
 
+void UserGuideWidget::setPlayerInTurn(std::shared_ptr<Player> playerInTurn)
+{
+    playerInTurnText_->setText("Vuorossa: " + playerInTurn->getName());
+}
+
+void UserGuideWidget::setGuide(QString)
+{
+
+}
+
+void UserGuideWidget::setRequestToUser(QString)
+{
+
+}
+
 }
