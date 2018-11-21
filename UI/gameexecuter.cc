@@ -31,11 +31,6 @@ GameExecuter::GameExecuter(
   userGuideText->setText("Tervetuloa pelaamaan Loveisland Suomi 2018!<br>"
                          "Klikkaa aluksi ruutua josta haluat siirtää napin");
 
-  // testikoodia
-  gameBoard->addPawn(1, 1);
-  gameBoard->addPawn(0, 2);
-  gameBoard->addPawn(1, 3);
-
 }
 
 

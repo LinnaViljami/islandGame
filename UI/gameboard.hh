@@ -5,6 +5,7 @@
 #include "gamestate.hh"
 #include "igameboard.hh"
 #include <QObject>
+#include <iplayer.hh>
 #include <map>
 #include <vector>
 
@@ -95,6 +96,8 @@ public:
 
   bool isAnyActorsOrTransportsOfType(std::string type);
 
+  void initializePawns(std::vector<std::shared_ptr<Common::IPlayer>> players);
+
 private:
   Student::GameBoardWidget *boardWidget_;
 
@@ -105,7 +108,6 @@ private:
   std::map<int, std::shared_ptr<Common::Actor>> actorsByIds_;
 
   std::map<int, std::shared_ptr<Common::Transport>> transportsByIds_;
-
 };
 
 } // namespace Student

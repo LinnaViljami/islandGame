@@ -44,6 +44,7 @@ GameWindow::GameWindow(vector<QString> playerNames)
   gameExecuter_ = std::make_unique<Student::GameExecuter>(
       gameRunner, gameBoard, gameState, spinnerContainerWidget, players, userGuideText);
 
+  gameBoard->initializePawns(players);
   boardWidget->updateBoard();
 }
 
