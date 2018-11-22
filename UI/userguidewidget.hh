@@ -17,12 +17,12 @@ public:
     explicit UserGuideWidget(QWidget *parent = nullptr);
 
     void setPlayerInTurn(std::shared_ptr<Student::Player> playerInTurn);
-    void setGuide(QString);
-    void setRequestToUser(QString);
+    void setNextActionGuide(QString);
+    void setAdditionalMessage(QString);
 private:
     QLabel* playerInTurnText_;
-    QLabel* doNextGuideText_;
-    QLabel* requestToUserText_;
+    QLabel* nextActionGuideText_;
+    QLabel* additionalMessageText_;
 };
 
 }

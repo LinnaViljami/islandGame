@@ -7,13 +7,13 @@ namespace Student {
 
 UserGuideWidget::UserGuideWidget(QWidget *parent) : QWidget(parent) {
   this->setLayout(new QVBoxLayout(this));
-  playerInTurnText_ = new QLabel("Default player in turn");
-  doNextGuideText_ = new QLabel("Default guide to player");
-  requestToUserText_ = new QLabel("Default request to player");
+  playerInTurnText_ = new QLabel();
+  nextActionGuideText_ = new QLabel();
+  additionalMessageText_ = new QLabel();
 
   this->layout()->addWidget(playerInTurnText_);
-  this->layout()->addWidget(doNextGuideText_);
-  this->layout()->addWidget(requestToUserText_);
+  this->layout()->addWidget(nextActionGuideText_);
+  this->layout()->addWidget(additionalMessageText_);
 }
 
 void UserGuideWidget::setPlayerInTurn(std::shared_ptr<Player> playerInTurn) {
@@ -22,8 +22,8 @@ void UserGuideWidget::setPlayerInTurn(std::shared_ptr<Player> playerInTurn) {
   playerInTurnText_->setStyleSheet("color:" + playerColor.name());
 }
 
-void UserGuideWidget::setGuide(QString) {}
+void UserGuideWidget::setNextActionGuide(QString) {}
 
-void UserGuideWidget::setRequestToUser(QString) {}
+void UserGuideWidget::setAdditionalMessage(QString) {}
 
 } // namespace Student
