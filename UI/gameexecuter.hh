@@ -10,6 +10,7 @@
 #include <player.hh>
 #include <vector>
 #include <QLabel>
+#include "player.hh"
 #include "userguidewidget.hh"
 
 namespace Student {
@@ -21,7 +22,7 @@ public:
                std::shared_ptr<Student::GameBoard> gameBoard,
                std::shared_ptr<Student::GameState> gameState,
                SpinnerContainerWidget *spinnerWidget,
-               std::vector<std::shared_ptr<Common::IPlayer>> playerVector,
+               std::vector<std::shared_ptr<Student::Player>> playerVector,
                Student::UserGuideWidget* userGuide);
 
 private:
@@ -33,7 +34,7 @@ private:
 
   SpinnerContainerWidget *spinnerWidget_;
 
-  std::vector<std::shared_ptr<Common::IPlayer>> playerVector_;
+  std::vector<std::shared_ptr<Student::Player>> playerVector_;
 
   Student::UserGuideWidget* userGuide_;
 

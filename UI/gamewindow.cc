@@ -16,6 +16,7 @@
 using Common::IPlayer;
 using std::shared_ptr;
 using std::vector;
+using Student::Player;
 
 GameWindow::GameWindow(vector<QString> playerNames)
     : QMainWindow(nullptr), ui(new Ui::GameWindow) {
@@ -26,9 +27,9 @@ GameWindow::GameWindow(vector<QString> playerNames)
 
   auto gameBoard = std::make_shared<Student::GameBoard>(boardWidget);
   auto gameState = std::make_shared<Student::GameState>();
-  vector<shared_ptr<IPlayer>> players = createPlayers(playerNames);
-  auto gameRunner =
-      Common::Initialization::getGameRunner(gameBoard, gameState, players);
+  vector<shared_ptr<Player>> players = createPlayers(playerNames);
+  auto gameRunner = Common::Initialization::getGameRunner(
+      gameBoard, gameState, castPlayersToIPlayers(players));
 
   auto vLayout = new QVBoxLayout(this);
   auto userGuideWidget = new Student::UserGuideWidget(this);
@@ -52,12 +53,19 @@ GameWindow::GameWindow(vector<QString> playerNames)
 
 GameWindow::~GameWindow() { delete ui; }
 
-vector<shared_ptr<IPlayer>> GameWindow::createPlayers(vector<QString> names) {
-  auto players = vector<shared_ptr<IPlayer>>();
+vector<shared_ptr<Player>> GameWindow::createPlayers(vector<QString> names) {
+  auto players = vector<shared_ptr<Player>>();
   for (unsigned int i = 0; i < names.size(); ++i) {
     QString playerName = names[i];
-    auto player = std::make_shared<Student::Player>(i, 3, playerName);
+    auto player = std::make_shared<Player>(i, 3, playerName);
     players.push_back(player);
   }
   return players;
+}
+
+vector<shared_ptr<IPlayer>>
+GameWindow::castPlayersToIPlayers(vector<shared_ptr<Player>> players) {
+  auto iplayers = vector<shared_ptr<IPlayer>>();
+  std::copy(players.begin(), players.end(), std::back_inserter(iplayers));
+  return iplayers;
 }

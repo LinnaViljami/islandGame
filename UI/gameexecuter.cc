@@ -9,11 +9,10 @@
 
 namespace Student {
 
-GameExecuter::GameExecuter(
-    std::shared_ptr<Common::IGameRunner> gameRunner,
+GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner,
     std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState,
     SpinnerContainerWidget *spinnerWidget,
-    std::vector<std::shared_ptr<Common::IPlayer>> playerVector,
+    std::vector<std::shared_ptr<Student::Player> > playerVector,
     Student::UserGuideWidget *userGuide)
     : gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState),
       spinnerWidget_(spinnerWidget), playerVector_(playerVector),

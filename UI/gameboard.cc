@@ -155,7 +155,7 @@ bool GameBoard::isAnyActorsOrTransportsOfType(std::string type) {
 }
 
 void GameBoard::initializePawns(
-    std::vector<std::shared_ptr<Common::IPlayer>> players) {
+    std::vector<std::shared_ptr<Student::Player>> players) {
   std::vector<shared_ptr<Hex>> possibleHexes;
   for (auto &&pair : hexMap_) {
     auto &hex = pair.second;
