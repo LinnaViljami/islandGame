@@ -5,6 +5,7 @@
 #include "hexgraphicsitem.hh"
 #include "initialize.hh"
 #include "player.hh"
+#include "playerpointswidget.hh"
 #include "spinnercontainerwidget.hh"
 #include "startdialog.hh"
 #include "ui_gamewindow.h"
@@ -31,21 +32,28 @@ GameWindow::GameWindow(vector<QString> playerNames)
   auto gameRunner = Common::Initialization::getGameRunner(
       gameBoard, gameState, castPlayersToIPlayers(players));
 
-  auto vLayout = new QVBoxLayout(this);
+  auto leftLayout = new QVBoxLayout(this);
+  ui->mainLayout->addLayout(leftLayout);
+
   auto userGuideWidget = new Student::UserGuideWidget(this);
-  ui->mainLayout->addLayout(vLayout);
-  vLayout->addWidget(userGuideWidget);
-  vLayout->addWidget(boardWidget);
+  leftLayout->addWidget(userGuideWidget);
+  leftLayout->addWidget(boardWidget);
+
+  auto rightLayout = new QVBoxLayout(this);
+  ui->mainLayout->addLayout(rightLayout);
 
   SpinnerLayout spinnerLayout = gameRunner->getSpinnerLayout();
   auto spinnerContainerWidget = new SpinnerContainerWidget(this, spinnerLayout);
   spinnerContainerWidget->setMinimumSize(200, 400);
-  ui->mainLayout->addWidget(spinnerContainerWidget);
-  ui->mainLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
+  rightLayout->addWidget(spinnerContainerWidget);
+  rightLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
+
+  auto pointsWidget = new Student::PlayerPointsWidget(this, players);
+  rightLayout->addWidget(pointsWidget);
 
   gameExecuter_ = std::make_unique<Student::GameExecuter>(
       gameRunner, gameBoard, gameState, spinnerContainerWidget, players,
-      userGuideWidget);
+      userGuideWidget, pointsWidget);
 
   gameBoard->initializePawns(players);
   boardWidget->updateBoard();

@@ -11,6 +11,7 @@
 #include <vector>
 #include <QLabel>
 #include "player.hh"
+#include "playerpointswidget.hh"
 #include "userguidewidget.hh"
 
 namespace Student {
@@ -23,7 +24,8 @@ public:
                std::shared_ptr<Student::GameState> gameState,
                SpinnerContainerWidget *spinnerWidget,
                std::vector<std::shared_ptr<Student::Player>> playerVector,
-               Student::UserGuideWidget* userGuide);
+               Student::UserGuideWidget* userGuide,
+               Student::PlayerPointsWidget* playerPointsWidget);
 
 private:
   std::shared_ptr<Common::IGameRunner> gameRunner_;
@@ -37,6 +39,8 @@ private:
   std::vector<std::shared_ptr<Student::Player>> playerVector_;
 
   Student::UserGuideWidget* userGuide_;
+
+  Student::PlayerPointsWidget* playerPointsWidget_;
 
   Common::CubeCoordinate selectedHexCoordinates_;
 
