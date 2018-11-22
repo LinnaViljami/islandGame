@@ -32,24 +32,18 @@ GameWindow::GameWindow(vector<QString> playerNames)
   auto gameRunner = Common::Initialization::getGameRunner(
       gameBoard, gameState, castPlayersToIPlayers(players));
 
-  auto leftLayout = new QVBoxLayout(this);
-  ui->mainLayout->addLayout(leftLayout);
-
   auto userGuideWidget = new Student::UserGuideWidget(this);
-  leftLayout->addWidget(userGuideWidget);
-  leftLayout->addWidget(boardWidget);
-
-  auto rightLayout = new QVBoxLayout(this);
-  ui->mainLayout->addLayout(rightLayout);
+  ui->leftLayout->addWidget(userGuideWidget);
+  ui->leftLayout->addWidget(boardWidget);
 
   SpinnerLayout spinnerLayout = gameRunner->getSpinnerLayout();
   auto spinnerContainerWidget = new SpinnerContainerWidget(this, spinnerLayout);
   spinnerContainerWidget->setMinimumSize(200, 400);
-  rightLayout->addWidget(spinnerContainerWidget);
-  rightLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
+  ui->rightLayout->addWidget(spinnerContainerWidget);
+  ui->rightLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
 
   auto pointsWidget = new Student::PlayerPointsWidget(this, players);
-  rightLayout->addWidget(pointsWidget);
+  ui->rightLayout->addWidget(pointsWidget);
 
   gameExecuter_ = std::make_unique<Student::GameExecuter>(
       gameRunner, gameBoard, gameState, spinnerContainerWidget, players,
