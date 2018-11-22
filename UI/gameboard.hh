@@ -93,9 +93,11 @@ public:
    */
   void removeTransport(int id) override;
 
-  bool isAnyPiecesOfType(std::string type);
+  bool isAnyPiecesOfType(std::string type) const;
 
-  bool isAnyActorsOrTransportsOfType(std::string type);
+  bool isAnyActorsOrTransportsOfType(std::string type) const;
+
+  bool hasGameEnded() const;
 
   void initializePawns(std::vector<std::shared_ptr<Student::Player> > players);
 

@@ -131,7 +131,7 @@ void GameBoard::removeTransport(int id) {
   transportsByIds_.erase(id);
 }
 
-bool GameBoard::isAnyPiecesOfType(std::string type) {
+bool GameBoard::isAnyPiecesOfType(std::string type) const {
   for (auto const &hex : hexMap_) {
     if (hex.second->getPieceType() == type) {
       return true;
@@ -140,7 +140,7 @@ bool GameBoard::isAnyPiecesOfType(std::string type) {
   return false;
 }
 
-bool GameBoard::isAnyActorsOrTransportsOfType(std::string type) {
+bool GameBoard::isAnyActorsOrTransportsOfType(std::string type) const {
   for (auto const &actor : actorsByIds_) {
     if (actor.second->getActorType() == type) {
       return true;
@@ -152,6 +152,17 @@ bool GameBoard::isAnyActorsOrTransportsOfType(std::string type) {
     }
   }
   return false;
+}
+
+bool GameBoard::hasGameEnded() const {
+  for (auto &&pair : hexMap_) {
+    auto &hex = pair.second;
+    std::string pieceType = hex->getPieceType();
+    if (pieceType == "Beach" || pieceType == "Forest") {
+      return false;
+    }
+  }
+  return true;
 }
 
 void GameBoard::initializePawns(
