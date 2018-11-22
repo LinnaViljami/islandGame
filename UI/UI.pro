@@ -31,7 +31,8 @@ SOURCES += main.cc \
     pawngraphicsitem.cc \
     actorgraphicsitem.cc \
     transportgraphicsitem.cc \
-    userguidewidget.cc
+    userguidewidget.cc \
+    playerpointswidget.cc
 
 HEADERS  += \
     gameboard.hh \
@@ -51,7 +52,8 @@ HEADERS  += \
     pawngraphicsitem.hh \
     actorgraphicsitem.hh \
     transportgraphicsitem.hh \
-    userguidewidget.hh
+    userguidewidget.hh \
+    playerpointswidget.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine

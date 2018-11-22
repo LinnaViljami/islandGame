@@ -19,16 +19,21 @@ public:
 
   virtual unsigned int getActionsLeft() const;
 
+  QString getName() const;
+
+  void setPoints(int points);
+
+  int getPoints() const;
+
   static QColor getPlayerColor(int playerId);
-
-  QString getName();
-
 private:
   int id_;
 
   unsigned int actionsLeft_;
 
   QString name_;
+
+  int points_;
 };
 
 } // namespace Student

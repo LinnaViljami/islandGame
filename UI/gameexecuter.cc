@@ -9,15 +9,17 @@
 
 namespace Student {
 
-GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner,
+GameExecuter::GameExecuter(
+    std::shared_ptr<Common::IGameRunner> gameRunner,
     std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState,
     SpinnerContainerWidget *spinnerWidget,
-    std::vector<std::shared_ptr<Student::Player> > playerVector,
-    Student::UserGuideWidget *userGuide)
+    std::vector<std::shared_ptr<Student::Player>> playerVector,
+    Student::UserGuideWidget *userGuide, PlayerPointsWidget *playerPointsWidget)
     : gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState),
       spinnerWidget_(spinnerWidget), playerVector_(playerVector),
-      userGuide_(userGuide), selectedHexCoordinates_(Common::CubeCoordinate()),
-      isHexSelected_(false), isWheelSpun_(false), selectedActorId_(-1),
+      userGuide_(userGuide), playerPointsWidget_(playerPointsWidget),
+      selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
+      isWheelSpun_(false), selectedActorId_(-1),
       movesOfSpunActor_(std::string()) {
 
   connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked, this,
@@ -28,8 +30,8 @@ GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner,
   gameState->changeGamePhase(Common::GamePhase::MOVEMENT);
   userGuide_->setPlayerInTurn(getCurrentPlayer());
 
-  //userGuide_->setPlayerInTurn(getCurrentPlayer());
-  //userGuideText->setText("Tervetuloa pelaamaan Loveisland Suomi 2018!<br>"
+  // userGuide_->setPlayerInTurn(getCurrentPlayer());
+  // userGuideText->setText("Tervetuloa pelaamaan Loveisland Suomi 2018!<br>"
   //                       "Klikkaa aluksi ruutua josta haluat siirtää napin");
 }
 
