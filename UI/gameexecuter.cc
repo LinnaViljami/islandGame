@@ -138,6 +138,11 @@ void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord) {
 
 void GameExecuter::handleSpin() {
     isWheelSpun_ = true;
+    if (!gameBoard_->isAnyActorsOrTransportsOfType(typeOfSpunActor_)) {
+      gamePhaseToMovement();
+      userGuide_->setAdditionalMessage("Laudalla ei ole käännettynä yhtään kiekon arpomaa toimijaa. Vuoro siirtyi seuraavalle pelaajalle.");
+      return;
+    }
     userGuide_->setNextActionGuide("Valitse toimija, jota haluat liikuttaa.");
     userGuide_->setAdditionalMessage("Kiekko pyörähti, näet siitä minkä tyyppistä toimijaa sinun tulee liikuttaa.");
 }
@@ -242,12 +247,7 @@ void GameExecuter::gamePhaseToSpinning() {
   std::pair<std::string, std::string> spinResult = gameRunner_->spinWheel();
   typeOfSpunActor_ = spinResult.first;
   movesOfSpunActor_ = spinResult.second;
-  spinnerWidget_->beginSpin(spinResult.first, spinResult.second);
-  if (!gameBoard_->isAnyActorsOrTransportsOfType(typeOfSpunActor_)) {
-    gamePhaseToMovement();
-    userGuide_->setAdditionalMessage("Laudalla ei ole käännettynä yhtään kiekon arpomaa toimijaa. Vuoro siirtyi seuraavalle pelaajalle.");
-    return;
-  }
+  spinnerWidget_->beginSpin(spinResult.first, spinResult.second);  
   userGuide_->setNextActionGuide("Odota, että kiekko pyörähtää.");
 }
 
