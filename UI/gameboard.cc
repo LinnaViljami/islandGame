@@ -173,12 +173,19 @@ void GameBoard::initializePawns(vector<shared_ptr<Player>> players) {
   int counter = 0;
   for (auto &&player : players) {
     for (int i = 0; i < PAWN_COUNT; ++i) {
-      Common::CubeCoordinate coord =
-          hexes.at(counter)->getCoordinates();
+      Common::CubeCoordinate coord = hexes.at(counter)->getCoordinates();
       addPawn(player->getPlayerId(), counter, coord);
       ++counter;
     }
   }
+}
+
+std::vector<std::shared_ptr<Common::Actor>> GameBoard::getAllActors() const {
+  vector<shared_ptr<Actor>> ret;
+  for (auto &&pair : actorsByIds_) {
+    ret.push_back(pair.second);
+  }
+  return ret;
 }
 
 vector<shared_ptr<Hex>> GameBoard::getAllHexes() const {

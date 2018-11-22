@@ -101,6 +101,8 @@ public:
 
   void initializePawns(std::vector<std::shared_ptr<Student::Player> > players);
 
+  std::vector<std::shared_ptr<Common::Actor>> getAllActors() const;
+
 private:
   Student::GameBoardWidget *boardWidget_;
 
