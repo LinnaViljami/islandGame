@@ -82,7 +82,7 @@ private:
   std::vector<std::shared_ptr<Common::Pawn>>
   getPlayerPawnsInCoordinate(Common::CubeCoordinate coord);
 
-  std::shared_ptr<Common::IPlayer> getCurrentPlayer();
+  std::shared_ptr<Student::Player> getCurrentPlayer();
 
   bool isPlayerPawnsInHex(Common::CubeCoordinate coord);
 

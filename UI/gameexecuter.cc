@@ -26,6 +26,7 @@ GameExecuter::GameExecuter(std::shared_ptr<Common::IGameRunner> gameRunner,
           &GameExecuter::handleSpin);
   gameState->changePlayerTurn(1);
   gameState->changeGamePhase(Common::GamePhase::MOVEMENT);
+  userGuide_->setPlayerInTurn(getCurrentPlayer());
 
   //userGuide_->setPlayerInTurn(getCurrentPlayer());
   //userGuideText->setText("Tervetuloa pelaamaan Loveisland Suomi 2018!<br>"
@@ -275,7 +276,7 @@ GameExecuter::getPlayerPawnsInCoordinate(Common::CubeCoordinate coord) {
   return playerPawns;
 }
 
-std::shared_ptr<Common::IPlayer> GameExecuter::getCurrentPlayer() {
+std::shared_ptr<Student::Player> GameExecuter::getCurrentPlayer() {
   for (auto player : playerVector_) {
     if (player->getPlayerId() == gameState_->currentPlayer()) {
       return player;
