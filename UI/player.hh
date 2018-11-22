@@ -4,6 +4,7 @@
 #include "iplayer.hh"
 #include <QColor>
 #include <QString>
+#include <QColor>
 
 namespace Student {
 
@@ -17,6 +18,8 @@ public:
   virtual void setActionsLeft(unsigned int actionsLeft);
 
   virtual unsigned int getActionsLeft() const;
+
+  static const QColor getPlayerColor(int playerId);
 
   QString getName();
 
