@@ -8,10 +8,10 @@
 #include "spinnercontainerwidget.hh"
 #include "startdialog.hh"
 #include "ui_gamewindow.h"
+#include "userguidewidget.hh"
 #include <QPushButton>
 #include <qboxlayout.h>
 #include <qlistview.h>
-#include "userguidewidget.hh"
 
 using Common::IPlayer;
 using std::shared_ptr;
@@ -20,6 +20,7 @@ using std::vector;
 GameWindow::GameWindow(vector<QString> playerNames)
     : QMainWindow(nullptr), ui(new Ui::GameWindow) {
   ui->setupUi(this);
+  std::srand(std::time(0));
 
   auto boardWidget = new Student::GameBoardWidget(this);
 
@@ -42,7 +43,8 @@ GameWindow::GameWindow(vector<QString> playerNames)
   ui->mainLayout->setAlignment(spinnerContainerWidget, Qt::AlignTop);
 
   gameExecuter_ = std::make_unique<Student::GameExecuter>(
-      gameRunner, gameBoard, gameState, spinnerContainerWidget, players, userGuideWidget);
+      gameRunner, gameBoard, gameState, spinnerContainerWidget, players,
+      userGuideWidget);
 
   gameBoard->initializePawns(players);
   boardWidget->updateBoard();
