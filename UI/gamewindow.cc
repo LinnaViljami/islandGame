@@ -35,6 +35,7 @@ GameWindow::GameWindow(vector<QString> playerNames)
   auto userGuideWidget = new Student::UserGuideWidget(this);
   ui->leftLayout->addWidget(userGuideWidget);
   ui->leftLayout->addWidget(boardWidget);
+  ui->leftLayout->addWidget(ui->zoomingAndPanningGuideLabel);
 
   SpinnerLayout spinnerLayout = gameRunner->getSpinnerLayout();
   auto spinnerContainerWidget = new SpinnerContainerWidget(this, spinnerLayout);

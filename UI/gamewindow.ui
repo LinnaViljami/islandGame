@@ -18,7 +18,21 @@
     <item>
      <layout class="QHBoxLayout" name="mainLayout">
       <item>
-       <layout class="QVBoxLayout" name="leftLayout"/>
+       <layout class="QVBoxLayout" name="leftLayout">
+        <item>
+         <widget class="QLabel" name="zoomingAndPanningGuideLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Zoomaa näkymää hiiren rullalla pitämällä CTRL pohjassa. Raahaa näkymää hiirellä pitämällä Shift pohjassa.</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="rightLayout"/>
