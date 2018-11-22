@@ -26,7 +26,7 @@ QColor Player::getPlayerColor(int playerId) {
 
 QString Player::getName() const { return name_; }
 
-void Player::addPoints(int change) { points_ += points; }
+void Player::addPoints(int change) { points_ += change; }
 
 int Player::getPoints() const { return points_; }
 

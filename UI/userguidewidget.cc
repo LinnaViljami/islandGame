@@ -22,8 +22,11 @@ void UserGuideWidget::setPlayerInTurn(std::shared_ptr<Player> playerInTurn) {
   playerInTurnText_->setStyleSheet("color:" + playerColor.name());
 }
 
-void UserGuideWidget::setNextActionGuide(QString) {}
+void UserGuideWidget::setNextActionGuide(QString message) {
+    nextActionGuideText_->setText(message);
+}
 
-void UserGuideWidget::setAdditionalMessage(QString) {}
-
+void UserGuideWidget::setAdditionalMessage(QString message) {
+    additionalMessageText_->setText(message);
+}
 } // namespace Student

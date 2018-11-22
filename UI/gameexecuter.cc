@@ -29,10 +29,8 @@ GameExecuter::GameExecuter(
   gameState->changePlayerTurn(1);
   gameState->changeGamePhase(Common::GamePhase::MOVEMENT);
   userGuide_->setPlayerInTurn(getCurrentPlayer());
-
-  // userGuide_->setPlayerInTurn(getCurrentPlayer());
-  // userGuideText->setText("Tervetuloa pelaamaan Loveisland Suomi 2018!<br>"
-  //                       "Klikkaa aluksi ruutua josta haluat siirtää napin");
+  userGuide->setNextActionGuide("Aloita klikkaamalla ruutua josta haluat siirtää nappulan");
+  userGuide_->setAdditionalMessage("Tervetuloa pelaamaan LoveIsland Suomi 2018-peliä!");
 }
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
@@ -54,22 +52,32 @@ void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
   std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(coord);
 
   if (clickedHex == nullptr) {
-    throw Common::GameException(
-        "Clicked hex not exist in game-executer gameboard_");
+    userGuide_->setAdditionalMessage("Virhe pelissä! "
+                                     "Klikkaamaasi ruutua ei ole olemassa, älä ota yhteyttä kehittäjiin vaan pure hammasta!"
+                                     " tai käynnistä peli uudelleen");
   } else if (!isHexSelected_) {
     if (isPlayerPawnsInHex(coord)) {
       selectedHexCoordinates_ = coord;
       isHexSelected_ = true;
+      userGuide_->setAdditionalMessage("Ruutu valittu!");
+      userGuide_->setNextActionGuide("Valitse ruutu johon haluat liikuttaa nappulan.");
+    }
+    else{
+        userGuide_->setAdditionalMessage("Et voi valita ruutua, jossa sinulla ei ole yhtään nappia.");
     }
   } else if (isHexSelected_) {
     if (selectedHexCoordinates_.operator==(coord)) {
       isHexSelected_ = false;
+      userGuide_->setAdditionalMessage("Valinta poistettu klikkaamastasi ruudusta.");
+      userGuide_->setNextActionGuide("Valitse ruutu josta haluat liikuttaa nappulan.");
     } else {
       tryMovePawn(coord);
     }
   }
   if (getCurrentPlayer()->getActionsLeft() == 0) {
     gameState_->changeGamePhase(Common::GamePhase::SINKING);
+    userGuide_->setNextActionGuide("Valitse upotettava ruutu.");
+    userGuide_->setAdditionalMessage("Liikkusi loppuivat, pelivaihe on nyt upotus.");
   }
 }
 
@@ -81,56 +89,58 @@ void GameExecuter::handlePhaseSinking(Common::CubeCoordinate coord) {
 
 void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord) {
   if (!isWheelSpun_) {
-    // userGuideText_->setText("Spinneri ei ollut vielä pyörähtänyt<br>"
-    //                        "Valitse ruutu josta haluat aktorin/transportin
-    //                        siirtyvän");
+      userGuide_->setAdditionalMessage("Kiekko ei ollut vielä pyörähtänyt, odota että se pyörähtää loppuun.");
     return;
   }
-
   if (!isHexSelected_) {
     if (trySelectActor(typeOfSpunActor_, coord)) {
       selectedHexCoordinates_ = coord;
-      // userGuideText_->setText("Aktori valittu.<br>"
-      //                        "Klikkaa ruutua johon haluat siirtää aktorin");
+      userGuide_->setAdditionalMessage("Toimija valittu.");
+      userGuide_->setNextActionGuide("Klikkaa ruutua, johon haluat siirtää toimijan.");
       isHexSelected_ = true;
       return;
     } else if (trySelectTransport(typeOfSpunActor_, coord)) {
       selectedHexCoordinates_ = coord;
-      // userGuideText_->setText("Transport valittu.<br>"
-      //                        "Klikkaa ruutua johon haluat siirtää
-      //                        transportin");
+      userGuide_->setAdditionalMessage("Kuljettaja valittu.");
+      userGuide_->setNextActionGuide("Klikkaa ruutua, johon haluat siirtää kuljettajan.");
       isHexSelected_ = true;
       return;
     }
-    // userGuideText_->setText("Et voi valita aktoria/transporttia
-    // klikkaamassasi ruudussa");
+    userGuide_->setAdditionalMessage("Et voi valita toimijaa/kuljettajaa kyseisessä ruudussa");
+    userGuide_->setNextActionGuide("Yritä valita toimija/kuljettaja toisesta ruudusta");
     return;
   }
 
   if (selectedHexCoordinates_.operator==(coord)) {
     isHexSelected_ = false;
-    userGuide_->setNextActionGuide("Valitse ruutu josta liikutat aktoria");
+    userGuide_->setAdditionalMessage("Ei ruutua valittuna.");
+    userGuide_->setNextActionGuide("Valitse ruutu josta liikutat toimijaa/kuljettajaa");
     return;
   }
 
   if (tryMoveActor(coord)) {
     tryDoActor(typeOfSpunActor_, coord);
     gamePhaseToMovement();
-    qDebug() << "Aktori liikutettu, toiminto toteutettu ja pelitilaksi "
-                "vaihdettu movement, vuorossa oleva pelaaja vaihtui";
+    userGuide_->setAdditionalMessage("Liikutit toimijan ja se toteutti toimintonsa!");
+
     return;
   }
 
   if (tryMoveTransport(coord)) {
     gamePhaseToMovement();
-    qDebug() << "Transport liikutettu, pelitilaksi vaihdettu movement, "
-                "vuorossa oleva pelaaja vaihtui";
+    userGuide_->setAdditionalMessage("Liikutit kuljettajan ja siinä olevat napit!");
     return;
   }
-  qDebug() << "Et voi liikuttaa aktoria/transporttia valitsemaasi ruutuun";
+  else{
+      userGuide_->setAdditionalMessage("Et voi liikuttaa toimijaa/kuljettajaa klikkaamaasi ruutuun");
+  }
 }
 
-void GameExecuter::handleSpin() { isWheelSpun_ = true; }
+void GameExecuter::handleSpin() {
+    isWheelSpun_ = true;
+    userGuide_->setNextActionGuide("Valitse toimija, jota haluat liikuttaa.");
+    userGuide_->setAdditionalMessage("Kiekko pyörähti, näet siitä minkä tyyppistä toimijaa sinun tulee liikuttaa.");
+}
 
 bool GameExecuter::trySelectActor(std::string actorType,
                                   Common::CubeCoordinate coord) {
@@ -191,14 +201,16 @@ bool GameExecuter::tryFlipTile(Common::CubeCoordinate coord) {
     std::string actor = gameRunner_->flipTile(coord);
     // if was actor in clicked hex and it can do
     if (tryDoActor(actor, coord)) {
+        userGuide_->setAdditionalMessage("Ruutu upotettu, toimija teki toimintonsa!");
       return true;
     }
     // if was transport in clicked hex
     if (putPawnsToTransport(actor, coord)) {
+        userGuide_->setAdditionalMessage("Ruutu upotettu!");
       return true;
     }
   } catch (Common::IllegalMoveException &e) {
-    qDebug() << "Et voi kääntää klikkaamaasi ruutua";
+      userGuide_->setAdditionalMessage("Et voi kääntää klikkaamaasi ruutua.");
     return false;
   }
   return false;
@@ -233,8 +245,10 @@ void GameExecuter::gamePhaseToSpinning() {
   spinnerWidget_->beginSpin(spinResult.first, spinResult.second);
   if (!gameBoard_->isAnyActorsOrTransportsOfType(typeOfSpunActor_)) {
     gamePhaseToMovement();
+    userGuide_->setAdditionalMessage("Laudalla ei ole käännettynä yhtään kiekon arpomaa toimijaa. Vuoro siirtyi seuraavalle pelaajalle.");
     return;
   }
+  userGuide_->setNextActionGuide("Odota, että kiekko pyörähtää.");
 }
 
 void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
@@ -244,9 +258,15 @@ void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
     try {
       getCurrentPlayer()->setActionsLeft(gameRunner_->movePawn(
           selectedHexCoordinates_, to, playerPawnsInSelected.front()->getId()));
+      userGuide_->setAdditionalMessage("Nappula liikutettu onnistuneesti.");
+      userGuide_->setNextActionGuide("Valitse ruutu josta haluat liikuttaa nappulan.");
     } catch (Common::IllegalMoveException) {
-          //jea
+        userGuide_->setAdditionalMessage("Et voi liikuttaa nappulaa klikkaamaasi ruutuun!");
+        userGuide_->setNextActionGuide("Valitse uudelleen ruutu josta haluat liikuttaa nappulan.");
     }
+  }
+  else{
+      userGuide_->setAdditionalMessage("Valitsemassasi ruudussa ei ole yhtään nappulaa joita voisit liikuttaa, valinta poistettu");
   }
   isHexSelected_ = false;
 }
