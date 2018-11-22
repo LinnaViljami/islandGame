@@ -23,14 +23,14 @@ void UserGuideWidget::setPlayerInTurn(std::shared_ptr<Player> playerInTurn)
     playerInTurnText_->setStyleSheet("color:" + Player::getPlayerColor(playerInTurn->getPlayerId()).name());
 }
 
-void UserGuideWidget::setGuide(QString)
+void UserGuideWidget::setGuide(QString guideText)
 {
-
+    doNextGuideText_->setText(guideText);
 }
 
-void UserGuideWidget::setRequestToUser(QString)
+void UserGuideWidget::setRequestToUser(QString requestText)
 {
-
+    requestToUserText_->setText(requestText);
 }
 
 }
