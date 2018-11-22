@@ -45,6 +45,7 @@ SOURCES += \
     ../../../UI/hexgraphicsitem.cc \
     ../../../UI/transportgraphicsitem.cc \
     ../../../UI/pawngraphicsitem.cc \
+    ../../../UI/player.cc \
     ../../../UI/actorgraphicsitem.cc \
     ../../../UI/coordinateconverter.cc \
     ../../../GameLogic/Engine/pawn.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
     ../../../UI/gameboardwidget.hh \
     ../../../UI/zoomablegraphicsview.hh \
     ../../../UI/coordinateconverter.hh \
+    ../../../UI/player.hh \
     ../../../GameLogic/Engine/pawn.hh \
     ../../../GameLogic/Engine/transport.hh \
     ../../../GameLogic/Engine/dolphin.hh \

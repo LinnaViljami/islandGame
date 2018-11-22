@@ -1,12 +1,7 @@
 #include "pawngraphicsitem.hh"
+#include "player.hh"
 
 #include <QPainter>
-
-namespace {
-static const std::vector<Qt::GlobalColor> playerColors{
-    Qt::GlobalColor::green, Qt::GlobalColor::blue, Qt::GlobalColor::red,
-    Qt::GlobalColor::yellow};
-}
 
 namespace Student {
 
@@ -25,7 +20,7 @@ void PawnGraphicsItem::paint(QPainter *painter,
   static const QVector<QPointF> points = {QPointF(-1, -1), QPointF(1, -1),
                                           QPointF(-1, 1), QPointF(1, 1)};
   painter->save();
-  QColor color = QColor(playerColors[pawn_->getPlayerId()]);
+  QColor color = Student::Player::getPlayerColor(pawn_->getPlayerId());
   painter->setBrush(QBrush(color));
   painter->setPen(color);
   painter->drawPolygon(QPolygonF(points));

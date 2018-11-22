@@ -19,7 +19,7 @@ public:
 
   virtual unsigned int getActionsLeft() const;
 
-  static const QColor getPlayerColor(int playerId);
+  static QColor getPlayerColor(int playerId);
 
   QString getName();
 
