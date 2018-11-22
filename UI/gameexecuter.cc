@@ -109,7 +109,7 @@ void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord) {
 
   if (selectedHexCoordinates_.operator==(coord)) {
     isHexSelected_ = false;
-    qDebug() << "Valitse ruutu";
+    userGuide_->setNextActionGuide("Valitse ruutu josta liikutat aktoria");
     return;
   }
 
@@ -219,7 +219,7 @@ void GameExecuter::gamePhaseToMovement() {
   isWheelSpun_ = false;
   isHexSelected_ = false;
   gameState_->changeGamePhase(Common::GamePhase::MOVEMENT);
-  qDebug() << "Pelitilaksi vaihdettu Movement";
+  userGuide_->setNextActionGuide("Valitse liikutettava nappula klikkaamalla ruutua");
   nextTurn();
 }
 
@@ -245,7 +245,7 @@ void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
       getCurrentPlayer()->setActionsLeft(gameRunner_->movePawn(
           selectedHexCoordinates_, to, playerPawnsInSelected.front()->getId()));
     } catch (Common::IllegalMoveException) {
-      qDebug() << "Pawn cannot move to clicked hex";
+          //jea
     }
   }
   isHexSelected_ = false;
@@ -294,11 +294,11 @@ bool GameExecuter::isPlayerPawnsInHex(Common::CubeCoordinate coord) {
 }
 
 void GameExecuter::nextTurn() {
-  qDebug() << "Vuoro vaihdettu seuraavalle pelaajalle";
   if (playerVector_.back()->getPlayerId() ==
       getCurrentPlayer()->getPlayerId()) {
     gameState_->changePlayerTurn(playerVector_.front()->getPlayerId());
     playerVector_.front()->setActionsLeft(3);
+    userGuide_->setPlayerInTurn(getCurrentPlayer());
     return;
   }
   for (size_t t = 0; t < playerVector_.size() - 1; ++t) {
@@ -306,6 +306,7 @@ void GameExecuter::nextTurn() {
     if (playerVector_.at(i)->getPlayerId() ==
         getCurrentPlayer()->getPlayerId()) {
       gameState_->changePlayerTurn(playerVector_.at(i + 1)->getPlayerId());
+      userGuide_->setPlayerInTurn(getCurrentPlayer());
       playerVector_.at(i + 1)->setActionsLeft(3);
       return;
     }
