@@ -14,6 +14,7 @@ using Common::Pawn;
 using Common::Transport;
 using std::map;
 using std::shared_ptr;
+using std::vector;
 
 namespace Student {
 
@@ -165,26 +166,28 @@ bool GameBoard::hasGameEnded() const {
   return true;
 }
 
-void GameBoard::initializePawns(
-    std::vector<std::shared_ptr<Student::Player>> players) {
-  std::vector<shared_ptr<Hex>> possibleHexes;
-  for (auto &&pair : hexMap_) {
-    auto &hex = pair.second;
-    if (!hex->isWaterTile()) {
-      possibleHexes.push_back(hex);
-    }
-  }
-  std::random_shuffle(possibleHexes.begin(), possibleHexes.end());
-  static const int PAWN_COUNT = 4;
+void GameBoard::initializePawns(vector<shared_ptr<Player>> players) {
+  vector<shared_ptr<Hex>> hexes = getAllHexes();
+  std::random_shuffle(hexes.begin(), hexes.end());
+  static const int PAWN_COUNT = 6;
   int counter = 0;
   for (auto &&player : players) {
     for (int i = 0; i < PAWN_COUNT; ++i) {
       Common::CubeCoordinate coord =
-          possibleHexes.at(counter)->getCoordinates();
+          hexes.at(counter)->getCoordinates();
       addPawn(player->getPlayerId(), counter, coord);
       ++counter;
     }
   }
+}
+
+vector<shared_ptr<Hex>> GameBoard::getAllHexes() const {
+  vector<shared_ptr<Hex>> ret;
+  for (auto &&pair : hexMap_) {
+    auto &hex = pair.second;
+    ret.push_back(hex);
+  }
+  return ret;
 }
 
 } // namespace Student

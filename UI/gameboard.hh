@@ -111,6 +111,8 @@ private:
   std::map<int, std::shared_ptr<Common::Actor>> actorsByIds_;
 
   std::map<int, std::shared_ptr<Common::Transport>> transportsByIds_;
+
+  std::vector<std::shared_ptr<Common::Hex>> getAllHexes() const;
 };
 
 } // namespace Student
