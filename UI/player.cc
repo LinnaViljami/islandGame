@@ -22,7 +22,7 @@ void Player::setActionsLeft(unsigned int actionsLeft) {
 
 unsigned int Player::getActionsLeft() const { return actionsLeft_; }
 
-const QColor Player::getPlayerColor(int playerId)
+QColor Player::getPlayerColor(int playerId)
 {
     return QColor(playerColors[playerId]);
 }

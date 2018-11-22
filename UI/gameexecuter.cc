@@ -107,7 +107,7 @@ void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord) {
 
   if (selectedHexCoordinates_.operator==(coord)) {
     isHexSelected_ = false;
-    userGuide_->setGuide("Valitse ruutu josta liikutat aktoria");
+    userGuide_->setNextActionGuide("Valitse ruutu josta liikutat aktoria");
     return;
   }
 
@@ -217,7 +217,7 @@ void GameExecuter::gamePhaseToMovement() {
   isWheelSpun_ = false;
   isHexSelected_ = false;
   gameState_->changeGamePhase(Common::GamePhase::MOVEMENT);
-  userGuide_->setGuide("Valitse liikutettava pawn klikkaamalla ruutua");
+  userGuide_->setNextActionGuide("Valitse liikutettava nappula klikkaamalla ruutua");
   nextTurn();
 }
 
@@ -243,7 +243,7 @@ void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
       getCurrentPlayer()->setActionsLeft(gameRunner_->movePawn(
           selectedHexCoordinates_, to, playerPawnsInSelected.front()->getId()));
     } catch (Common::IllegalMoveException) {
-      userGuide_->setGuide("Et voi liikuttaa pelinappulaa klikkaamaasi ruutuun. Valitse uudelleen ruutu josta haluat liikuttaa nappia");
+          //jea
     }
   }
   isHexSelected_ = false;
