@@ -1,6 +1,7 @@
 #include "userguidewidget.hh"
 #include <QLabel>
 #include <QBoxLayout>
+#include <QPainter>
 
 namespace Student {
 
@@ -18,7 +19,8 @@ UserGuideWidget::UserGuideWidget(QWidget *parent) : QWidget(parent)
 
 void UserGuideWidget::setPlayerInTurn(std::shared_ptr<Player> playerInTurn)
 {
-    playerInTurnText_->setText("Vuorossa: " + playerInTurn->getName());
+    playerInTurnText_->setText("Vuorossa " + playerInTurn->getName());
+    playerInTurnText_->setStyleSheet("color:" + Player::getPlayerColor(playerInTurn->getPlayerId()).name());
 }
 
 void UserGuideWidget::setGuide(QString)
