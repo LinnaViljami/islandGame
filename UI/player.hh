@@ -21,7 +21,7 @@ public:
 
   QString getName() const;
 
-  void setPoints(int points);
+  void addPoints(int change);
 
   int getPoints() const;
 
