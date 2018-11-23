@@ -3,10 +3,12 @@
 
 #include <QGraphicsView>
 
+namespace Student {
+
 class ZoomableGraphicsView : public QGraphicsView {
 public:
   explicit ZoomableGraphicsView(QWidget *parent = nullptr,
-                                double zoomFactorBase = 1.00015);
+                                double zoomFactorBase = 1.0015);
 
   void fitToContent();
 
@@ -22,5 +24,7 @@ private:
 
   const double zoomFactorBase_;
 };
+
+} // namespace Student
 
 #endif // ZOOMABLEGRAPHICSVIEW_HH

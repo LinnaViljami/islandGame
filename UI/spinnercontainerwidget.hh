@@ -7,7 +7,9 @@
 #include <QObject>
 #include <QWidget>
 
-using SpinnerLayout = std::map<std::string, std::map<std::string,unsigned>>;
+using SpinnerLayout = std::map<std::string, std::map<std::string, unsigned>>;
+
+namespace Student {
 
 class SpinnerContainerWidget : public QWidget {
   Q_OBJECT
@@ -26,5 +28,7 @@ private:
   std::vector<std::string> getActorOptions(SpinnerLayout layout);
   std::vector<std::string> getMoveOptions(SpinnerLayout layout);
 };
+
+} // namespace Student
 
 #endif // SPINNERCONTAINERWIDGET_HH

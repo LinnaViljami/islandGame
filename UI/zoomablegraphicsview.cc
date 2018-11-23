@@ -5,9 +5,11 @@
 #include <QWheelEvent>
 #include <qmath.h>
 
+namespace Student {
+
 ZoomableGraphicsView::ZoomableGraphicsView(QWidget *parent,
                                            double zoomFactorBase)
-    : QGraphicsView(parent), zoomFactorBase_(1.0015) {
+    : QGraphicsView(parent), zoomFactorBase_(zoomFactorBase) {
   setMouseTracking(true);
 }
 
@@ -46,3 +48,5 @@ void ZoomableGraphicsView::keyReleaseEvent(QKeyEvent *event) {
 bool ZoomableGraphicsView::keyEventHasShiftModifier(QKeyEvent *event) {
   return event->modifiers().testFlag(Qt::ShiftModifier);
 }
+
+} // namespace Student

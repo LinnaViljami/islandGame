@@ -11,6 +11,8 @@ namespace {
 static const double R = 1;
 }
 
+namespace Student {
+
 SpinnerGraphicsItem::SpinnerGraphicsItem(std::vector<string> spinnerValues)
     : QGraphicsObject(nullptr), spinnerValues_(spinnerValues),
       pointerItem_(*(new Student::SpinnerPointerGraphicsItem(this))),
@@ -74,7 +76,7 @@ void SpinnerGraphicsItem::paintSingleSpinnerValue(QPainter &painter,
                                                   std::string value,
                                                   double rotation) {
   painter.save();
-  int flags = Qt::AlignVCenter;
+  unsigned int flags = Qt::AlignVCenter;
   // If rotation from top is over 180, text cannot just rotated
   // more, because it would apper inverted. That's why rotation
   // is always between 0 and 180, and text is aligned to left or right.
@@ -95,3 +97,5 @@ int SpinnerGraphicsItem::getIndexOfSpinnerValue(std::string value) {
       std::find(spinnerValues_.begin(), spinnerValues_.end(), value);
   return std::distance(spinnerValues_.begin(), iterator);
 }
+
+} // namespace Student

@@ -18,8 +18,6 @@ class GameBoard : public QObject, public Common::IGameBoard {
 public:
   explicit GameBoard(GameBoardWidget *boardWidget = nullptr);
 
-  GameBoardWidget *getBoardWidget();
-
   /**
    * @copydoc IGameBoard::checkTileOccupation()
    */
@@ -100,6 +98,8 @@ public:
   bool hasGameEnded() const;
 
   void initializePawns(std::vector<std::shared_ptr<Student::Player> > players);
+
+  void updateBoard();
 
   std::vector<std::shared_ptr<Common::Actor>> getAllActors() const;
 

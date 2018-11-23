@@ -21,8 +21,6 @@ namespace Student {
 GameBoard::GameBoard(GameBoardWidget *boardWidget)
     : boardWidget_(boardWidget) {}
 
-GameBoardWidget *GameBoard::getBoardWidget() { return boardWidget_; }
-
 int GameBoard::checkTileOccupation(CubeCoordinate tileCoord) const {
   shared_ptr<Hex> hex = getHex(tileCoord);
   if (hex == nullptr) {
@@ -53,8 +51,9 @@ shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
 
 void GameBoard::addHex(shared_ptr<Common::Hex> newHex) {
   hexMap_[newHex->getCoordinates()] = newHex;
-  if (boardWidget_ != nullptr)
+  if (boardWidget_ != nullptr) {
     boardWidget_->addOrUpdateHex(newHex);
+  }
 }
 
 void GameBoard::addPawn(int playerId, int pawnId) {
@@ -178,6 +177,11 @@ void GameBoard::initializePawns(vector<shared_ptr<Player>> players) {
       ++counter;
     }
   }
+}
+
+void GameBoard::updateBoard()
+{
+    boardWidget_->updateBoard();
 }
 
 std::vector<std::shared_ptr<Common::Actor>> GameBoard::getAllActors() const {
