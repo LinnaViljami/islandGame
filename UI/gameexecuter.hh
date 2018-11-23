@@ -60,9 +60,6 @@ private:
 
   void handlePhaseSpinning(Common::CubeCoordinate coord);
 
-
-  // Set new id to attribute "selectedActorId_", if "coord" have type
-  // "actorType" actor, else set -1;
   bool trySelectActor(std::string actorType, Common::CubeCoordinate coord);
 
   bool trySelectTransport(std::string type, Common::CubeCoordinate coord);
@@ -91,6 +88,10 @@ private:
   bool isPlayerPawnsInHex(Common::CubeCoordinate coord);
 
   void nextTurn();
+
+  void doAllActors();
+
+
 
 
 

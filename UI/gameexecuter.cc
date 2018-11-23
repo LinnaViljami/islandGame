@@ -72,6 +72,7 @@ void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
       userGuide_->setNextActionGuide("Valitse ruutu josta haluat liikuttaa nappulan.");
     } else {
       tryMovePawn(coord);
+      doAllActors();
     }
   }
   if (getCurrentPlayer()->getActionsLeft() == 0) {
@@ -331,6 +332,14 @@ void GameExecuter::nextTurn() {
       return;
     }
   }
+}
+
+void GameExecuter::doAllActors()
+{
+    std::vector<std::shared_ptr<Common::Actor>> allActors = gameBoard_->getAllActors();
+    for(auto const& actor : allActors){
+        actor->doAction();
+    }
 }
 
 } // namespace Student
