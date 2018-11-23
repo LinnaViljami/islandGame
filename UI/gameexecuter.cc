@@ -12,20 +12,22 @@ namespace Student {
 GameExecuter::GameExecuter(
     std::shared_ptr<Common::IGameRunner> gameRunner,
     std::shared_ptr<GameBoard> gameBoard, std::shared_ptr<GameState> gameState,
-    SpinnerContainerWidget *spinnerWidget,
+    SpinnerContainerWidget *spinnerWidget, GameBoardWidget *gameBoardWidget,
     std::vector<std::shared_ptr<Student::Player>> playerVector,
     Student::UserGuideWidget *userGuide, PlayerPointsWidget *playerPointsWidget)
-    : gameRunner_(gameRunner), gameBoard_(gameBoard), gameState_(gameState),
-      spinnerWidget_(spinnerWidget), playerVector_(playerVector),
+    : QObject(), gameRunner_(gameRunner), gameBoard_(gameBoard),
+      gameState_(gameState), spinnerWidget_(spinnerWidget),
+      gameBoardWidget_(gameBoardWidget), playerVector_(playerVector),
       userGuide_(userGuide), playerPointsWidget_(playerPointsWidget),
       selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
       isWheelSpun_(false), selectedActorId_(-1),
       movesOfSpunActor_(std::string()) {
 
-  connect(gameBoard_->getBoardWidget(), &GameBoardWidget::hexClicked, this,
+  connect(gameBoardWidget_, &GameBoardWidget::hexClicked, this,
           &GameExecuter::handleHexClick);
   connect(spinnerWidget_, &SpinnerContainerWidget::spinningFinished, this,
           &GameExecuter::handleSpin);
+
   gameState->changePlayerTurn(1);
   gameState->changeGamePhase(Common::GamePhase::MOVEMENT);
   userGuide_->setPlayerInTurn(getCurrentPlayer());
@@ -46,8 +48,10 @@ void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
   case Common::GamePhase::SPINNING:
     handlePhaseSpinning(coordinates);
     break;
+  default:
+    return;
   }
-  gameBoard_->getBoardWidget()->updateBoard();
+  gameBoardWidget_->updateBoard();
 }
 
 void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
@@ -70,7 +74,7 @@ void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
       userGuide_->setAdditionalMessage(
           "Et voi valita ruutua, jossa sinulla ei ole yhtään nappia.");
     }
-  } else if (isHexSelected_) {
+  } else {
     if (selectedHexCoordinates_.operator==(coord)) {
       isHexSelected_ = false;
       userGuide_->setAdditionalMessage(

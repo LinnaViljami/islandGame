@@ -5,14 +5,14 @@
 #include "gameboard.hh"
 #include "gamestate.hh"
 #include "igamerunner.hh"
+#include "player.hh"
+#include "playerpointswidget.hh"
 #include "spinnercontainerwidget.hh"
+#include "userguidewidget.hh"
+#include <QLabel>
 #include <QObject>
 #include <player.hh>
 #include <vector>
-#include <QLabel>
-#include "player.hh"
-#include "playerpointswidget.hh"
-#include "userguidewidget.hh"
 
 namespace Student {
 
@@ -23,9 +23,10 @@ public:
                std::shared_ptr<Student::GameBoard> gameBoard,
                std::shared_ptr<Student::GameState> gameState,
                SpinnerContainerWidget *spinnerWidget,
+               GameBoardWidget *gameBoardWidget,
                std::vector<std::shared_ptr<Student::Player>> playerVector,
-               Student::UserGuideWidget* userGuide,
-               Student::PlayerPointsWidget* playerPointsWidget);
+               Student::UserGuideWidget *userGuide,
+               Student::PlayerPointsWidget *playerPointsWidget);
 
 private:
   std::shared_ptr<Common::IGameRunner> gameRunner_;
@@ -36,11 +37,13 @@ private:
 
   SpinnerContainerWidget *spinnerWidget_;
 
+  GameBoardWidget *gameBoardWidget_;
+
   std::vector<std::shared_ptr<Student::Player>> playerVector_;
 
-  Student::UserGuideWidget* userGuide_;
+  Student::UserGuideWidget *userGuide_;
 
-  Student::PlayerPointsWidget* playerPointsWidget_;
+  Student::PlayerPointsWidget *playerPointsWidget_;
 
   Common::CubeCoordinate selectedHexCoordinates_;
 
@@ -59,7 +62,6 @@ private:
   void handlePhaseSinking(Common::CubeCoordinate coord);
 
   void handlePhaseSpinning(Common::CubeCoordinate coord);
-
 
   // Set new id to attribute "selectedActorId_", if "coord" have type
   // "actorType" actor, else set -1;
@@ -92,9 +94,7 @@ private:
 
   void nextTurn();
 
-
-
-public slots:
+private slots:
   void handleHexClick(Common::CubeCoordinate coordinates);
 
   void handleSpin();

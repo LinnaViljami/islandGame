@@ -49,8 +49,8 @@ GameWindow::GameWindow(vector<QString> playerNames)
   ui->rightLayout->addWidget(pointsWidget);
 
   gameExecuter_ = std::make_unique<Student::GameExecuter>(
-      gameRunner, gameBoard, gameState, spinnerContainerWidget, players,
-      userGuideWidget, pointsWidget);
+      gameRunner, gameBoard, gameState, spinnerContainerWidget, boardWidget,
+      players, userGuideWidget, pointsWidget);
 
   gameBoard->initializePawns(players);
   boardWidget->updateBoard();
