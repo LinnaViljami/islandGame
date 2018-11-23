@@ -19,6 +19,8 @@ using std::shared_ptr;
 using std::vector;
 using Student::Player;
 
+namespace Student {
+
 GameWindow::GameWindow(vector<QString> playerNames)
     : QMainWindow(nullptr), ui(new Ui::GameWindow) {
   ui->setupUi(this);
@@ -72,3 +74,5 @@ GameWindow::castPlayersToIPlayers(vector<shared_ptr<Player>> players) {
   std::copy(players.begin(), players.end(), std::back_inserter(iplayers));
   return iplayers;
 }
+
+} // namespace Student

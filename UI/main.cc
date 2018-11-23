@@ -11,14 +11,14 @@ int main(int argc, char *argv[]) {
 
   QApplication a(argc, argv);
 
-  StartDialog startDialog;
+  Student::StartDialog startDialog;
   int dialogResult = startDialog.exec();
 
   if (dialogResult != QDialog::Accepted) {
     return 0;
   } else {
     std::vector<QString> playerNames = startDialog.getPlayerNames();
-    GameWindow mainWin(playerNames);
+    Student::GameWindow mainWin(playerNames);
     mainWin.showMaximized();
     return a.exec();
   }

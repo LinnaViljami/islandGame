@@ -3,6 +3,8 @@
 
 #include <QGraphicsView>
 
+namespace Student {
+
 class FitToContentGraphicsView : public QGraphicsView {
 public:
   explicit FitToContentGraphicsView(QWidget *parent = nullptr);
@@ -10,5 +12,7 @@ public:
 protected:
   void resizeEvent(QResizeEvent *event) override;
 };
+
+}
 
 #endif // FITTINGQRAPHICSVIEW_HH

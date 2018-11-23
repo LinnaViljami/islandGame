@@ -3,7 +3,6 @@
 
 #include "gameexecuter.hh"
 #include "player.hh"
-#include "player.hh"
 
 #include <QMainWindow>
 #include <cubecoordinate.hh>
@@ -14,6 +13,8 @@ namespace Ui {
 
 class GameWindow;
 }
+
+namespace Student {
 
 class GameWindow : public QMainWindow {
   Q_OBJECT
@@ -27,9 +28,11 @@ private:
   std::unique_ptr<Student::GameExecuter> gameExecuter_;
 
   std::vector<std::shared_ptr<Student::Player>>
-     createPlayers(std::vector<QString> names);
+  createPlayers(std::vector<QString> names);
   std::vector<std::shared_ptr<Common::IPlayer>>
-     castPlayersToIPlayers(std::vector<std::shared_ptr<Student::Player>> players);
+  castPlayersToIPlayers(std::vector<std::shared_ptr<Student::Player>> players);
 };
+
+} // namespace Student
 
 #endif // GAMEWINDOW_HH

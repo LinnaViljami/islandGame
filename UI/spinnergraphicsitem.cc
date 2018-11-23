@@ -11,6 +11,8 @@ namespace {
 static const double R = 1;
 }
 
+namespace Student {
+
 SpinnerGraphicsItem::SpinnerGraphicsItem(std::vector<string> spinnerValues)
     : QGraphicsObject(nullptr), spinnerValues_(spinnerValues),
       pointerItem_(*(new Student::SpinnerPointerGraphicsItem(this))),
@@ -95,3 +97,5 @@ int SpinnerGraphicsItem::getIndexOfSpinnerValue(std::string value) {
       std::find(spinnerValues_.begin(), spinnerValues_.end(), value);
   return std::distance(spinnerValues_.begin(), iterator);
 }
+
+} // namespace Student

@@ -7,6 +7,8 @@
 #include <QPushButton>
 #include <set>
 
+namespace Student {
+
 SpinnerContainerWidget::SpinnerContainerWidget(QWidget *parent,
                                                SpinnerLayout layout)
     : QWidget(parent) {
@@ -58,3 +60,5 @@ SpinnerContainerWidget::getMoveOptions(SpinnerLayout layout) {
   std::copy(set.begin(), set.end(), std::back_inserter(ret));
   return ret;
 }
+
+} // namespace Student

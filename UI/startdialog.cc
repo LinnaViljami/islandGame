@@ -3,6 +3,8 @@
 
 #include <QtWidgets>
 
+namespace Student {
+
 StartDialog::StartDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::StartDialog) {
   ui->setupUi(this);
@@ -41,3 +43,5 @@ void StartDialog::playerCountChanged(int newCount) {
     }
   }
 }
+
+} // namespace Student

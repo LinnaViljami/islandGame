@@ -7,6 +7,8 @@
 #include <memory>
 #include <qpropertyanimation.h>
 
+namespace Student {
+
 class SpinnerGraphicsItem : public QGraphicsObject {
   Q_OBJECT
 
@@ -35,5 +37,7 @@ private:
                                double rotation);
   int getIndexOfSpinnerValue(std::string value);
 };
+
+} // namespace Student
 
 #endif // SPINNERGRAPHICSITEM_HH
