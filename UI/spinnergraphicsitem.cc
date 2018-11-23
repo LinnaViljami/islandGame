@@ -74,7 +74,7 @@ void SpinnerGraphicsItem::paintSingleSpinnerValue(QPainter &painter,
                                                   std::string value,
                                                   double rotation) {
   painter.save();
-  int flags = Qt::AlignVCenter;
+  unsigned int flags = Qt::AlignVCenter;
   // If rotation from top is over 180, text cannot just rotated
   // more, because it would apper inverted. That's why rotation
   // is always between 0 and 180, and text is aligned to left or right.
