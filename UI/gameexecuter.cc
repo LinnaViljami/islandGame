@@ -82,8 +82,9 @@ void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
       userGuide_->setNextActionGuide(
           "Valitse ruutu josta haluat liikuttaa nappulan.");
     } else {
-      tryMoveTransport(coord);
-      tryMovePawn(coord);
+        if(!tryMoveTransport(coord)){
+            tryMovePawn(coord);
+        }
       doAllActors();
     }
   }
@@ -213,10 +214,16 @@ bool GameExecuter::tryMoveTransport(Common::CubeCoordinate to) {
             putPawnsToTransport(transport->getTransportType(),selectedHexCoordinates_);
             int movesLeft = gameRunner_->moveTransport(selectedHexCoordinates_, to, transport->getId());
             if(movesLeft>=0){
+                userGuide_->setAdditionalMessage("Kuljettaja ja siinä olevat nappulat liikutettu");
+                userGuide_->setNextActionGuide("Valitse ruutu josta haluat liikuttaa nappuloita");
+                isHexSelected_ = false;
                 return true;
             }
-        }return false;
+        }
+        userGuide_->setAdditionalMessage("Et voi siirtää kuljettajaa klikkaamaasi ruutuun");
+        return false;
   } catch (Common::IllegalMoveException &e){
+      userGuide_->setAdditionalMessage("Et voi siirtää kuljettajaa klikkaamaasi ruutuun");
       return false;
   }
 
@@ -274,8 +281,7 @@ void GameExecuter::gamePhaseToMovement() {
   gameState_->changeGamePhase(Common::GamePhase::MOVEMENT);
   userGuide_->setNextActionGuide(
       "Valitse liikutettava nappula klikkaamalla ruutua");
-  getCurrentPlayer()->addPoints(gameBoard_->getPlayerPawnAmount(gameRunner_->getCurrentPlayer()->getPlayerId()));
-  playerPointsWidget_->refreshPoints();
+  updatePoints();
   nextTurn();
 }
 
@@ -385,6 +391,14 @@ void GameExecuter::doAllActors()
     for(auto const& actor : allActors){
         actor->doAction();
     }
+}
+
+void GameExecuter::updatePoints()
+{
+    for(auto const& player : playerVector_){
+        player->addPoints(gameBoard_->getPlayerPawnAmount(player->getPlayerId()));
+    }
+    playerPointsWidget_->refreshPoints();
 }
 
 } // namespace Student

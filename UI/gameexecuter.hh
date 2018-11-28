@@ -96,6 +96,8 @@ private:
 
   void doAllActors();
 
+  void updatePoints();
+
 private slots:
   void handleHexClick(Common::CubeCoordinate coordinates);
 
