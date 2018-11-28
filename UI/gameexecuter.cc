@@ -82,6 +82,7 @@ void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
       userGuide_->setNextActionGuide(
           "Valitse ruutu josta haluat liikuttaa nappulan.");
     } else {
+      tryMoveTransport(coord);
       tryMovePawn(coord);
       doAllActors();
     }
@@ -208,8 +209,13 @@ bool GameExecuter::tryMoveActor(Common::CubeCoordinate to) {
 
 bool GameExecuter::tryMoveTransport(Common::CubeCoordinate to) {
   try{
-      gameRunner_->moveTransport(selectedHexCoordinates_, to, selectedActorId_);
-      return true;
+        for(auto const& transport : gameBoard_->getHex(selectedHexCoordinates_)->getTransports()){
+            putPawnsToTransport(transport->getTransportType(),selectedHexCoordinates_);
+            int movesLeft = gameRunner_->moveTransport(selectedHexCoordinates_, to, transport->getId());
+            if(movesLeft>=0){
+                return true;
+            }
+        }return false;
   } catch (Common::IllegalMoveException &e){
       return false;
   }
@@ -314,7 +320,9 @@ bool GameExecuter::putPawnsToTransport(std::string type,
   for (auto const &t : hexInCoord->getTransports()) {
     if (t->getTransportType() == type) {
       for (auto const &pawn : hexInCoord->getPawns()) {
-        t->addPawn(pawn);
+          if(!t->isPawnInTransport(pawn)){
+              t->addPawn(pawn);
+          }
       }
       return true;
     }
