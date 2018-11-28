@@ -192,6 +192,19 @@ std::vector<std::shared_ptr<Common::Actor>> GameBoard::getAllActors() const {
   return ret;
 }
 
+int GameBoard::getPlayerPawnAmount(int playerId)
+{
+    int pawnAmount = 0;
+    for(auto const& hex : getAllHexes()){
+        for(auto const& pawn : hex->getPawns()){
+            if(pawn->getPlayerId() == playerId){
+                ++pawnAmount;
+            }
+        }
+    }
+    return pawnAmount;
+}
+
 vector<shared_ptr<Hex>> GameBoard::getAllHexes() const {
   vector<shared_ptr<Hex>> ret;
   for (auto &&pair : hexMap_) {

@@ -71,6 +71,8 @@ private:
 
   bool tryMoveTransport(Common::CubeCoordinate to);
 
+  bool tryMoveTransportWithSpinner(Common::CubeCoordinate to, std::string moves);
+
   bool tryFlipTile(Common::CubeCoordinate coord);
 
   bool tryDoActor(std::string type, Common::CubeCoordinate coord);

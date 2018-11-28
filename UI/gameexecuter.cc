@@ -38,7 +38,7 @@ GameExecuter::GameExecuter(
 }
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
-  switch (gameState_->currentGamePhase()) {
+  switch (gameRunner_->currentGamePhase()) {
   case Common::GamePhase::MOVEMENT:
     handlePhaseMovement(coordinates);
     break;
@@ -146,7 +146,7 @@ void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord) {
     return;
   }
 
-  if (tryMoveTransport(coord)) {
+  if (tryMoveTransportWithSpinner(coord, movesOfSpunActor_)) {
     gamePhaseToMovement();
     userGuide_->setAdditionalMessage(
         "Liikutit kuljettajan ja siinä olevat napit!");
@@ -207,21 +207,26 @@ bool GameExecuter::tryMoveActor(Common::CubeCoordinate to) {
 }
 
 bool GameExecuter::tryMoveTransport(Common::CubeCoordinate to) {
-  std::shared_ptr<Common::Hex> selectedHex =
-      gameBoard_->getHex(selectedHexCoordinates_);
-  std::shared_ptr<Common::Hex> clickedHex = gameBoard_->getHex(to);
-
-  std::vector<std::shared_ptr<Common::Transport>> hexTransports =
-      selectedHex->getTransports();
-  if (hexTransports.size() != 0) {
-    for (auto const &transport : hexTransports) {
-      if (transport->canMove(getCurrentPlayer()->getPlayerId())) {
-        gameBoard_->moveTransport(transport->getId(), to);
-        return true;
-      }
-    }
+  try{
+      gameRunner_->moveTransport(selectedHexCoordinates_, to, selectedActorId_);
+      return true;
+  } catch (Common::IllegalMoveException &e){
+      return false;
   }
-  return false;
+
+
+}
+
+bool GameExecuter::tryMoveTransportWithSpinner(Common::CubeCoordinate to, std::string moves)
+{
+    try{
+        gameRunner_->moveTransportWithSpinner(selectedHexCoordinates_, to, selectedActorId_, moves);
+        return true;
+    }
+    catch (Common::IllegalMoveException &e){
+        return false;
+    }
+
 }
 
 bool GameExecuter::tryFlipTile(Common::CubeCoordinate coord) {
@@ -263,6 +268,8 @@ void GameExecuter::gamePhaseToMovement() {
   gameState_->changeGamePhase(Common::GamePhase::MOVEMENT);
   userGuide_->setNextActionGuide(
       "Valitse liikutettava nappula klikkaamalla ruutua");
+  getCurrentPlayer()->addPoints(gameBoard_->getPlayerPawnAmount(gameRunner_->getCurrentPlayer()->getPlayerId()));
+  playerPointsWidget_->refreshPoints();
   nextTurn();
 }
 
@@ -321,16 +328,17 @@ GameExecuter::getPlayerPawnsInCoordinate(Common::CubeCoordinate coord) {
       gameBoard_->getHex(coord)->getPawns();
   std::vector<std::shared_ptr<Common::Pawn>> playerPawns;
   for (auto const &pawn : pawnsInClickedHex) {
-    if (pawn->getPlayerId() == gameState_->currentPlayer()) {
+    if (pawn->getPlayerId() == gameRunner_->currentPlayer()) {
       playerPawns.push_back(pawn);
     }
   }
   return playerPawns;
 }
 
+
 std::shared_ptr<Student::Player> GameExecuter::getCurrentPlayer() {
   for (auto player : playerVector_) {
-    if (player->getPlayerId() == gameState_->currentPlayer()) {
+    if (player->getPlayerId() == gameRunner_->currentPlayer()) {
       return player;
     }
   }

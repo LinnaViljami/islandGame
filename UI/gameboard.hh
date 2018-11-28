@@ -103,6 +103,8 @@ public:
 
   std::vector<std::shared_ptr<Common::Actor>> getAllActors() const;
 
+  int getPlayerPawnAmount(int playerId);
+
 private:
   Student::GameBoardWidget *boardWidget_;
 
