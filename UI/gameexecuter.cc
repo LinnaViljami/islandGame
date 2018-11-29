@@ -89,6 +89,7 @@ void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
           "Valitse ruutu josta haluat liikuttaa nappulan.");
     } else {
         if(!tryMoveTransport(coord)){
+            //jos transportin liikuttaminen ei ole mahdollista liikutetaan pawnia
             tryMovePawn(coord);
         }
       doActionsOfAllActors();
@@ -292,6 +293,7 @@ bool GameExecuter::tryFlipTile(Common::CubeCoordinate coord) {
 
 bool GameExecuter::tryDoActor(std::string type, Common::CubeCoordinate coord) {
   std::shared_ptr<Common::Hex> hexInCoord = gameBoard_->getHex(coord);
+  //etsitään oikeaa tyyppiä oleva aktori
   for (auto const &actor : hexInCoord->getActors()) {
     if (actor->getActorType() == type) {
       actor->doAction();
@@ -335,8 +337,10 @@ void GameExecuter::gamePhaseToSpinning() {
 bool GameExecuter::putPawnsToTransport(std::string type,
                                        Common::CubeCoordinate coord) {
   std::shared_ptr<Common::Hex> hexInCoord = gameBoard_->getHex(coord);
+  //etsitään oikeaa tyyppiä oleva transport ruudusta
   for (auto const &t : hexInCoord->getTransports()) {
     if (t->getTransportType() == type) {
+      //yritetään lisätä transporttiin kaikki ruudun pawnit jotka eivät jo ole transportissa
       for (auto const &pawn : hexInCoord->getPawns()) {
           if(!t->isPawnInTransport(pawn)){
               t->addPawn(pawn);
@@ -378,6 +382,7 @@ bool GameExecuter::isPlayerPawnsInHex(Common::CubeCoordinate coord) {
 }
 
 void GameExecuter::nextTurn() {
+  //jos vuorossa oleva pelaaja on viimeisenä
   if (playerVector_.back()->getPlayerId() ==
       getCurrentPlayer()->getPlayerId()) {
     gameState_->changePlayerTurn(playerVector_.front()->getPlayerId());
@@ -385,10 +390,12 @@ void GameExecuter::nextTurn() {
     userGuide_->setPlayerInTurn(getCurrentPlayer());
     return;
   }
+  //etsitään pelaaja vektorista
   for (size_t t = 0; t < playerVector_.size() - 1; ++t) {
     int i = static_cast<int>(t);
     if (playerVector_.at(i)->getPlayerId() ==
         getCurrentPlayer()->getPlayerId()) {
+      //vaihdetaan vuoro vektorissa seuraavana olevalle pelaajalle
       gameState_->changePlayerTurn(playerVector_.at(i + 1)->getPlayerId());
       userGuide_->setPlayerInTurn(getCurrentPlayer());
       playerVector_.at(i + 1)->setActionsLeft(3);
