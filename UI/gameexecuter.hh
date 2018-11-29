@@ -82,6 +82,8 @@ private:
 
   void gamePhaseToMovement();
 
+  void gamePhaseToSinking();
+
   void gamePhaseToSpinning();
 
   void tryMovePawn(Common::CubeCoordinate to);
@@ -100,6 +102,8 @@ private:
   void doActionsOfAllActors();
 
   void updatePoints();
+
+  void goToNextState();
 
 private slots:
   void handleHexClick(Common::CubeCoordinate coordinates);

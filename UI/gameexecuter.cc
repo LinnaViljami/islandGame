@@ -39,7 +39,8 @@ GameExecuter::GameExecuter(
 
 void GameExecuter::skipCurrentPhaseRequested()
 {
-
+    goToNextState();
+    userGuide_->setAdditionalMessage("Skippasit vuoron");
 }
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
@@ -94,17 +95,13 @@ void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
     }
   }
   if (getCurrentPlayer()->getActionsLeft() == 0) {
-    gameState_->changeGamePhase(Common::GamePhase::SINKING);
-    userGuide_->setNextActionGuide("Valitse upotettava ruutu.");
-    userGuide_->setAdditionalMessage(
-        "Liikkusi loppuivat, pelivaihe on nyt upotus.");
+    goToNextState();
   }
 }
 
 void GameExecuter::handlePhaseSinking(Common::CubeCoordinate coord) {
   if (tryFlipTile(coord)) {
-    gamePhaseToSpinning();
-  }
+    goToNextState();  }
 }
 
 void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord) {
@@ -146,15 +143,14 @@ void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord) {
 
   if (tryMoveActor(coord)) {
     tryDoActor(typeOfSpunActor_, coord);
-    gamePhaseToMovement();
+    goToNextState();
     userGuide_->setAdditionalMessage(
         "Liikutit toimijan ja se toteutti toimintonsa!");
-
     return;
   }
 
   if (tryMoveTransportWithSpinner(coord, movesOfSpunActor_)) {
-    gamePhaseToMovement();
+    goToNextState();
     userGuide_->setAdditionalMessage(
         "Liikutit kuljettajan ja siinä olevat napit!");
     return;
@@ -290,6 +286,14 @@ void GameExecuter::gamePhaseToMovement() {
   nextTurn();
 }
 
+void GameExecuter::gamePhaseToSinking()
+{
+    gameState_->changeGamePhase(Common::GamePhase::SINKING);
+    userGuide_->setNextActionGuide("Valitse upotettava ruutu.");
+    userGuide_->setAdditionalMessage(
+        "Liikkusi loppuivat, pelivaihe on nyt upotus.");
+}
+
 void GameExecuter::gamePhaseToSpinning() {
   isWheelSpun_ = false;
   isHexSelected_ = false;
@@ -404,6 +408,21 @@ void GameExecuter::updatePoints()
         player->addPoints(gameBoard_->getPlayerPawnAmount(player->getPlayerId()));
     }
     playerPointsWidget_->refreshPoints();
+}
+
+void GameExecuter::goToNextState()
+{
+    switch (gameState_->currentGamePhase()) {
+    case Common::GamePhase::MOVEMENT:
+        gamePhaseToSinking();
+        break;
+    case Common::GamePhase::SINKING:
+        gamePhaseToSpinning();
+        break;
+    case Common::GamePhase::SPINNING:
+        gamePhaseToMovement();
+        break;
+    }
 }
 
 } // namespace Student
