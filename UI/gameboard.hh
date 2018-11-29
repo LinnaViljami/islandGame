@@ -12,6 +12,10 @@
 
 namespace Student {
 
+///
+/// \brief GameBoard-class is store for all the hexes, paws, actors and the trasports
+/// of the game. It also has some handy query-methods for different items.
+///
 class GameBoard : public QObject, public Common::IGameBoard {
   Q_OBJECT
 
@@ -91,18 +95,43 @@ public:
    */
   void removeTransport(int id) override;
 
+  ///
+  /// \brief Returns true, if there is any piece of \p type.
+  /// Otherwise returns false.
+  ///
   bool isAnyPiecesOfType(std::string type) const;
 
+  ///
+  /// \brief Returns true, if there is any actor or transport of \p type.
+  /// Otherwise returns false.
+  ///
   bool isAnyActorsOrTransportsOfType(std::string type) const;
 
+  ///
+  /// \brief Returns true, if the game has ended, i.e all sinkable pieces has sunk.
+  ///
   bool hasGameEnded() const;
 
+  ///
+  /// \brief Adds pawns to each player.
+  /// \param players Players of the game.
+  ///
   void initializePawns(std::vector<std::shared_ptr<Student::Player> > players);
 
+  ///
+  /// \brief Redraws the board according to current state of pieces, pawns etc.
+  ///
   void updateBoard();
 
+  ///
+  /// \brief Returns all actors.
+  ///
   std::vector<std::shared_ptr<Common::Actor>> getAllActors() const;
 
+  ///
+  /// \brief Returns amount of pawns of player.
+  /// \param playerId The id of the player
+  ///
   int getPlayerPawnAmount(int playerId);
 
 private:

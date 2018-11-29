@@ -6,6 +6,9 @@
 
 namespace Student {
 
+///
+/// \brief QGraphicsItem for drawing an transport.
+///
 class TransportGraphicsItem : public QGraphicsSimpleTextItem {
 public:
   explicit TransportGraphicsItem(QGraphicsItem *parent,

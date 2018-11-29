@@ -5,6 +5,9 @@
 
 namespace Student {
 
+///
+/// \brief QGraphicsView, which fits to it's content on every resizeEvent
+///
 class FitToContentGraphicsView : public QGraphicsView {
 public:
   explicit FitToContentGraphicsView(QWidget *parent = nullptr);

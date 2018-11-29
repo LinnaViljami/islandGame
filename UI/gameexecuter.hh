@@ -97,7 +97,7 @@ private:
 
   void nextTurn();
 
-  void doAllActors();
+  void doActionsOfAllActors();
 
   void updatePoints();
 

@@ -5,6 +5,9 @@
 
 namespace Student {
 
+///
+/// \brief Struct for describing normal xy-coordinates
+///
 struct CartesianCoordinate {
   double x;
   double y;
@@ -21,6 +24,9 @@ struct CartesianCoordinate {
   }
 };
 
+///
+/// \brief Converts CubeCoordinate to CartesianCoordinate
+///
 CartesianCoordinate convertCoordinates(Common::CubeCoordinate cubeCoord);
 
 } // namespace Student

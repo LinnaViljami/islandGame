@@ -7,6 +7,9 @@
 
 namespace Student {
 
+///
+/// \brief QGraphicsItem for drawing an actor
+///
 class ActorGraphicsItem : public QGraphicsSimpleTextItem {
 public:
   explicit ActorGraphicsItem(QGraphicsItem *parent,

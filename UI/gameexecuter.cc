@@ -90,7 +90,7 @@ void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
         if(!tryMoveTransport(coord)){
             tryMovePawn(coord);
         }
-      doAllActors();
+      doActionsOfAllActors();
     }
   }
   if (getCurrentPlayer()->getActionsLeft() == 0) {
@@ -390,7 +390,7 @@ void GameExecuter::nextTurn() {
   }
 }
 
-void GameExecuter::doAllActors()
+void GameExecuter::doActionsOfAllActors()
 {
     std::vector<std::shared_ptr<Common::Actor>> allActors = gameBoard_->getAllActors();
     for(auto const& actor : allActors){
