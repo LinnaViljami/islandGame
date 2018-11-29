@@ -54,19 +54,12 @@ private:
    * @{
    */
   std::shared_ptr<Common::IGameRunner> gameRunner_;
-
   std::shared_ptr<Student::GameBoard> gameBoard_;
-
   std::shared_ptr<Student::GameState> gameState_;
-
   SpinnerContainerWidget *spinnerWidget_;
-
   GameBoardWidget *gameBoardWidget_;
-
   std::vector<std::shared_ptr<Student::Player>> playerVector_;
-
   Student::UserGuideWidget *userGuide_;
-
   Student::PlayerPointsWidget *playerPointsWidget_;
   /** @} */
 
@@ -75,15 +68,10 @@ private:
    * @{
    */
   Common::CubeCoordinate selectedHexCoordinates_;
-
   bool isHexSelected_;
-
   bool isWheelSpun_;
-
   int selectedActorId_;
-
   std::string movesOfSpunActor_;
-
   std::string typeOfSpunActor_;
   /** @} */
 
@@ -92,9 +80,7 @@ private:
    * @{
    */
   void handlePhaseMovement(Common::CubeCoordinate coord);
-
   void handlePhaseSinking(Common::CubeCoordinate coord);
-
   void handlePhaseSpinning(Common::CubeCoordinate coord);
   /** @} */
 
@@ -107,7 +93,6 @@ private:
    * @return true if select success. False if not.
    */
   bool trySelectActor(std::string type, Common::CubeCoordinate coord);
-
   bool trySelectTransport(std::string type, Common::CubeCoordinate coord);
   /** @} */
 
@@ -119,13 +104,11 @@ private:
    * @return true if moving succes. False if not.
    */
   bool tryMoveActor(Common::CubeCoordinate to);
-
   bool tryMoveTransport(Common::CubeCoordinate to);
-
   bool tryMovePawn(Common::CubeCoordinate to);
-
   bool tryMoveTransportWithSpinner(Common::CubeCoordinate to, std::string moves);
   /** @} */
+
 
   /**
    * @brief tryFlipTile Flip tile if possible.
@@ -148,9 +131,7 @@ private:
    * @brief Do all what needs to do when GamePhase changes.
    */
   void gamePhaseToMovement();
-
   void gamePhaseToSinking();
-
   void gamePhaseToSpinning();
   /** @} */
 
