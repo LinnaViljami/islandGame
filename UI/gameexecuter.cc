@@ -259,6 +259,7 @@ bool GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
 
 bool GameExecuter::tryMoveTransportWithSpinner(Common::CubeCoordinate to, std::string moves)
 {
+    putPawnsToTransport(typeOfSpunActor_, selectedHexCoordinates_);
     try{
         gameRunner_->moveTransportWithSpinner(selectedHexCoordinates_, to, selectedActorId_, moves);
         return true;
