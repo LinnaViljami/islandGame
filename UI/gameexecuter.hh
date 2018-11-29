@@ -28,6 +28,9 @@ public:
                Student::UserGuideWidget *userGuide,
                Student::PlayerPointsWidget *playerPointsWidget);
 
+public slots:
+  void skipCurrentPhaseRequested();
+
 private:
   std::shared_ptr<Common::IGameRunner> gameRunner_;
 

@@ -34,7 +34,12 @@ GameExecuter::GameExecuter(
   userGuide->setNextActionGuide(
       "Aloita klikkaamalla ruutua josta haluat siirtää nappulan");
   userGuide_->setAdditionalMessage(
-      "Tervetuloa pelaamaan LoveIsland Suomi 2018-peliä!");
+              "Tervetuloa pelaamaan LoveIsland Suomi 2018-peliä!");
+}
+
+void GameExecuter::skipCurrentPhaseRequested()
+{
+
 }
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {

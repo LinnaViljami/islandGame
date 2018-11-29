@@ -23,21 +23,21 @@ namespace Student {
 
 GameWindow::GameWindow(vector<QString> playerNames)
     : QMainWindow(nullptr), ui(new Ui::GameWindow) {
+
   ui->setupUi(this);
   std::srand(std::time(0));
 
   auto boardWidget = new Student::GameBoardWidget(this);
+  auto userGuideWidget = new Student::UserGuideWidget(this);
+  ui->leftLayout->addWidget(userGuideWidget);
+  ui->leftLayout->addWidget(boardWidget);
+  ui->leftLayout->addWidget(ui->zoomingAndPanningGuideLabel);
 
   auto gameBoard = std::make_shared<Student::GameBoard>(boardWidget);
   auto gameState = std::make_shared<Student::GameState>();
   vector<shared_ptr<Player>> players = createPlayers(playerNames);
   auto gameRunner = Common::Initialization::getGameRunner(
       gameBoard, gameState, castPlayersToIPlayers(players));
-
-  auto userGuideWidget = new Student::UserGuideWidget(this);
-  ui->leftLayout->addWidget(userGuideWidget);
-  ui->leftLayout->addWidget(boardWidget);
-  ui->leftLayout->addWidget(ui->zoomingAndPanningGuideLabel);
 
   SpinnerLayout spinnerLayout = gameRunner->getSpinnerLayout();
   auto spinnerContainerWidget = new SpinnerContainerWidget(this, spinnerLayout);
@@ -54,6 +54,11 @@ GameWindow::GameWindow(vector<QString> playerNames)
 
   gameBoard->initializePawns(players);
   boardWidget->updateBoard();
+
+  QPushButton *skipCurrentPhaseButton = new QPushButton(QString("Ohita vaihe"));
+  ui->rightLayout->addWidget(skipCurrentPhaseButton);
+  connect(skipCurrentPhaseButton, &QPushButton::clicked, gameExecuter_.get(),
+          &GameExecuter::skipCurrentPhaseRequested);
 }
 
 GameWindow::~GameWindow() { delete ui; }
