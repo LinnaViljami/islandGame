@@ -174,10 +174,10 @@ void GameExecuter::handleSpin() {
                                    "tyyppistä toimijaa sinun tulee liikuttaa.");
 }
 
-bool GameExecuter::trySelectActor(std::string actorType,
+bool GameExecuter::trySelectActor(std::string type,
                                   Common::CubeCoordinate coord) {
   for (auto const &a : gameBoard_->getHex(coord)->getActors()) {
-    if (a->getActorType() == actorType) {
+    if (a->getActorType() == type) {
       selectedActorId_ = a->getId();
       return true;
       ;
@@ -227,8 +227,33 @@ bool GameExecuter::tryMoveTransport(Common::CubeCoordinate to) {
       userGuide_->setAdditionalMessage("Et voi siirtää kuljettajaa klikkaamaasi ruutuun");
       return false;
   }
+}
 
+bool GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
+  std::vector<std::shared_ptr<Common::Pawn>> playerPawnsInSelected =
+      getPlayerPawnsInCoordinate(selectedHexCoordinates_);
+  isHexSelected_ = false;
+  if (playerPawnsInSelected.size() != 0) {
+    try {
+      getCurrentPlayer()->setActionsLeft(gameRunner_->movePawn(
+          selectedHexCoordinates_, to, playerPawnsInSelected.front()->getId()));
+      userGuide_->setAdditionalMessage("Nappula liikutettu onnistuneesti.");
+      userGuide_->setNextActionGuide(
+          "Valitse ruutu josta haluat liikuttaa nappulan.");
+      return true;
+    } catch (Common::IllegalMoveException) {
+      userGuide_->setAdditionalMessage(
+          "Et voi liikuttaa nappulaa klikkaamaasi ruutuun!");
+      userGuide_->setNextActionGuide(
+          "Valitse uudelleen ruutu josta haluat liikuttaa nappulan.");
+    }
+  } else {
+    userGuide_->setAdditionalMessage(
+        "Valitsemassasi ruudussa ei ole yhtään nappulaa joita voisit "
+        "liikuttaa, valinta poistettu");
 
+  }
+  return false;
 }
 
 bool GameExecuter::tryMoveTransportWithSpinner(Common::CubeCoordinate to, std::string moves)
@@ -305,29 +330,7 @@ void GameExecuter::gamePhaseToSpinning() {
   userGuide_->setNextActionGuide("Odota, että kiekko pyörähtää.");
 }
 
-void GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
-  std::vector<std::shared_ptr<Common::Pawn>> playerPawnsInSelected =
-      getPlayerPawnsInCoordinate(selectedHexCoordinates_);
-  if (playerPawnsInSelected.size() != 0) {
-    try {
-      getCurrentPlayer()->setActionsLeft(gameRunner_->movePawn(
-          selectedHexCoordinates_, to, playerPawnsInSelected.front()->getId()));
-      userGuide_->setAdditionalMessage("Nappula liikutettu onnistuneesti.");
-      userGuide_->setNextActionGuide(
-          "Valitse ruutu josta haluat liikuttaa nappulan.");
-    } catch (Common::IllegalMoveException) {
-      userGuide_->setAdditionalMessage(
-          "Et voi liikuttaa nappulaa klikkaamaasi ruutuun!");
-      userGuide_->setNextActionGuide(
-          "Valitse uudelleen ruutu josta haluat liikuttaa nappulan.");
-    }
-  } else {
-    userGuide_->setAdditionalMessage(
-        "Valitsemassasi ruudussa ei ole yhtään nappulaa joita voisit "
-        "liikuttaa, valinta poistettu");
-  }
-  isHexSelected_ = false;
-}
+
 
 bool GameExecuter::putPawnsToTransport(std::string type,
                                        Common::CubeCoordinate coord) {
