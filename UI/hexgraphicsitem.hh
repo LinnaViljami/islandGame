@@ -15,9 +15,19 @@
 
 namespace Student {
 
+///
+/// \brief The HexGraphicsItem class is responsible of drawing single hex of
+/// gameboard. It draws both the actual hex with correct color, and
+/// corresponding QGraphicsItem- derivatives for each pawn/actor/transport.
+///
 class HexGraphicsItem : public QGraphicsObject {
   Q_OBJECT
 public:
+
+  ///
+  /// \brief Constructs new HexGraphicsItem
+  /// \param hex Used to get location, type and contents of hex.
+  ///
   explicit HexGraphicsItem(std::shared_ptr<Common::Hex> hex);
 
   QRectF boundingRect() const override;
@@ -27,9 +37,16 @@ public:
 
   QPainterPath shape() const override;
 
+  ///
+  /// \brief Redraws all pawns, actors and trasport of the hex.
+  ///
   void updateHexContents();
 
 signals:
+
+  ///
+  /// \brief Emitted, when mouse is pressed on hex.
+  ///
   void mousePressed();
 
 protected:
@@ -59,10 +76,10 @@ private:
 
   void addOrUpdateActorGraphicsItem(std::shared_ptr<Common::Actor> actor);
 
-  void addOrUpdateTransportGraphicsItem(std::shared_ptr<Common::Transport> transport);
+  void addOrUpdateTransportGraphicsItem(
+      std::shared_ptr<Common::Transport> transport);
 
   void addOrUpdatePawnGraphicsItem(std::shared_ptr<Common::Pawn> pawn);
-
 };
 
 } // namespace Student

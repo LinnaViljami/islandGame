@@ -9,10 +9,18 @@
 
 namespace Student {
 
+///
+/// \brief QGraphicsObject for drawing random spinner.
+/// The values of spinner can be set arbitrary.
+///
 class SpinnerGraphicsItem : public QGraphicsObject {
   Q_OBJECT
 
 public:
+  ///
+  /// \brief Constructor
+  /// \param spinnerValues String-values of the spinner
+  ///
   explicit SpinnerGraphicsItem(std::vector<std::string> spinnerValues);
 
   QRectF boundingRect() const override;
@@ -20,9 +28,17 @@ public:
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
              QWidget *widget) override;
 
+  ///
+  /// \brief Starts animation towards certain spinner value.
+  /// \param value The target value
+  ///
   void beginSpinToValue(std::string value);
 
 signals:
+
+  ///
+  /// \brief Emitted, when spinning animation has been finished.
+  ///
   void spinningFinished();
 
 private:

@@ -5,6 +5,10 @@
 
 namespace Student {
 
+///
+/// \brief QGraphicsObject for drawing spinner pointer.
+/// This is implement with separate class to made animations easier.
+///
 class SpinnerPointerGraphicsItem : public QGraphicsObject {
 public:
   explicit SpinnerPointerGraphicsItem(QGraphicsItem *parent);

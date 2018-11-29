@@ -6,6 +6,9 @@
 
 namespace Student {
 
+///
+/// \brief QGraphicsItem for drawing an pawn.
+///
 class PawnGraphicsItem : public QGraphicsItem {
 public:
   explicit PawnGraphicsItem(QGraphicsItem *parent, std::shared_ptr<Common::Pawn> pawn);
