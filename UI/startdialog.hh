@@ -33,7 +33,7 @@ public slots:
 private:
   Ui::StartDialog *ui;
 
-  std::vector<QLineEdit *> _playerNameLineEdits;
+  std::vector<QLineEdit *> playerNameLineEdits_;
 };
 
 } // namespace Student

@@ -18,21 +18,21 @@ using std::shared_ptr;
 namespace Student {
 
 GameBoardWidget::GameBoardWidget(QWidget *parent)
-    : QWidget(parent), _graphicsView(new ZoomableGraphicsView(this)) {
+    : QWidget(parent), graphicsView_(new ZoomableGraphicsView(this)) {
   this->setLayout(new QHBoxLayout(this));
   QGraphicsScene *scene = new QGraphicsScene(this);
-  _graphicsView->setScene(scene);
-  this->layout()->addWidget(_graphicsView);
+  graphicsView_->setScene(scene);
+  this->layout()->addWidget(graphicsView_);
 }
 
 void GameBoardWidget::addOrUpdateHex(std::shared_ptr<Common::Hex> hex) {
-  QGraphicsScene *scene = _graphicsView->scene();
+  QGraphicsScene *scene = graphicsView_->scene();
 
   CubeCoordinate coordinates = hex->getCoordinates();
   removeDrawnHexItemAt(coordinates);
 
   shared_ptr<HexGraphicsItem> item = std::make_shared<HexGraphicsItem>(hex);
-  _hexItemsByCoordinates[coordinates] = item;
+  hexItemsByCoordinates_[coordinates] = item;
 
   Student::CartesianCoordinate cartesianCoord =
       Student::convertCoordinates(hex->getCoordinates());
@@ -44,7 +44,7 @@ void GameBoardWidget::addOrUpdateHex(std::shared_ptr<Common::Hex> hex) {
 }
 
 void GameBoardWidget::updateBoard() {
-  for (auto &&pair : _hexItemsByCoordinates) {
+  for (auto &&pair : hexItemsByCoordinates_) {
     auto &hexItem = pair.second;
     hexItem->updateHexContents();
     hexItem->update();
@@ -54,15 +54,15 @@ void GameBoardWidget::updateBoard() {
 void GameBoardWidget::removeDrawnHexItemAt(Common::CubeCoordinate coord) {
   shared_ptr<HexGraphicsItem> item = getExistingHexItemOrNull(coord);
   if (item != nullptr) {
-    _graphicsView->scene()->removeItem(item.get());
-    _hexItemsByCoordinates.erase(coord);
+    graphicsView_->scene()->removeItem(item.get());
+    hexItemsByCoordinates_.erase(coord);
   }
 }
 
 shared_ptr<HexGraphicsItem>
 GameBoardWidget::getExistingHexItemOrNull(CubeCoordinate coord) const {
-  auto iterator = _hexItemsByCoordinates.find(coord);
-  if (iterator == _hexItemsByCoordinates.end()) {
+  auto iterator = hexItemsByCoordinates_.find(coord);
+  if (iterator == hexItemsByCoordinates_.end()) {
     return nullptr;
   } else {
     return iterator->second;

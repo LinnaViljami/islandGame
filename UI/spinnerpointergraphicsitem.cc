@@ -24,6 +24,9 @@ void Student::SpinnerPointerGraphicsItem::paint(
     QPainter *painter, const QStyleOptionGraphicsItem *option,
     QWidget *widget) {
 
+  Q_UNUSED(option);
+  Q_UNUSED(widget);
+
   painter->save();
   static const QPoint pointerPoints[3] = {QPoint(WIDTH / 2, BOTTOM_SIDE_Y),
                                           QPoint(-WIDTH / 2, BOTTOM_SIDE_Y),

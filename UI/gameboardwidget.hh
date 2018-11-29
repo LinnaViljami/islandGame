@@ -47,8 +47,8 @@ private:
   getExistingHexItemOrNull(Common::CubeCoordinate coord) const;
   void removeDrawnHexItemAt(Common::CubeCoordinate coord);
   std::map<Common::CubeCoordinate, std::shared_ptr<Student::HexGraphicsItem>>
-      _hexItemsByCoordinates;
-  ZoomableGraphicsView *_graphicsView;
+      hexItemsByCoordinates_;
+  ZoomableGraphicsView *graphicsView_;
 };
 
 } // namespace Student
