@@ -33,11 +33,15 @@ GameWindow::GameWindow(vector<QString> playerNames)
   ui->leftLayout->addWidget(boardWidget);
   ui->leftLayout->addWidget(ui->zoomingAndPanningGuideLabel);
 
-  auto gameBoard = std::make_shared<Student::GameBoard>(boardWidget);
+  auto gameBoard = std::make_shared<Student::GameBoard>();
   auto gameState = std::make_shared<Student::GameState>();
   vector<shared_ptr<Player>> players = createPlayers(playerNames);
   auto gameRunner = Common::Initialization::getGameRunner(
       gameBoard, gameState, castPlayersToIPlayers(players));
+
+  for(auto hex : gameBoard->getAllHexes()){
+      boardWidget->addOrUpdateHex(hex);
+  }
 
   SpinnerLayout spinnerLayout = gameRunner->getSpinnerLayout();
   auto spinnerContainerWidget = new SpinnerContainerWidget(this, spinnerLayout);

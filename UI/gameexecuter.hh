@@ -3,6 +3,7 @@
 
 #include "cubecoordinate.hh"
 #include "gameboard.hh"
+#include "gameboardwidget.hh"
 #include "gamestate.hh"
 #include "igamerunner.hh"
 #include "player.hh"

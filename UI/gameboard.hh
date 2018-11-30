@@ -1,7 +1,7 @@
 #ifndef GAMEBOARD_HH
 #define GAMEBOARD_HH
 
-#include "gameboardwidget.hh"
+#include "hex.hh"
 #include "gamestate.hh"
 #include "igameboard.hh"
 #include "player.hh"
@@ -20,7 +20,7 @@ class GameBoard : public QObject, public Common::IGameBoard {
   Q_OBJECT
 
 public:
-  explicit GameBoard(GameBoardWidget *boardWidget = nullptr);
+  explicit GameBoard();
 
   /**
    * @copydoc IGameBoard::checkTileOccupation()
@@ -119,11 +119,6 @@ public:
   void initializePawns(std::vector<std::shared_ptr<Student::Player> > players);
 
   ///
-  /// \brief Redraws the board according to current state of pieces, pawns etc.
-  ///
-  void updateBoard();
-
-  ///
   /// \brief Returns all actors.
   ///
   std::vector<std::shared_ptr<Common::Actor>> getAllActors() const;
@@ -134,9 +129,11 @@ public:
   ///
   int getPlayerPawnAmount(int playerId);
 
+  ///
+  /// \brief Returns all Hex-objects.
+  ///
+  std::vector<std::shared_ptr<Common::Hex>> getAllHexes() const;
 private:
-  Student::GameBoardWidget *boardWidget_;
-
   std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap_;
 
   std::map<int, std::shared_ptr<Common::Pawn>> pawnsByIds_;
@@ -144,8 +141,6 @@ private:
   std::map<int, std::shared_ptr<Common::Actor>> actorsByIds_;
 
   std::map<int, std::shared_ptr<Common::Transport>> transportsByIds_;
-
-  std::vector<std::shared_ptr<Common::Hex>> getAllHexes() const;
 };
 
 } // namespace Student

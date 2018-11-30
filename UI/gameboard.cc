@@ -18,8 +18,7 @@ using std::vector;
 
 namespace Student {
 
-GameBoard::GameBoard(GameBoardWidget *boardWidget)
-    : boardWidget_(boardWidget) {}
+GameBoard::GameBoard() {}
 
 int GameBoard::checkTileOccupation(CubeCoordinate tileCoord) const {
   shared_ptr<Hex> hex = getHex(tileCoord);
@@ -51,9 +50,6 @@ shared_ptr<Hex> GameBoard::getHex(CubeCoordinate hexCoord) const {
 
 void GameBoard::addHex(shared_ptr<Common::Hex> newHex) {
   hexMap_[newHex->getCoordinates()] = newHex;
-  if (boardWidget_ != nullptr) {
-    boardWidget_->addOrUpdateHex(newHex);
-  }
 }
 
 void GameBoard::addPawn(int playerId, int pawnId) {
@@ -179,11 +175,6 @@ void GameBoard::initializePawns(vector<shared_ptr<Player>> players) {
   }
 }
 
-void GameBoard::updateBoard()
-{
-    boardWidget_->updateBoard();
-}
-
 std::vector<std::shared_ptr<Common::Actor>> GameBoard::getAllActors() const {
   vector<shared_ptr<Actor>> ret;
   for (auto &&pair : actorsByIds_) {
@@ -192,17 +183,16 @@ std::vector<std::shared_ptr<Common::Actor>> GameBoard::getAllActors() const {
   return ret;
 }
 
-int GameBoard::getPlayerPawnAmount(int playerId)
-{
-    int pawnAmount = 0;
-    for(auto const& hex : getAllHexes()){
-        for(auto const& pawn : hex->getPawns()){
-            if(pawn->getPlayerId() == playerId){
-                ++pawnAmount;
-            }
-        }
+int GameBoard::getPlayerPawnAmount(int playerId) {
+  int pawnAmount = 0;
+  for (auto const &hex : getAllHexes()) {
+    for (auto const &pawn : hex->getPawns()) {
+      if (pawn->getPlayerId() == playerId) {
+        ++pawnAmount;
+      }
     }
-    return pawnAmount;
+  }
+  return pawnAmount;
 }
 
 vector<shared_ptr<Hex>> GameBoard::getAllHexes() const {
