@@ -31,6 +31,7 @@ private:
   createPlayers(std::vector<QString> names);
   std::vector<std::shared_ptr<Common::IPlayer>>
   castPlayersToIPlayers(std::vector<std::shared_ptr<Student::Player>> players);
+  void showErrorDialogAndClose(QString errorMessage);
 };
 
 } // namespace Student
