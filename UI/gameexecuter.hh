@@ -158,7 +158,7 @@ private:
   /**
    * @brief nextTurn Give turn to next player.
    */
-  void nextTurn();
+  void moveToNextPlayerTurn();
 
   /**
    * @brief doActionsOfAllActors Try to do all actors which exist in gameboard.

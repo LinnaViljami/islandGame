@@ -34,13 +34,12 @@ GameExecuter::GameExecuter(
   userGuide->setNextActionGuide(
       "Aloita klikkaamalla ruutua josta haluat siirtää nappulan");
   userGuide_->setAdditionalMessage(
-              "Tervetuloa pelaamaan LoveIsland Suomi 2018-peliä!");
+      "Tervetuloa pelaamaan LoveIsland Suomi 2018-peliä!");
 }
 
-void GameExecuter::skipCurrentPhaseRequested()
-{
-    goToNextState();
-    userGuide_->setAdditionalMessage("Skippasit vuoron");
+void GameExecuter::skipCurrentPhaseRequested() {
+  goToNextState();
+  userGuide_->setAdditionalMessage("Skippasit vuoron");
 }
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
@@ -88,10 +87,10 @@ void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
       userGuide_->setNextActionGuide(
           "Valitse ruutu josta haluat liikuttaa nappulan.");
     } else {
-        if(!tryMoveTransport(coord)){
-            //jos transportin liikuttaminen ei ole mahdollista liikutetaan pawnia
-            tryMovePawn(coord);
-        }
+      if (!tryMoveTransport(coord)) {
+        // jos transportin liikuttaminen ei ole mahdollista liikutetaan pawnia
+        tryMovePawn(coord);
+      }
       doActionsOfAllActors();
     }
   }
@@ -102,7 +101,8 @@ void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
 
 void GameExecuter::handlePhaseSinking(Common::CubeCoordinate coord) {
   if (tryFlipTile(coord)) {
-    goToNextState();  }
+    goToNextState();
+  }
 }
 
 void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord) {
@@ -211,22 +211,29 @@ bool GameExecuter::tryMoveActor(Common::CubeCoordinate to) {
 }
 
 bool GameExecuter::tryMoveTransport(Common::CubeCoordinate to) {
-  try{
-        for(auto const& transport : gameBoard_->getHex(selectedHexCoordinates_)->getTransports()){
-            putPawnsToTransport(transport->getTransportType(),selectedHexCoordinates_);
-            int movesLeft = gameRunner_->moveTransport(selectedHexCoordinates_, to, transport->getId());
-            if(movesLeft>=0){
-                userGuide_->setAdditionalMessage("Kuljettaja ja siinä olevat nappulat liikutettu");
-                userGuide_->setNextActionGuide("Valitse ruutu josta haluat liikuttaa nappuloita");
-                isHexSelected_ = false;
-                return true;
-            }
-        }
-        userGuide_->setAdditionalMessage("Et voi siirtää kuljettajaa klikkaamaasi ruutuun");
-        return false;
-  } catch (Common::IllegalMoveException &e){
-      userGuide_->setAdditionalMessage("Et voi siirtää kuljettajaa klikkaamaasi ruutuun");
-      return false;
+  try {
+    for (auto const &transport :
+         gameBoard_->getHex(selectedHexCoordinates_)->getTransports()) {
+      putPawnsToTransport(transport->getTransportType(),
+                          selectedHexCoordinates_);
+      int movesLeft = gameRunner_->moveTransport(selectedHexCoordinates_, to,
+                                                 transport->getId());
+      if (movesLeft >= 0) {
+        userGuide_->setAdditionalMessage(
+            "Kuljettaja ja siinä olevat nappulat liikutettu");
+        userGuide_->setNextActionGuide(
+            "Valitse ruutu josta haluat liikuttaa nappuloita");
+        isHexSelected_ = false;
+        return true;
+      }
+    }
+    userGuide_->setAdditionalMessage(
+        "Et voi siirtää kuljettajaa klikkaamaasi ruutuun");
+    return false;
+  } catch (Common::IllegalMoveException &e) {
+    userGuide_->setAdditionalMessage(
+        "Et voi siirtää kuljettajaa klikkaamaasi ruutuun");
+    return false;
   }
 }
 
@@ -252,22 +259,20 @@ bool GameExecuter::tryMovePawn(Common::CubeCoordinate to) {
     userGuide_->setAdditionalMessage(
         "Valitsemassasi ruudussa ei ole yhtään nappulaa joita voisit "
         "liikuttaa, valinta poistettu");
-
   }
   return false;
 }
 
-bool GameExecuter::tryMoveTransportWithSpinner(Common::CubeCoordinate to, std::string moves)
-{
-    putPawnsToTransport(typeOfSpunActor_, selectedHexCoordinates_);
-    try{
-        gameRunner_->moveTransportWithSpinner(selectedHexCoordinates_, to, selectedActorId_, moves);
-        return true;
-    }
-    catch (Common::IllegalMoveException &e){
-        return false;
-    }
-
+bool GameExecuter::tryMoveTransportWithSpinner(Common::CubeCoordinate to,
+                                               std::string moves) {
+  putPawnsToTransport(typeOfSpunActor_, selectedHexCoordinates_);
+  try {
+    gameRunner_->moveTransportWithSpinner(selectedHexCoordinates_, to,
+                                          selectedActorId_, moves);
+    return true;
+  } catch (Common::IllegalMoveException &e) {
+    return false;
+  }
 }
 
 bool GameExecuter::tryFlipTile(Common::CubeCoordinate coord) {
@@ -294,7 +299,7 @@ bool GameExecuter::tryFlipTile(Common::CubeCoordinate coord) {
 
 bool GameExecuter::tryDoActor(std::string type, Common::CubeCoordinate coord) {
   std::shared_ptr<Common::Hex> hexInCoord = gameBoard_->getHex(coord);
-  //etsitään oikeaa tyyppiä oleva aktori
+  // etsitään oikeaa tyyppiä oleva aktori
   for (auto const &actor : hexInCoord->getActors()) {
     if (actor->getActorType() == type) {
       actor->doAction();
@@ -311,15 +316,14 @@ void GameExecuter::gamePhaseToMovement() {
   userGuide_->setNextActionGuide(
       "Valitse liikutettava nappula klikkaamalla ruutua");
   updatePoints();
-  nextTurn();
+  moveToNextPlayerTurn();
 }
 
-void GameExecuter::gamePhaseToSinking()
-{
-    gameState_->changeGamePhase(Common::GamePhase::SINKING);
-    userGuide_->setNextActionGuide("Valitse upotettava ruutu.");
-    userGuide_->setAdditionalMessage(
-        "Liikkusi loppuivat, pelivaihe on nyt upotus.");
+void GameExecuter::gamePhaseToSinking() {
+  gameState_->changeGamePhase(Common::GamePhase::SINKING);
+  userGuide_->setNextActionGuide("Valitse upotettava ruutu.");
+  userGuide_->setAdditionalMessage(
+      "Liikkusi loppuivat, pelivaihe on nyt upotus.");
 }
 
 void GameExecuter::gamePhaseToSpinning() {
@@ -333,19 +337,18 @@ void GameExecuter::gamePhaseToSpinning() {
   userGuide_->setNextActionGuide("Odota, että kiekko pyörähtää.");
 }
 
-
-
 bool GameExecuter::putPawnsToTransport(std::string type,
                                        Common::CubeCoordinate coord) {
   std::shared_ptr<Common::Hex> hexInCoord = gameBoard_->getHex(coord);
-  //etsitään oikeaa tyyppiä oleva transport ruudusta
+  // etsitään oikeaa tyyppiä oleva transport ruudusta
   for (auto const &t : hexInCoord->getTransports()) {
     if (t->getTransportType() == type) {
-      //yritetään lisätä transporttiin kaikki ruudun pawnit jotka eivät jo ole transportissa
+      // yritetään lisätä transporttiin kaikki ruudun pawnit jotka eivät jo ole
+      // transportissa
       for (auto const &pawn : hexInCoord->getPawns()) {
-          if(!t->isPawnInTransport(pawn)){
-              t->addPawn(pawn);
-          }
+        if (!t->isPawnInTransport(pawn)) {
+          t->addPawn(pawn);
+        }
       }
       return true;
     }
@@ -366,7 +369,6 @@ GameExecuter::getPlayerPawnsInCoordinate(Common::CubeCoordinate coord) {
   return playerPawns;
 }
 
-
 std::shared_ptr<Student::Player> GameExecuter::getCurrentPlayer() {
   for (auto player : playerVector_) {
     if (player->getPlayerId() == gameRunner_->currentPlayer()) {
@@ -382,58 +384,50 @@ bool GameExecuter::isPlayerPawnsInHex(Common::CubeCoordinate coord) {
   return (playerPawns.size() != 0);
 }
 
-void GameExecuter::nextTurn() {
-  //jos vuorossa oleva pelaaja on viimeisenä
-  if (playerVector_.back()->getPlayerId() ==
-      getCurrentPlayer()->getPlayerId()) {
-    gameState_->changePlayerTurn(playerVector_.front()->getPlayerId());
-    playerVector_.front()->setActionsLeft(3);
-    userGuide_->setPlayerInTurn(getCurrentPlayer());
-    return;
+void GameExecuter::moveToNextPlayerTurn() {
+  // jos vuorossa oleva pelaaja on viimeisenä
+  std::shared_ptr<Player> currentPlayer = getCurrentPlayer();
+  std::shared_ptr<Player> nextPlayer = nullptr;
+  size_t currentPlayerIndex = std::distance(
+      playerVector_.begin(),
+      std::find(playerVector_.begin(), playerVector_.end(), currentPlayer));
+  if (currentPlayerIndex == playerVector_.size() - 1) {
+    nextPlayer = playerVector_.front();
+  } else {
+    nextPlayer = playerVector_.at(currentPlayerIndex + 1);
   }
-  //etsitään pelaaja vektorista
-  for (size_t t = 0; t < playerVector_.size() - 1; ++t) {
-    int i = static_cast<int>(t);
-    if (playerVector_.at(i)->getPlayerId() ==
-        getCurrentPlayer()->getPlayerId()) {
-      //vaihdetaan vuoro vektorissa seuraavana olevalle pelaajalle
-      gameState_->changePlayerTurn(playerVector_.at(i + 1)->getPlayerId());
-      userGuide_->setPlayerInTurn(getCurrentPlayer());
-      playerVector_.at(i + 1)->setActionsLeft(3);
-      return;
-    }
+  gameState_->changePlayerTurn(nextPlayer->getPlayerId());
+  nextPlayer->setActionsLeft(3);
+  userGuide_->setPlayerInTurn(nextPlayer);
+} // namespace Student
+
+void GameExecuter::doActionsOfAllActors() {
+  std::vector<std::shared_ptr<Common::Actor>> allActors =
+      gameBoard_->getAllActors();
+  for (auto const &actor : allActors) {
+    actor->doAction();
   }
 }
 
-void GameExecuter::doActionsOfAllActors()
-{
-    std::vector<std::shared_ptr<Common::Actor>> allActors = gameBoard_->getAllActors();
-    for(auto const& actor : allActors){
-        actor->doAction();
-    }
+void GameExecuter::updatePoints() {
+  for (auto const &player : playerVector_) {
+    player->addPoints(gameBoard_->getPlayerPawnAmount(player->getPlayerId()));
+  }
+  playerPointsWidget_->refreshPoints();
 }
 
-void GameExecuter::updatePoints()
-{
-    for(auto const& player : playerVector_){
-        player->addPoints(gameBoard_->getPlayerPawnAmount(player->getPlayerId()));
-    }
-    playerPointsWidget_->refreshPoints();
-}
-
-void GameExecuter::goToNextState()
-{
-    switch (gameState_->currentGamePhase()) {
-    case Common::GamePhase::MOVEMENT:
-        gamePhaseToSinking();
-        break;
-    case Common::GamePhase::SINKING:
-        gamePhaseToSpinning();
-        break;
-    case Common::GamePhase::SPINNING:
-        gamePhaseToMovement();
-        break;
-    }
+void GameExecuter::goToNextState() {
+  switch (gameState_->currentGamePhase()) {
+  case Common::GamePhase::MOVEMENT:
+    gamePhaseToSinking();
+    break;
+  case Common::GamePhase::SINKING:
+    gamePhaseToSpinning();
+    break;
+  case Common::GamePhase::SPINNING:
+    gamePhaseToMovement();
+    break;
+  }
 }
 
 } // namespace Student
