@@ -56,7 +56,7 @@ GameWindow::GameWindow(vector<QString> playerNames)
       gameRunner, gameBoard, gameState, spinnerContainerWidget, boardWidget,
       players, userGuideWidget, pointsWidget);
 
-  gameBoard->initializePawns(players);
+  gameBoard->initializePawns(castPlayersToIPlayers(players));
   boardWidget->updateBoard();
 
   QPushButton *skipCurrentPhaseButton = new QPushButton(QString("Ohita vaihe"));

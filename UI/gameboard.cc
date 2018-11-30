@@ -165,7 +165,7 @@ bool GameBoard::hasGameEnded() const {
   return true;
 }
 
-void GameBoard::initializePawns(vector<shared_ptr<Player>> players) {
+void GameBoard::initializePawns(std::vector<std::shared_ptr<Common::IPlayer> > players) {
   vector<shared_ptr<Hex>> hexes = getAllHexes();
   std::random_shuffle(hexes.begin(), hexes.end());
   static const int PAWN_COUNT = 6;
