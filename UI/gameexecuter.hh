@@ -3,6 +3,7 @@
 
 #include "cubecoordinate.hh"
 #include "gameboard.hh"
+#include "gameboardwidget.hh"
 #include "gamestate.hh"
 #include "igamerunner.hh"
 #include "player.hh"
@@ -161,7 +162,7 @@ private:
   /**
    * @brief nextTurn Give turn to next player.
    */
-  void nextTurn();
+  void moveToNextPlayerTurn();
 
   /**
    * @brief doActionsOfAllActors Try to do all actors which exist in gameboard.
