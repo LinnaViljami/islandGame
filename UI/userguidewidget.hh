@@ -33,6 +33,10 @@ public:
   ///
   void setAdditionalMessage(QString message);
 
+  ///
+  /// \brief Sets value telling which player won the game
+  ///
+  void setWinnerPlayer(std::shared_ptr<Student::Player> winner);
 private:
   QLabel *playerInTurnText_;
   QLabel *nextActionGuideText_;

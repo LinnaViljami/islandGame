@@ -29,4 +29,11 @@ void UserGuideWidget::setNextActionGuide(QString message) {
 void UserGuideWidget::setAdditionalMessage(QString message) {
     additionalMessageText_->setText(message);
 }
+
+void UserGuideWidget::setWinnerPlayer(std::shared_ptr<Player> winner)
+{
+    playerInTurnText_->setText("Pelin voitti " + winner->getName());
+    QColor winnerColor = Player::getPlayerColor(winner->getPlayerId());
+    playerInTurnText_->setStyleSheet("color:" + winnerColor.name());
+}
 } // namespace Student

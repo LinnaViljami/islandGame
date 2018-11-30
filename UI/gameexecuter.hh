@@ -70,6 +70,7 @@ private:
   Common::CubeCoordinate selectedHexCoordinates_;
   bool isHexSelected_;
   bool isWheelSpun_;
+  bool hasGameEnded_;
   int selectedActorId_;
   std::string movesOfSpunActor_;
   std::string typeOfSpunActor_;
@@ -155,6 +156,8 @@ private:
 
   bool isPlayerPawnsInHex(Common::CubeCoordinate coord);
 
+  std::shared_ptr<Student::Player> getPlayerWithMostPoints();
+
   /**
    * @brief nextTurn Give turn to next player.
    */
@@ -175,6 +178,11 @@ private:
    * @brief goToNextState Command game flow handler functions to flow next game state.
    */
   void goToNextState();
+
+  /**
+   * @brief handleGameEnding called if game has ended
+   */
+  void handleGameEnding();
 
 private slots:
   /**

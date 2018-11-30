@@ -155,6 +155,9 @@ bool GameBoard::isAnyActorsOrTransportsOfType(std::string type) const {
 }
 
 bool GameBoard::hasGameEnded() const {
+  if(pawnsByIds_.empty()){
+    return true;
+  }
   for (auto &&pair : hexMap_) {
     auto &hex = pair.second;
     std::string pieceType = hex->getPieceType();
@@ -162,6 +165,7 @@ bool GameBoard::hasGameEnded() const {
       return false;
     }
   }
+
   return true;
 }
 

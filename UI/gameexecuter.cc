@@ -20,7 +20,7 @@ GameExecuter::GameExecuter(
       gameBoardWidget_(gameBoardWidget), playerVector_(playerVector),
       userGuide_(userGuide), playerPointsWidget_(playerPointsWidget),
       selectedHexCoordinates_(Common::CubeCoordinate()), isHexSelected_(false),
-      isWheelSpun_(false), selectedActorId_(-1),
+      isWheelSpun_(false), hasGameEnded_(false), selectedActorId_(-1),
       movesOfSpunActor_(std::string()) {
 
   connect(gameBoardWidget_, &GameBoardWidget::hexClicked, this,
@@ -44,20 +44,22 @@ void GameExecuter::skipCurrentPhaseRequested()
 }
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
-  switch (gameRunner_->currentGamePhase()) {
-  case Common::GamePhase::MOVEMENT:
-    handlePhaseMovement(coordinates);
-    break;
-  case Common::GamePhase::SINKING:
-    handlePhaseSinking(coordinates);
-    break;
-  case Common::GamePhase::SPINNING:
-    handlePhaseSpinning(coordinates);
-    break;
-  default:
-    return;
-  }
-  gameBoardWidget_->updateBoard();
+    if(!hasGameEnded_){
+      switch (gameRunner_->currentGamePhase()) {
+      case Common::GamePhase::MOVEMENT:
+        handlePhaseMovement(coordinates);
+        break;
+      case Common::GamePhase::SINKING:
+        handlePhaseSinking(coordinates);
+        break;
+      case Common::GamePhase::SPINNING:
+        handlePhaseSpinning(coordinates);
+        break;
+      default:
+        return;
+      }
+      gameBoardWidget_->updateBoard();
+    }
 }
 
 void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
@@ -382,6 +384,20 @@ bool GameExecuter::isPlayerPawnsInHex(Common::CubeCoordinate coord) {
   return (playerPawns.size() != 0);
 }
 
+std::shared_ptr<Player> GameExecuter::getPlayerWithMostPoints()
+{
+    std::shared_ptr<Player> mostPointsPlayer = playerVector_.at(0);
+    int highestPoints = mostPointsPlayer->getPoints();
+    for(auto const& player : playerVector_){
+        int points = player->getPoints();
+        if(highestPoints<points){
+            mostPointsPlayer = player;
+            highestPoints = points;
+        }
+    }
+    return mostPointsPlayer;
+}
+
 void GameExecuter::nextTurn() {
   //jos vuorossa oleva pelaaja on viimeisenä
   if (playerVector_.back()->getPlayerId() ==
@@ -423,17 +439,34 @@ void GameExecuter::updatePoints()
 
 void GameExecuter::goToNextState()
 {
-    switch (gameState_->currentGamePhase()) {
-    case Common::GamePhase::MOVEMENT:
-        gamePhaseToSinking();
-        break;
-    case Common::GamePhase::SINKING:
-        gamePhaseToSpinning();
-        break;
-    case Common::GamePhase::SPINNING:
-        gamePhaseToMovement();
-        break;
+    if(gameBoard_->hasGameEnded()){
+        handleGameEnding();
     }
+    else{
+        switch (gameState_->currentGamePhase()) {
+        case Common::GamePhase::MOVEMENT:
+            gamePhaseToSinking();
+            break;
+        case Common::GamePhase::SINKING:
+            gamePhaseToSpinning();
+            break;
+        case Common::GamePhase::SPINNING:
+            gamePhaseToMovement();
+            break;
+        }
+    }
+}
+
+void GameExecuter::handleGameEnding()
+{
+    hasGameEnded_=true;
+    std::shared_ptr<Student::Player> winner = getPlayerWithMostPoints();
+    userGuide_->setWinnerPlayer(winner);
+    userGuide_->setNextActionGuide("Peli loppui, onnea voittajalle!");
+    userGuide_->setAdditionalMessage("Sulje peli painamalla rastia");
+
+
+
 }
 
 } // namespace Student
