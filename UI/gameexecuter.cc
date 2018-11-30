@@ -43,22 +43,22 @@ void GameExecuter::skipCurrentPhaseRequested() {
 }
 
 void GameExecuter::handleHexClick(Common::CubeCoordinate coordinates) {
-    if(!hasGameEnded_){
-      switch (gameRunner_->currentGamePhase()) {
-      case Common::GamePhase::MOVEMENT:
-        handlePhaseMovement(coordinates);
-        break;
-      case Common::GamePhase::SINKING:
-        handlePhaseSinking(coordinates);
-        break;
-      case Common::GamePhase::SPINNING:
-        handlePhaseSpinning(coordinates);
-        break;
-      default:
-        return;
-      }
-      gameBoardWidget_->updateBoard();
+  if (!hasGameEnded_) {
+    switch (gameRunner_->currentGamePhase()) {
+    case Common::GamePhase::MOVEMENT:
+      handlePhaseMovement(coordinates);
+      break;
+    case Common::GamePhase::SINKING:
+      handlePhaseSinking(coordinates);
+      break;
+    case Common::GamePhase::SPINNING:
+      handlePhaseSpinning(coordinates);
+      break;
+    default:
+      return;
     }
+    gameBoardWidget_->updateBoard();
+  }
 }
 
 void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
@@ -82,7 +82,7 @@ void GameExecuter::handlePhaseMovement(Common::CubeCoordinate coord) {
           "Et voi valita ruutua, jossa sinulla ei ole yhtään nappia.");
     }
   } else {
-    if (selectedHexCoordinates_.operator==(coord)) {
+    if (selectedHexCoordinates_ == coord) {
       isHexSelected_ = false;
       userGuide_->setAdditionalMessage(
           "Valinta poistettu klikkaamastasi ruudusta.");
@@ -111,52 +111,39 @@ void GameExecuter::handlePhaseSpinning(Common::CubeCoordinate coord) {
   if (!isWheelSpun_) {
     userGuide_->setAdditionalMessage(
         "Kiekko ei ollut vielä pyörähtänyt, odota että se pyörähtää loppuun.");
-    return;
-  }
-  if (!isHexSelected_) {
+  } else if (!isHexSelected_) {
     if (trySelectActor(typeOfSpunActor_, coord)) {
       selectedHexCoordinates_ = coord;
       userGuide_->setAdditionalMessage("Toimija valittu.");
       userGuide_->setNextActionGuide(
           "Klikkaa ruutua, johon haluat siirtää toimijan.");
       isHexSelected_ = true;
-      return;
     } else if (trySelectTransport(typeOfSpunActor_, coord)) {
       selectedHexCoordinates_ = coord;
       userGuide_->setAdditionalMessage("Kuljettaja valittu.");
       userGuide_->setNextActionGuide(
           "Klikkaa ruutua, johon haluat siirtää kuljettajan.");
       isHexSelected_ = true;
-      return;
+    } else {
+      userGuide_->setAdditionalMessage(
+          "Et voi valita toimijaa/kuljettajaa kyseisessä ruudussa");
+      userGuide_->setNextActionGuide(
+          "Yritä valita toimija/kuljettaja toisesta ruudusta");
     }
-    userGuide_->setAdditionalMessage(
-        "Et voi valita toimijaa/kuljettajaa kyseisessä ruudussa");
-    userGuide_->setNextActionGuide(
-        "Yritä valita toimija/kuljettaja toisesta ruudusta");
-    return;
-  }
-
-  if (selectedHexCoordinates_.operator==(coord)) {
+  } else if (selectedHexCoordinates_ == coord) {
     isHexSelected_ = false;
     userGuide_->setAdditionalMessage("Ei ruutua valittuna.");
     userGuide_->setNextActionGuide(
         "Valitse ruutu josta liikutat toimijaa/kuljettajaa");
-    return;
-  }
-
-  if (tryMoveActor(coord)) {
+  } else if (tryMoveActor(coord)) {
     tryDoActor(typeOfSpunActor_, coord);
     goToNextState();
     userGuide_->setAdditionalMessage(
         "Liikutit toimijan ja se toteutti toimintonsa!");
-    return;
-  }
-
-  if (tryMoveTransportWithSpinner(coord, movesOfSpunActor_)) {
+  } else if (tryMoveTransportWithSpinner(coord, movesOfSpunActor_)) {
     goToNextState();
     userGuide_->setAdditionalMessage(
         "Liikutit kuljettajan ja siinä olevat napit!");
-    return;
   } else {
     userGuide_->setAdditionalMessage(
         "Et voi liikuttaa toimijaa/kuljettajaa klikkaamaasi ruutuun");
@@ -170,11 +157,12 @@ void GameExecuter::handleSpin() {
     userGuide_->setAdditionalMessage(
         "Laudalla ei ole käännettynä yhtään kiekon arpomaa toimijaa. Vuoro "
         "siirtyi seuraavalle pelaajalle.");
-    return;
+  } else {
+    userGuide_->setNextActionGuide("Valitse toimija, jota haluat liikuttaa.");
+    userGuide_->setAdditionalMessage(
+        "Kiekko pyörähti, näet siitä minkä "
+        "tyyppistä toimijaa sinun tulee liikuttaa.");
   }
-  userGuide_->setNextActionGuide("Valitse toimija, jota haluat liikuttaa.");
-  userGuide_->setAdditionalMessage("Kiekko pyörähti, näet siitä minkä "
-                                   "tyyppistä toimijaa sinun tulee liikuttaa.");
 }
 
 bool GameExecuter::trySelectActor(std::string type,
@@ -386,18 +374,17 @@ bool GameExecuter::isPlayerPawnsInHex(Common::CubeCoordinate coord) {
   return (playerPawns.size() != 0);
 }
 
-std::shared_ptr<Player> GameExecuter::getPlayerWithMostPoints()
-{
-    std::shared_ptr<Player> mostPointsPlayer = playerVector_.at(0);
-    int highestPoints = mostPointsPlayer->getPoints();
-    for(auto const& player : playerVector_){
-        int points = player->getPoints();
-        if(highestPoints<points){
-            mostPointsPlayer = player;
-            highestPoints = points;
-        }
+std::shared_ptr<Player> GameExecuter::getPlayerWithMostPoints() {
+  std::shared_ptr<Player> mostPointsPlayer = playerVector_.at(0);
+  int highestPoints = mostPointsPlayer->getPoints();
+  for (auto const &player : playerVector_) {
+    int points = player->getPoints();
+    if (highestPoints < points) {
+      mostPointsPlayer = player;
+      highestPoints = points;
     }
-    return mostPointsPlayer;
+  }
+  return mostPointsPlayer;
 }
 
 void GameExecuter::moveToNextPlayerTurn() {
@@ -432,33 +419,30 @@ void GameExecuter::updatePoints() {
   playerPointsWidget_->refreshPoints();
 }
 
-void GameExecuter::goToNextState()
-{
-    if(gameBoard_->hasGameEnded()){
-        handleGameEnding();
+void GameExecuter::goToNextState() {
+  if (gameBoard_->hasGameEnded()) {
+    handleGameEnding();
+  } else {
+    switch (gameState_->currentGamePhase()) {
+    case Common::GamePhase::MOVEMENT:
+      gamePhaseToSinking();
+      break;
+    case Common::GamePhase::SINKING:
+      gamePhaseToSpinning();
+      break;
+    case Common::GamePhase::SPINNING:
+      gamePhaseToMovement();
+      break;
     }
-    else{
-        switch (gameState_->currentGamePhase()) {
-        case Common::GamePhase::MOVEMENT:
-            gamePhaseToSinking();
-            break;
-        case Common::GamePhase::SINKING:
-            gamePhaseToSpinning();
-            break;
-        case Common::GamePhase::SPINNING:
-            gamePhaseToMovement();
-            break;
-        }
-    }
+  }
 }
 
-void GameExecuter::handleGameEnding()
-{
-    hasGameEnded_=true;
-    std::shared_ptr<Student::Player> winner = getPlayerWithMostPoints();
-    userGuide_->setWinnerPlayer(winner);
-    userGuide_->setNextActionGuide("Peli loppui, onnea voittajalle!");
-    userGuide_->setAdditionalMessage("Sulje peli painamalla rastia");
+void GameExecuter::handleGameEnding() {
+  hasGameEnded_ = true;
+  std::shared_ptr<Student::Player> winner = getPlayerWithMostPoints();
+  userGuide_->setWinnerPlayer(winner);
+  userGuide_->setNextActionGuide("Peli loppui, onnea voittajalle!");
+  userGuide_->setAdditionalMessage("Sulje peli painamalla rastia");
 }
 
 } // namespace Student
