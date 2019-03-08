@@ -105,7 +105,7 @@ GameStateTestsRun:
   stage: test
   script:
     - cd Tests/UnitTests/GameState
-    - ./gamestatetest
+    - ./bin/gamestatetest
   dependencies:
     - BuildUnitTests
 
@@ -115,6 +115,6 @@ CoordinateConverterTestsRun:
   stage: test
   script:
     - cd Tests/UnitTests/CoordinateConverter
-    - ./coordinateconvertertests
+    - ./bin/coordinateconvertertests
   dependencies:
     - BuildUnitTests

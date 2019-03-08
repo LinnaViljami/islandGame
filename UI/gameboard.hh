@@ -4,7 +4,6 @@
 #include "hex.hh"
 #include "gamestate.hh"
 #include "igameboard.hh"
-#include "player.hh"
 #include <QObject>
 #include <iplayer.hh>
 #include <map>
@@ -116,7 +115,7 @@ public:
   /// \brief Adds pawns to each player.
   /// \param players Players of the game.
   ///
-  void initializePawns(std::vector<std::shared_ptr<Student::Player> > players);
+  void initializePawns(std::vector<std::shared_ptr<Common::IPlayer> > players);
 
   ///
   /// \brief Returns all actors.
